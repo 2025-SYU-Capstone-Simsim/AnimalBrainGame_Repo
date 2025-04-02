@@ -95,7 +95,7 @@ export default class GameController extends cc.Component {
                 this.score += 10;  // 점수 증가
                 this.updateScore();
                 this.userInput = [];  // 사용자 입력 초기화
-                this.level++;  // 레벨 증가
+                this.level++; 
                 this.generateColorSequence(); // 색상 순서 길이 증가
                 this.scheduleOnce(() => {
                     this.showColorSequence();  // 새로 생성된 순서 깜빡이기
@@ -104,7 +104,7 @@ export default class GameController extends cc.Component {
         } else {
             // 틀렸을 경우
             this.setStatusMessage("틀렸습니다! 다시 시도하세요.");
-            this.userInput = [];  // 사용자 입력 초기화
+            this.userInput = []; 
         }
     }
 
