@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "aca92d1f-9f82-48f4-9d7e-3826f3a8ff22",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 848,
+  "height": 785,
+  "platformSettings": {},
+  "subMetas": {
+    "스크린샷 2025-03-26 224843": {
+      "ver": "1.0.6",
+      "uuid": "8759637e-dbbe-4409-a18d-10c1d2fc33b8",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "aca92d1f-9f82-48f4-9d7e-3826f3a8ff22",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 848,
+      "height": 785,
+      "rawWidth": 848,
+      "rawHeight": 785,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
