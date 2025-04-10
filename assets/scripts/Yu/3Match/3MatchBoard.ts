@@ -8,7 +8,7 @@ export default class ThreeMatchBoard extends cc.Component {
     tilePrefab: cc.Prefab = null;
 
     @property(cc.Integer)
-    boardSize: number = 3;
+    boardSize: number = 8;
 
     @property(ThreeMatchManager)
     gameManager: ThreeMatchManager = null;
