@@ -1,4 +1,5 @@
 const { ccclass, property } = cc._decorator;
+import ThreeMatchBoard from "./3MatchBoard";
 
 @ccclass("ThreeMatchManager")
 export default class ThreeMatchManager extends cc.Component {
@@ -8,9 +9,13 @@ export default class ThreeMatchManager extends cc.Component {
     @property(cc.Label)
     scoreLabel: cc.Label = null;
 
-    private totalTime: number = 60;  // 제한 시간 60초
-    private currentTime: number = 60;
+    @property(cc.Node)
+    boardNode: cc.Node = null; // Board 노드 직접 연결
+
+    private totalTime: number = 120;  // 제한 시간 2분
+    private currentTime: number = 120;
     private score: number = 0;
+    private currentStage: number = 1;
 
     onLoad() {
         this.schedule(this.updateTimer, 1);
@@ -32,15 +37,29 @@ export default class ThreeMatchManager extends cc.Component {
     updateScore(amount: number) {
         this.score += amount;
         this.scoreLabel.string = `획득 점수: ${this.score}`;
+        this.checkStageUpgrade();  // 점수 업데이트마다 단계 확인
     }
 
     onGameOver() {
         cc.log("게임 종료!");
-        // 이후 게임 종료 UI 띄우거나 리셋 가능
+        // 게임 종료 처리
     }
 
-    /** 외부에서 점수 추가할 때 호출할 수 있음 */
     public addMatchScore(matchCount: number) {
-        this.updateScore(matchCount * 10);  // 기본 점수 로직
+        this.updateScore(matchCount * 10);
+    }
+
+    private checkStageUpgrade() {
+        const board = this.boardNode.getComponent(ThreeMatchBoard) as any;
+
+        if (this.currentStage === 1 && this.score >= 200) {
+            this.currentStage = 2;
+            cc.log("2단계");
+            board.resetBoard(7);
+        } else if (this.currentStage === 2 && this.score >= 500) {
+            this.currentStage = 3;
+            cc.log("3단계");
+            board.resetBoard(10);
+        }
     }
 }
