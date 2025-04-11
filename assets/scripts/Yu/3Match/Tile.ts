@@ -110,6 +110,7 @@ export default class Tile extends cc.Component {
         if (!this.node || !cc.isValid(this.node)) return;  // 추가
         this.node.scale = enable ? 1.1 : 1.0;
     }
+    
 
     swapPosition(otherTile: Tile) {
         // 위치 바꾸기
@@ -146,6 +147,7 @@ export default class Tile extends cc.Component {
             }, 1);
         }
     
+        // 애니메이션 + 파괴
         this.node.runAction(
             cc.sequence(
                 cc.spawn(

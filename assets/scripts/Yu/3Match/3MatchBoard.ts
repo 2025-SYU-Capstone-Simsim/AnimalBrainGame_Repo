@@ -4,15 +4,10 @@ import Tile from "./Tile";
 
 @ccclass
 export default class ThreeMatchBoard extends cc.Component {
-    @property(cc.Prefab) 
-    tilePrefab: cc.Prefab = null;
+    @property(cc.Prefab) tilePrefab: cc.Prefab = null;
+    @property(ThreeMatchManager) gameManager: ThreeMatchManager = null;
 
-    @property(cc.Integer)
-    boardSize: number = 8;
-
-    @property(ThreeMatchManager)
-    gameManager: ThreeMatchManager = null;
-
+    private boardSize: number = 8;  // 항상 8x8 고정
     private tileSize: number = 100;
     private gap: number = 5;
 
@@ -20,7 +15,7 @@ export default class ThreeMatchBoard extends cc.Component {
     private isSwapping: boolean = false;
 
     start() {
-        this.node.color = cc.Color.GRAY; 
+        this.node.color = cc.Color.GRAY;
         this.createBoard();
     }
 
@@ -226,18 +221,6 @@ export default class ThreeMatchBoard extends cc.Component {
         return new cc.Vec3(x, y, 0);
     }
 
-    resetBoard(newSize: number) {
-        // 기존 타일 제거
-        for (let row = 0; row < this.board.length; row++) {
-            for (let col = 0; col < this.board[row].length; col++) {
-                if (this.board[row][col]) {
-                    this.board[row][col].node.destroy();
-                }
-            }
-        }
-    
-        this.boardSize = newSize;
-        this.createBoard(); // 새로 생성
-    }
+
     
 }

@@ -373,7 +373,6 @@
     "tilePrefab": {
       "__uuid__": "f620e8a3-53f6-4c9b-a0c3-f5377961e416"
     },
-    "boardSize": 5,
     "gameManager": {
       "__id__": 8
     },
