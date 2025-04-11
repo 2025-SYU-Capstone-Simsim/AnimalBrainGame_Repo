@@ -75,22 +75,27 @@ export default class Tile extends cc.Component {
     }
 
     onTileClicked() {
+        if (!cc.isValid(this.node)) return;
+    
         if (Tile.selectedTile === null) {
             Tile.selectedTile = this;
             this.highlight(true);
         } else {
+            if (!cc.isValid(Tile.selectedTile.node)) {
+                Tile.selectedTile = null;
+                return;
+            }
+    
             if (Tile.selectedTile === this) {
                 this.highlight(false);
                 Tile.selectedTile = null;
                 return;
             }
     
-            // 같은 타일을 클릭한 경우 해제
             this.highlight(false);
             Tile.selectedTile.highlight(false);
     
-            // 위치 바꾸기 (GameBoard에서 swapTiles 호출)
-            const board = this.node.parent.getComponent(ThreeMatchBoard) as any;
+            const board = this.node.parent.getComponent(ThreeMatchBoard);
             if (board) {
                 board.swapTiles(this, Tile.selectedTile);
             }
@@ -99,8 +104,10 @@ export default class Tile extends cc.Component {
         }
     }
     
+    
 
     highlight(enable: boolean) {
+        if (!this.node || !cc.isValid(this.node)) return;  // 추가
         this.node.scale = enable ? 1.1 : 1.0;
     }
 
@@ -139,7 +146,6 @@ export default class Tile extends cc.Component {
             }, 1);
         }
     
-        // 애니메이션 + 파괴
         this.node.runAction(
             cc.sequence(
                 cc.spawn(
@@ -147,7 +153,9 @@ export default class Tile extends cc.Component {
                     cc.fadeOut(0.2)
                 ),
                 cc.callFunc(() => {
-                    console.log(`타일 제거 완료: (${this.row}, ${this.col})`);
+                    if (Tile.selectedTile === this) {
+                        Tile.selectedTile = null;  // 사라질 때 선택 해제
+                    }
                     this.node.destroy();
                 })
             )
