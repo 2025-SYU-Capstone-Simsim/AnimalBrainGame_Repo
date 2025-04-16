@@ -17,7 +17,7 @@ export default class GameManager extends cc.Component {
 
     correctCount: number = 0;
 
-    start() {
+    onLoad() {
         this.generateQuestion();
     }
 
@@ -31,7 +31,7 @@ export default class GameManager extends cc.Component {
         // 3. 보기 숫자들 만들기 (정답 포함 8개)
         const options = new Set<number>();
         options.add(this.correctCount);
-        while (options.size < 8) {
+        while (options.size < this.optionButtons.length) {
             options.add(Math.floor(Math.random() * 30) + 1);
         }
 
@@ -39,7 +39,7 @@ export default class GameManager extends cc.Component {
         this.shuffleArray(optionList);
 
         // 4. 버튼에 숫자 세팅 + 클릭 이벤트 연결
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < this.optionButtons.length; i++) {
             const label = this.optionButtons[i].node.getComponentInChildren(cc.Label);
             label.string = optionList[i].toString();
         
@@ -92,6 +92,7 @@ export default class GameManager extends cc.Component {
         const availableForStack = [...basePositions];
         this.shuffleArray(availableForStack);
     
+        placed = 0;
         for (const base of availableForStack) {
             if (placed >= count) break;
     
