@@ -4,34 +4,37 @@ const { ccclass, property } = cc._decorator;
 export default class GameController extends cc.Component {
 
     @property(cc.Button)
-    startButton: cc.Button = null; // 시작 버튼
+    startButton: cc.Button = null;
 
     @property(cc.Button)
-    redButton: cc.Button = null;   // 빨강 버튼
+    redButton: cc.Button = null;
 
     @property(cc.Button)
-    yellowButton: cc.Button = null; // 노랑 버튼
+    yellowButton: cc.Button = null;
 
     @property(cc.Button)
-    greenButton: cc.Button = null;  // 초록 버튼
+    greenButton: cc.Button = null;
 
     @property(cc.Button)
-    blueButton: cc.Button = null;   // 파랑 버튼
+    blueButton: cc.Button = null;
 
     @property(cc.Label)
-    scoreLabel: cc.Label = null;    // 점수 라벨
+    scoreLabel: cc.Label = null;
 
     @property(cc.Label)
-    statusLabel: cc.Label = null;   // 진행 상태 라벨
+    statusLabel: cc.Label = null;
 
-    private colorSequence: string[] = [];  // 랜덤 색상 순서
-    private userInput: string[] = [];      // 사용자가 입력한 순서
-    private score: number = 0;             // 점수
-    private level: number = 1;             // 게임 단계
-    private isGameActive: boolean = false; // 게임 활성화 상태
+    @property(cc.Label)
+    hintLabel: cc.Label = null;
 
-    // 색상에 맞는 버튼 객체를 저장
+    private colorSequence: string[] = [];
+    private userInput: string[] = [];
+    private score: number = 0;
+    private level: number = 1;
+    private isGameActive: boolean = false;
+
     private buttonMap: { [key: string]: cc.Button } = {};
+    private colors: string[] = ["red", "yellow", "green", "blue"];
 
     onLoad() {
         cc.debug.setDisplayStats(false);
@@ -49,25 +52,42 @@ export default class GameController extends cc.Component {
         this.greenButton.node.on('click', () => this.onColorButtonClick('green'), this);
         this.blueButton.node.on('click', () => this.onColorButtonClick('blue'), this);
 
-        // 초기화: 버튼을 어두운 색으로 비활성화
         this.setInitialButtonState();
+        this.startButton.node.active = true; // 처음에만 시작 버튼을 보이게
     }
 
-    // 게임 시작
     private onStartGame() {
-        this.colorSequence = [];
-        this.userInput = [];
-        this.score = 0;
-        this.level = 1;  // 게임 시작 시 레벨 1
-        this.updateScore();
-        this.setStatusMessage("게임 시작!");
-        this.isGameActive = true;
-        this.disableButtons(true); // 버튼 비활성화
-        this.generateColorSequence(); // 색상 순서 생성
-        this.showColorSequence(); // 색상 순서 깜빡이기
+        if (this.startButton.node.getComponentInChildren(cc.Label).string === "다시 도전") {
+            // "다시 도전"을 클릭한 경우, 게임을 다시 시작하되, 현재 레벨을 유지
+            this.userInput = [];
+            this.setStatusMessage("현재 단계 다시 시작!");
+            this.hintLabel.string = "";  // 힌트 초기화
+
+            // 현재 레벨에 맞게 색상 순서 다시 생성 및 표시
+            this.generateColorSequence();
+            this.showColorSequence();
+
+            this.startButton.node.getComponentInChildren(cc.Label).string = "게임 시작";  // 텍스트 변경
+            this.startButton.node.active = false;  // 게임 중에는 시작 버튼 숨기기
+            this.isGameActive = true;  // 게임 활성화
+            this.disableButtons(false);  // 버튼 활성화
+        } else {
+            // 처음 게임 시작
+            this.colorSequence = [];
+            this.userInput = [];
+            this.score = 0;
+            this.level = 1;
+            this.updateScore();
+            this.setStatusMessage("게임 시작!");
+            this.hintLabel.string = "";
+            this.isGameActive = true;
+            this.disableButtons(true);
+            this.generateColorSequence();
+            this.showColorSequence();
+            this.startButton.node.active = false;  // 첫 게임 시작 시 버튼 숨기기
+        }
     }
 
-    // 색상 버튼 클릭 시
     private onColorButtonClick(color: string) {
         if (!this.isGameActive) return;
 
@@ -75,57 +95,67 @@ export default class GameController extends cc.Component {
         this.checkUserInput();
     }
 
-    // 정답 확인
     private checkUserInput() {
         let correct = true;
 
-        // 사용자 입력과 원본 색상 순서를 정확히 비교
+        // 3단계에서만 정답 순서를 반대로!
+        let targetSequence = this.colorSequence;
+        if (this.level === 3) {
+            targetSequence = [...this.colorSequence].reverse();
+        }
+
         for (let i = 0; i < this.userInput.length; i++) {
-            if (this.userInput[i] !== this.colorSequence[i]) {
+            if (this.userInput[i] !== targetSequence[i]) {
                 correct = false;
                 break;
             }
         }
 
-        // 모든 입력이 맞다면
         if (correct) {
-            // 사용자가 입력한 순서의 길이가 색상 순서 길이와 같으면
-            if (this.userInput.length === this.colorSequence.length) {
+            if (this.userInput.length === targetSequence.length) {
                 this.setStatusMessage("정답! 다음 단계로!");
-                this.score += 10;  // 점수 증가
+                this.score += 10;
                 this.updateScore();
-                this.userInput = [];  // 사용자 입력 초기화
-                this.level++; 
-                this.generateColorSequence(); // 색상 순서 길이 증가
+                this.userInput = [];
+                this.level++;
+
                 this.scheduleOnce(() => {
-                    this.showColorSequence();  // 새로 생성된 순서 깜빡이기
-                }, 3);  // 3초 후에 새로 깜빡이기 시작
+                    this.generateColorSequence();
+                    this.showColorSequence();
+                }, 3);
             }
         } else {
-            // 틀렸을 경우
             this.setStatusMessage("틀렸습니다! 다시 시도하세요.");
-            this.userInput = []; 
+            this.userInput = [];
+            this.startButton.node.getComponentInChildren(cc.Label).string = "다시 도전";  // 시작 버튼 텍스트 변경
+            this.startButton.node.active = true;  // 틀린 경우, 다시 도전 버튼 보이게
+            this.isGameActive = false;  // 게임을 비활성화
+            this.disableButtons(true);  // 버튼 비활성화
         }
     }
 
     private generateColorSequence() {
-        const colors: string[] = ["red", "yellow", "green", "blue"];
-        this.colorSequence = []; // 기존 색상 순서 초기화
-    
-        // 레벨에 맞는 색상 순서 생성
-        for (let i = 0; i < this.level + 3; i++) { // 첫 번째 단계에서 4개, 두 번째에서 5개, 세 번째에서 6개
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            this.colorSequence.push(randomColor);
+        this.colorSequence = [];
+        const sequenceLength = this.level >= 5 ? 7 : this.level + 2; // 5단계 이상부터는 7개로 고정
+        for (let i = 0; i < sequenceLength; i++) {
+            const randomIndex = Math.floor(Math.random() * this.colors.length);
+            this.colorSequence.push(this.colors[randomIndex]);
         }
-    
-        console.log("랜덤으로 부여된 색상 순서:", this.colorSequence);
+
+        // 힌트는 3단계에서만 표시
+        if (this.level === 3) {
+            this.hintLabel.string = "불이 깜빡이는 순서를 반대로 입력하라.";
+        } else {
+            this.hintLabel.string = "";
+        }
+
+        console.log("생성된 색상 순서:", this.colorSequence);
     }
 
-    // 초기 버튼 상태 설정 (어두운 색과 비활성화)
     private setInitialButtonState() {
-        const darkenColor = (color: cc.Button) => {
-            color.node.opacity = 100; // 어두운 색으로 변경
-            color.interactable = false; // 비활성화
+        const darkenColor = (button: cc.Button) => {
+            button.node.opacity = 100;
+            button.interactable = false;
         };
         darkenColor(this.redButton);
         darkenColor(this.yellowButton);
@@ -133,81 +163,56 @@ export default class GameController extends cc.Component {
         darkenColor(this.blueButton);
     }
 
-    // 색상 순서 깜빡이기
     private showColorSequence() {
-        let delay = 0; // 초기 딜레이 설정
+        let delay = 0;
+        const sequenceToShow = [...this.colorSequence]; // 보여줄 순서
 
-        // 색상 순서를 랜덤하게 섞음
-        let shuffledSequence = [...this.colorSequence];
-        // this.shuffleArray(shuffledSequence); // 순서 랜덤화
-
-        console.log("랜덤으로 부여된 색상 순서:", shuffledSequence); // 랜덤 순서 출력
-
-        // 모든 버튼을 비활성화
         this.disableButtons(true);
 
-        // 순차적으로 각 버튼을 활성화하고 다시 비활성화
-        shuffledSequence.forEach((color, index) => {
+        sequenceToShow.forEach((color) => {
             const button = this.buttonMap[color];
-
-            // 각 버튼에 대해 딜레이를 두고 활성화 후 다시 비활성화
             this.scheduleOnce(() => {
-                this.activateButtonForBlink(button); // 버튼 활성화 후 비활성화
+                this.activateButtonForBlink(button);
             }, delay);
-
-            delay += 1.0; // 버튼 간 간격을 1초로 설정
+            delay += 1.0;
         });
 
-        // 깜빡임이 끝난 후 모든 버튼을 다시 원색으로 보여주고 활성화
         this.scheduleOnce(() => {
-            this.resetButtonState(); // 모든 버튼 원색으로 활성화
+            this.resetButtonState();
             this.setStatusMessage("버튼 순서를 맞춰주세요!");
         }, delay);
     }
 
-    // 버튼 활성화 후 비활성화
     private activateButtonForBlink(button: cc.Button) {
-        button.interactable = true; // 버튼 활성화
+        button.interactable = true;
         cc.tween(button.node)
-            .to(0.3, { opacity: 255 }) // 버튼을 활성화된 상태로 잠깐 보여줌
-            .to(0.3, { opacity: 100 })  // 버튼을 다시 어두운 상태로
+            .to(0.3, { opacity: 255 })
+            .to(0.3, { opacity: 100 })
             .start();
         this.scheduleOnce(() => {
-            button.interactable = false; // 버튼 다시 비활성화
-        }, 0.6); // 0.6초 후에 비활성화
+            button.interactable = false;
+        }, 0.6);
     }
 
-    // 배열 섞기 (랜덤 순서)
-    private shuffleArray(array: string[]) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    // 모든 버튼을 원색으로 복원하고 활성화
     private resetButtonState() {
-        const resetColor = (color: cc.Button) => {
-            color.node.opacity = 255; // 원래 색으로 복원
-            color.interactable = true; // 버튼 활성화
+        const reset = (btn: cc.Button) => {
+            btn.node.opacity = 255;
+            btn.interactable = true;
         };
-        resetColor(this.redButton);
-        resetColor(this.yellowButton);
-        resetColor(this.greenButton);
-        resetColor(this.blueButton);
+        reset(this.redButton);
+        reset(this.yellowButton);
+        reset(this.greenButton);
+        reset(this.blueButton);
     }
 
-    // 점수 업데이트
     private updateScore() {
         this.scoreLabel.string = `점수: ${this.score}`;
     }
 
-    // 진행 상태 메시지 설정
     private setStatusMessage(message: string) {
         this.statusLabel.string = message;
     }
 
-    // 버튼 활성화/비활성화
     private disableButtons(disable: boolean) {
         this.redButton.interactable = !disable;
         this.yellowButton.interactable = !disable;
@@ -215,4 +220,3 @@ export default class GameController extends cc.Component {
         this.blueButton.interactable = !disable;
     }
 }
-
