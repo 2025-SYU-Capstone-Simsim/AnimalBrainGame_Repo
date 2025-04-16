@@ -1,8 +1,13 @@
 {
   "engine": "cocos-creator-js",
   "packages": "packages",
+<<<<<<< HEAD
   "name": "미로찾기",
   "id": "522a2a5f-5c0b-4b36-b6a2-05b2e2ec1dcd",
+=======
+  "name": "Capstone_SimSim",
+  "id": "cd52c69e-4a82-4a75-ae5f-9eb424456de5",
+>>>>>>> 9d112efd3ae810d10d6bea2f2b8e95bf0d09b571
   "version": "2.4.11",
   "isNew": false
 }
