@@ -1,0 +1,8 @@
+{
+  "engine": "cocos-creator-js",
+  "packages": "packages",
+  "name": "미로찾기",
+  "id": "522a2a5f-5c0b-4b36-b6a2-05b2e2ec1dcd",
+  "version": "2.4.11",
+  "isNew": false
+}
