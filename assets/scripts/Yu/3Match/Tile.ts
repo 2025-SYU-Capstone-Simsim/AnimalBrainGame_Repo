@@ -15,6 +15,7 @@ export default class Tile extends cc.Component {
     public row: number = 0;
     public col: number = 0;
 
+    private touchStartPos: cc.Vec2 = null;
     private static selectedTile: Tile = null;
 
     // 노드가 씬에 생성되면서 초기화 단계.
@@ -25,7 +26,11 @@ export default class Tile extends cc.Component {
             this.sprite = this.node.addComponent(cc.Sprite);
         }
 
-        this.node.on(cc.Node.EventType.TOUCH_END, this.onTileClicked, this);
+        // this.node.on(cc.Node.EventType.TOUCH_END, this.onTileClicked, this);
+        // 드래그 감지용 이벤트 등록
+        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
 
     }
 
@@ -74,57 +79,73 @@ export default class Tile extends cc.Component {
         graphics.stroke();
     }
 
-    onTileClicked() {
-        if (!cc.isValid(this.node)) return;
+    onTouchStart(event: cc.Event.EventTouch) {
+        this.touchStartPos = event.getLocation();
+        // 또는 this.touchStartPos = this.node.convertToNodeSpaceAR(event.getLocation());
+        console.log("드래그 시작 위치:", this.touchStartPos);
+    }
     
-        if (Tile.selectedTile === null) {
-            Tile.selectedTile = this;
-            this.highlight(true);
-        } else {
-            if (!cc.isValid(Tile.selectedTile.node)) {
-                Tile.selectedTile = null;
-                return;
-            }
-    
-            if (Tile.selectedTile === this) {
-                this.highlight(false);
-                Tile.selectedTile = null;
-                return;
-            }
-    
-            this.highlight(false);
-            Tile.selectedTile.highlight(false);
-    
-            const board = this.node.parent.getComponent(ThreeMatchBoard);
-            if (board) {
-                board.swapTiles(this, Tile.selectedTile);
-            }
-    
-            Tile.selectedTile = null;
+    onTouchEnd(event: cc.Event.EventTouch) {
+        const endPos = event.getLocation();
+        const delta = endPos.sub(this.touchStartPos);
+
+        console.log("드래그 끝 위치:", endPos);
+        console.log("드래그 거리:", delta);
+
+        // 최소 거리 체크 (조금 더 유연하게, 예: 3픽셀 이상이면 처리)
+        if (delta.len() < 3) {
+            console.log("드래그 너무 짧아서 무시됨");
+            return;
         }
-    }
-    
-    
 
-    highlight(enable: boolean) {
-        if (!this.node || !cc.isValid(this.node)) return;  // 추가
-        this.node.scale = enable ? 1.1 : 1.0;
-    }
-    
+        let absX = Math.abs(delta.x);
+        let absY = Math.abs(delta.y);
 
-    swapPosition(otherTile: Tile) {
-        // 위치 바꾸기
-        const tempPos = this.node.getPosition();
-        this.node.setPosition(otherTile.node.getPosition());
-        otherTile.node.setPosition(tempPos);
+        // 아주 작은 delta.x나 delta.y일 경우, 방향 보정
+        if (absX < 1 && absY < 1) {
+            console.log("움직임이 너무 작아서 무시됨");
+            return;
+        }
 
-        // row, col 교환
-        const tempRow = this.row;
-        const tempCol = this.col;
-        this.row = otherTile.row;
-        this.col = otherTile.col;
-        otherTile.row = tempRow;
-        otherTile.col = tempCol;
+        let direction: string = "";
+
+        if (absX > absY) {
+            direction = delta.x > 0 ? "right" : "left";
+        } else {
+            direction = delta.y > 0 ? "up" : "down";
+        }
+
+        console.log("드래그 방향:", direction);
+        
+        const board = this.node.parent.getComponent(ThreeMatchBoard);
+        if (!board || !board["board"]) {
+            console.warn("ThreeMatchBoard를 찾을 수 없음");
+            return;
+        }
+
+        let targetTile: Tile = null;
+        const row = this.row;
+        const col = this.col;
+
+        switch (direction) {
+            case "up":
+                if (row > 0) targetTile = board["board"][row - 1][col];
+                break;
+            case "down":
+                if (row < board["boardSize"] - 1) targetTile = board["board"][row + 1][col];
+                break;
+            case "left":
+                if (col > 0) targetTile = board["board"][row][col - 1];
+                break;
+            case "right":
+                if (col < board["boardSize"] - 1) targetTile = board["board"][row][col + 1];
+                break;
+        }
+
+        if (targetTile) {
+            console.log(`타일 교환: (${row}, ${col}) <-> (${targetTile.row}, ${targetTile.col})`);
+            board.swapTiles(this, targetTile);
+        }
     }
 
     explode() {
