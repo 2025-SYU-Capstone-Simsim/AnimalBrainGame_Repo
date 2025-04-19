@@ -13,9 +13,10 @@ export default class MainController extends cc.Component {
         cc.director.loadScene('3M_GameScene');
     }
     
-
+    
+ // 추후 실제 씬이름 추가 , 코코스 내 빌드파일에도 추가
     // loadGame3() {
-    //     cc.director.loadScene('Game3Scene');  // 나중에 실제 씬 이름으로 바꿔줘
+    //     cc.director.loadScene('Game3Scene');  
     // }
 
     // loadGame4() {
