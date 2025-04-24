@@ -21,6 +21,12 @@ export default class GameScene extends cc.Component {
     @property(cc.Label) scoreLabel: cc.Label = null;
     @property(cc.Label) timerLabel: cc.Label = null;
 
+    // 망치 마우스 포인터 노드 설정
+    @property(cc.SpriteFrame)
+    hammerSprite: cc.SpriteFrame = null;
+
+    private hammerNode: cc.Node = null;
+
     private moleHoles: cc.Node[] = [];  // 구멍을 저장할 배열
     private score: number = 0;  // 점수
     private timer: number = 30;  // 타이머 30초
@@ -28,6 +34,16 @@ export default class GameScene extends cc.Component {
 
     // 게임 시작
     start() {
+        this.hammerNode = new cc.Node("Hammer");
+        const sprite = this.hammerNode.addComponent(cc.Sprite);
+        sprite.spriteFrame = this.hammerSprite;
+        this.hammerNode.parent = this.node;
+        this.hammerNode.zIndex = 999; // 제일 위에 보이도록
+        this.hammerNode.setContentSize(200, 300); // 크기 조절
+        this.hammerNode.anchorX = 0.2; 
+        this.hammerNode.anchorY = 0.8;   // 위쪽 (해머 머리 쪽 기준)
+
+
         // 구멍 노드 배열에 추가
         this.moleHoles = [
             this.Hole1, this.Hole2, this.Hole3,
@@ -84,6 +100,7 @@ export default class GameScene extends cc.Component {
             }, 1);
         }, 0.5, cc.macro.REPEAT_FOREVER);
     }
+    
 
     onMoleClick(event: cc.Event.EventTouch) {
         const mole = event.target;
@@ -94,6 +111,40 @@ export default class GameScene extends cc.Component {
 
         mole.active = false;
     }
+
+    onLoad() {
+        cc.Canvas.instance.node.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
+        cc.Canvas.instance.node.on(cc.Node.EventType.MOUSE_DOWN, this.onMouseClick, this);
+        // 기본 마우스 포인터 숨기기
+        // cocos2.X 버전에선 보통 Canvas ID를 GameCanvas로 자동 할당함
+        const canvas = document.getElementById('GameCanvas'); 
+        if (canvas) {
+            canvas.style.cursor = 'none'; // 기본 커서 숨김 
+        }
+    }
+    
+    onMouseMove(event: cc.Event.EventMouse) {
+        // 마우스의 화면 좌표를 가져옴
+        const location = event.getLocation();
+    
+        // 화면 좌표를 Canvas(Local) 좌표로 변환
+        const localPos = cc.Canvas.instance.node.convertToNodeSpaceAR(location);
+    
+        // 망치 노드를 해당 위치로 이동
+        this.hammerNode.setPosition(localPos);
+    }
+
+    onMouseClick() {
+        // 클릭 시 망치 살짝 내리치는 애니메이션 (간단한 scale 애니메이션)
+        this.hammerNode.stopAllActions();
+        this.hammerNode.runAction(
+            cc.sequence(
+                cc.scaleTo(0.05, 0.9),
+                cc.scaleTo(0.05, 1.0)
+            )
+        );
+    }
+    
 
     gameOver() {
         if (this.isGameOver) return;
