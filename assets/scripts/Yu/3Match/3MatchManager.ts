@@ -57,12 +57,12 @@ export default class ThreeMatchManager extends cc.Component {
             this.onGameOver();
         }
 
-        this.timerLabel.string = `남은 시간: ${this.currentTime}`;
+        this.timerLabel.string = `시간: ${this.currentTime}`;
     }
 
     updateScore(amount: number) {
         this.score += amount;
-        this.scoreLabel.string = `획득 점수: ${this.score}`;
+        this.scoreLabel.string = `${this.score}`;
         // 점수 획득시 콤보게이지 추가 메서드 실행    
         this.increaseComboGauge(amount);  
     }

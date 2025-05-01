@@ -75,11 +75,11 @@ export default class GameScene extends cc.Component {
     }
 
     updateTimerLabel() {
-        this.timerLabel.string = `Time: ${this.timer}`;
+        this.timerLabel.string = `시간: ${this.timer}`;
     }
 
     updateScoreLabel() {
-        this.scoreLabel.string = `Score: ${this.score}`;
+        this.scoreLabel.string = `점수: ${this.score}`;
     }
 
     // 두더지 랜덤 생성
