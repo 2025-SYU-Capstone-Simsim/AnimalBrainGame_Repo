@@ -26,9 +26,20 @@ export default class GameManager extends cc.Component {
   @property(cc.Label)
   scoreLabel: cc.Label = null;
 
+  // 7) TIMEOUT 표시용 레이블
+  @property(cc.Label)
+  timeoutLabel: cc.Label = null;
+
+  // 8) 남은 시간 표시용 레이블
+  @property(cc.Label)
+  timeLabel: cc.Label = null;
+
   private correctCount: number = 0;
   private score: number = 0;
-  private answered: boolean = false;  // 한 문제당 한 번만 점수 처리하기 위한 플래그
+  private answered: boolean = false;
+
+  // 전체 게임 시간 (초)
+  private timeLeft: number = 100;
 
   // y축(높이)마다 사용할 색상
   private layerColors: cc.Color[] = [
@@ -39,42 +50,90 @@ export default class GameManager extends cc.Component {
   ];
 
   onLoad() {
-    // Next/Skip 버튼 세팅
+    // Next/Skip 버튼 클릭
     if (this.nextButton) {
-      this.nextButton.node.active = true;
       this.nextButton.node.on('click', this.nextQuestion, this);
-    } else {
-      console.warn('[GameManager] nextButton이 에디터에 연결되지 않았습니다!');
     }
 
     // Score 초기화
     this.score = 0;
     if (this.scoreLabel) {
-      this.scoreLabel.string = `점수 : ${this.score}점`
+      this.scoreLabel.string = `점수 : ${this.score}점`;
     }
 
+    // TIMEOUT 레이블 숨기기
+    if (this.timeoutLabel) {
+      this.timeoutLabel.node.active = false;
+    }
+
+    // 남은 시간 레이블 초기화
+    this.timeLeft = 100;
+    if (this.timeLabel) {
+      this.timeLabel.string = `남은 시간: ${this.timeLeft}초`;
+    }
+
+    // 전체 게임 100초 카운트다운 시작
+    this.startTimer();
+
+    // 첫 문제 생성
     this.generateQuestion();
   }
 
-  /** 새 문제 생성 */
-  generateQuestion() {
-    console.log('[GameManager] generateQuestion');
+  /** 100초 타이머 시작 */
+  private startTimer() {
+    this.unschedule(this.updateTimer);
+    this.timeLeft = 100;
+    if (this.timeLabel) {
+      this.timeLabel.string = `남은 시간: ${this.timeLeft}초`;
+    }
+    this.schedule(this.updateTimer, 1);
+  }
 
-    // 1) 답변 플래그 초기화
+  /** 1초마다 호출되어 남은 시간을 갱신 */
+  private updateTimer() {
+    this.timeLeft--;
+    if (this.timeLabel) {
+      this.timeLabel.string = `남은 시간: ${this.timeLeft}초`;
+    }
+    if (this.timeLeft <= 0) {
+      this.unschedule(this.updateTimer);
+      this.onTimeout();
+    }
+  }
+
+  /** 전체 시간이 다 됐을 때 호출 */
+  private onTimeout() {
+    // “TIMEOUT” 표시
+    if (this.timeoutLabel) {
+      this.timeoutLabel.node.active = true;
+      this.timeoutLabel.string = 'TIMEOUT';
+    }
+    // 모든 버튼 비활성화
+    this.optionButtons.forEach(btn => btn.interactable = false);
+    if (this.nextButton) {
+      this.nextButton.interactable = false;
+    }
+  }
+
+  /** 새 문제 생성 (시간은 계속 흐릅니다) */
+  generateQuestion() {
     this.answered = false;
 
-    // 2) 버튼 레이블을 “건너뛰기”로 세팅
+    // Next 버튼 레이블 초기화
     if (this.nextButton) {
-      const lbl = this.nextButton.node.getComponentInChildren(cc.Label);
-      if (lbl) lbl.string = '건너뛰기';
+      const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
+      lbl.string = '건너뛰기';
+      this.nextButton.interactable = true;
     }
 
-    // 3) 정답 개수 결정 & 블록 배치
+    // 결과 레이블 초기화
+    this.resultLabel.string = '';
+
+    // 정답 개수 결정 및 블록 배치
     this.correctCount = Math.floor(Math.random() * 20) + 1;
-    console.log('[GameManager] correctCount =', this.correctCount);
     this.spawnBlocks(this.correctCount);
 
-    // 4) 보기 세팅
+    // 보기 세팅
     const options = new Set<number>([this.correctCount]);
     while (options.size < this.optionButtons.length) {
       options.add(Math.floor(Math.random() * 30) + 1);
@@ -82,52 +141,54 @@ export default class GameManager extends cc.Component {
     const list = Array.from(options);
     this.shuffleArray(list);
     this.optionButtons.forEach((btn, i) => {
+      btn.interactable = true;
       const lbl = btn.node.getComponentInChildren(cc.Label)!;
       lbl.string = list[i].toString();
       btn.node.off('click');
       btn.node.on('click', () => this.checkAnswer(list[i]));
     });
-
-    // 5) 결과 레이블 초기화
-    this.resultLabel.string = '';
   }
 
   /** 답안 확인 */
   checkAnswer(selected: number) {
-    // 이미 처리된 문제라면 무시
     if (this.answered) return;
-    this.answered = true;
 
+    // 정답인 경우
     if (selected === this.correctCount) {
-      this.resultLabel.string = '🎉 정답입니다!';
-      // 정답일 때만 점수 추가
-      this.score += 10;
-      if (this.scoreLabel) {
-        this.scoreLabel.string = `점수 : ${this.score}점`;
+        this.answered = true;
+        this.resultLabel.string = '🎉 정답입니다!';
+        this.score += 20;  // 맞았을 때 +10
+        if (this.scoreLabel) {
+          this.scoreLabel.string = `점수 : ${this.score}점`;
+        }
+        if (this.nextButton) {
+          const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
+          lbl.string = '다음으로';
+        }
       }
-      // 버튼 레이블 “다음으로”
-      if (this.nextButton) {
-        const lbl = this.nextButton.node.getComponentInChildren(cc.Label);
-        if (lbl) lbl.string = '다음으로';
+    // 오답인 경우
+    else {
+        this.resultLabel.string = '❌ 틀렸습니다!';
+        this.score -= 10;  // 틀렸을 때 -10
+        if (this.scoreLabel) {
+          this.scoreLabel.string = `점수 : ${this.score}점`;
+        }
+        if (this.nextButton) {
+          const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
+          lbl.string = '건너뛰기';
+        }
       }
-    } else {
-      this.resultLabel.string = '❌ 틀렸습니다!';
-      // 오답 시에도 버튼은 “건너뛰기” 상태 유지
-      if (this.nextButton) {
-        const lbl = this.nextButton.node.getComponentInChildren(cc.Label);
-        if (lbl) lbl.string = '건너뛰기';
-      }
-    }
   }
 
   /** 다음 문제로 넘어가기 */
   nextQuestion() {
-    this.generateQuestion();
+    if (this.timeLeft > 0) {
+      this.generateQuestion();
+    }
   }
 
-  /** 블록 스폰 및 애니메이션 (column-first, y축 기준) */
+  /** 블록 생성 & 애니메이션 (column-first, y축 기준) */
   spawnBlocks(count: number) {
-    console.log('[GameManager] spawnBlocks, count =', count);
     if (!this.blockParent) {
       console.error('[GameManager] blockParent가 연결되지 않았습니다!');
       return;
@@ -137,7 +198,7 @@ export default class GameManager extends cc.Component {
     const blockW = 100, blockH = 50, blockD = 50;
     const maxSize = 4, maxHeight = 4;
 
-    // 1) 가능한 모든 (x,z) 좌표 셔플
+    // 가능한 (x,z) 좌표 셔플
     const xzList: { x: number; z: number }[] = [];
     for (let x = 0; x < maxSize; x++) {
       for (let z = 0; z < maxSize; z++) {
@@ -146,7 +207,7 @@ export default class GameManager extends cc.Component {
     }
     this.shuffleArray(xzList);
 
-    // 2) 컬럼 단위로 y=0→1→… 채워나가기
+    // 컬럼 단위로 y=0→1→… 채우기
     type Pos = { x: number; z: number; y: number };
     const placedCoords: Pos[] = [];
     let placed = 0;
@@ -158,7 +219,7 @@ export default class GameManager extends cc.Component {
       if (placed >= count) break outer;
     }
 
-    // 3) y층별 그룹핑
+    // y층별 그룹핑
     const layers: Pos[][] = [];
     let maxY = 0;
     placedCoords.forEach(p => {
@@ -167,13 +228,13 @@ export default class GameManager extends cc.Component {
       layers[p.y].push(p);
     });
 
-    // 4) 애니메이션 파라미터
+    // 애니메이션 파라미터
     const dropH    = 500;
     const dropDur  = 0.15;
     const layerGap = dropDur + 0.08;
     const itemGap  = 0.05;
 
-    // 5) y=0→1→… 순서대로 떨어뜨리기
+    // y=0→1→… 순서대로 떨어뜨리기
     for (let y = 0; y <= maxY; y++) {
       const layer = layers[y] || [];
       layer.forEach((p, i) => {
@@ -181,7 +242,7 @@ export default class GameManager extends cc.Component {
         block.parent = this.blockParent;
         block.zIndex = p.x + p.z + p.y * 10;
 
-        // 아이소메트릭 목표 위치 계산
+        // 아이소메트릭 목표 위치
         const isoX   = (p.x - p.z) * (blockW / 2);
         const floorY = -300;
         const baseY  = floorY + blockH / 2;
@@ -189,10 +250,9 @@ export default class GameManager extends cc.Component {
                         + baseY
                         + p.y * blockD;
 
-        // 시작 위치
         block.setPosition(isoX, targetY + dropH, 0);
 
-        // y층마다 다른 색 지정
+        // 층마다 색상 적용
         const spr = block.getComponent(cc.Sprite)!;
         spr.node.color = this.layerColors[p.y] ?? cc.color(200, 200, 200);
 
