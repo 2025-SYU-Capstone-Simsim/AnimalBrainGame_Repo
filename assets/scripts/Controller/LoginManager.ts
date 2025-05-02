@@ -104,7 +104,7 @@ export default class LoginManager extends cc.Component {
       cc.log("로그인 및 프로필 저장 완료");
 
       // 4. 게임 시작 (씬 이동 등)
-      // cc.director.loadScene("GameScene");
+      cc.director.loadScene("MainScene");
 
     } catch (error) {
       cc.error("에러 발생:", error);
