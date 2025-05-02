@@ -575,7 +575,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "GameManager",
+    "_name": "BlockCountGameManager",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
