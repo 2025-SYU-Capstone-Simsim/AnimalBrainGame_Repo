@@ -1,4 +1,7 @@
 {
+<<<<<<< HEAD
+  "start-scene": "235e2038-7eef-4b64-b2cf-da6bafa2e11d"
+=======
   "group-list": [
     "default"
   ],
@@ -33,4 +36,5 @@
       "enable": false
     }
   }
+>>>>>>> 9d112efd3ae810d10d6bea2f2b8e95bf0d09b571
 }
