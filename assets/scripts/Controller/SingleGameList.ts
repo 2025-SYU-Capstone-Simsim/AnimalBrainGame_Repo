@@ -23,6 +23,12 @@ export default class MainController extends cc.Component {
         console.log("기억력 게임으로 이동");
         cc.director.loadScene('RememberGameScene');
     }
+
+    
+    loadMazeGame() {
+        console.log("미로찾기 게임으로 이동");
+        cc.director.loadScene('StartMazeScene');
+    }
     
     
  // 추후 실제 씬이름 추가 , 코코스 내 빌드파일에도 추가
