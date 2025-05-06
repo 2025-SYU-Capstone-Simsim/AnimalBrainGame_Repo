@@ -1054,16 +1054,6 @@
     "meta": 1746540161819,
     "relativePath": "scenes\\Song\\Rottenacorn_Scenes"
   },
-  "235e2038-7eef-4b64-b2cf-da6bafa2e11d": {
-    "asset": 1746540135767,
-    "meta": 1746540161838,
-    "relativePath": "scenes\\FirstScene.fire"
-  },
-  "006efd29-0f48-4b66-aea0-ad73d06f3386": {
-    "asset": 1746540135767,
-    "meta": 1746540161860,
-    "relativePath": "scenes\\GameOver.fire"
-  },
   "826bf544-5f21-4398-b24e-395064c5ee17": {
     "asset": 1746540161522,
     "meta": 1746540161862,
@@ -1093,11 +1083,6 @@
     "asset": 1746540154040,
     "meta": 1746540162025,
     "relativePath": "scripts\\Song\\Reversecorrect_scripts\\Reversecorrect_Game_logic.ts"
-  },
-  "dd2e9acd-d1e7-4ffc-9827-d5bc50c956d3": {
-    "asset": 1746540135769,
-    "meta": 1746540162031,
-    "relativePath": "scenes\\MainScene.fire"
   },
   "d5e77baa-9d86-4df1-9733-c78530e8b323": {
     "asset": 1746540154040,
@@ -1130,8 +1115,8 @@
     "relativePath": "scenes\\Song\\Reversecorrect_Scenes\\Reversecorrect_mainscene.fire"
   },
   "20b4c1c9-ebd5-4d8a-97ee-4835afb971b4": {
-    "asset": 1746540154032,
-    "meta": 1746540162265,
+    "asset": 1746540493214,
+    "meta": 1746540493250,
     "relativePath": "scenes\\Song\\Rottenacorn_Scenes\\Rottenacorn_mainscene.fire"
   },
   "c90a2230-5bd9-4861-8d18-2f1e78ae1f3e": {
