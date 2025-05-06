@@ -176,6 +176,6 @@ export default class MazeGameManager extends cc.Component {
 
   private onBackButtonClick() {
     GameData.currentLevel = 1;
-    cc.director.loadScene("MainScene");
+    cc.director.loadScene("SingleGameList");
   }
 }

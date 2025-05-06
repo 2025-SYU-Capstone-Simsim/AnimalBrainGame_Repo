@@ -5,38 +5,21 @@
       "main": true,
       "url": "app://editor/index.html",
       "windowType": "dockable",
-<<<<<<< HEAD
-      "x": 90,
-      "y": 58,
-      "width": 1175,
-      "height": 856,
-=======
-      "x": 0,
-      "y": 0,
-      "width": 1440,
-      "height": 852,
->>>>>>> origin/minki
+      "x": -7,
+      "y": -7,
+      "width": 1454,
+      "height": 866,
       "layout": {
         "type": "dock-h",
         "children": [
           {
-<<<<<<< HEAD
-            "width": 246.7890625,
-            "height": 742,
+            "width": 305.7890625,
+            "height": 751,
             "type": "dock-v",
             "children": [
               {
-                "width": 246.7890625,
-                "height": 414.4375,
-=======
-            "width": 286.796875,
-            "height": 738,
-            "type": "dock-v",
-            "children": [
-              {
-                "width": 286.796875,
-                "height": 278.6171875,
->>>>>>> origin/minki
+                "width": 305.7890625,
+                "height": 450,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -44,13 +27,8 @@
                 ]
               },
               {
-<<<<<<< HEAD
-                "width": 246.7890625,
-                "height": 324.5625,
-=======
-                "width": 286.796875,
-                "height": 456.3828125,
->>>>>>> origin/minki
+                "width": 305.7890625,
+                "height": 298,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -60,33 +38,18 @@
             ]
           },
           {
-<<<<<<< HEAD
-            "width": 561.515625,
-            "height": 742,
+            "width": 696.515625,
+            "height": 751,
             "type": "dock-v",
             "children": [
               {
-                "width": 561.515625,
-                "height": 286.3828125,
+                "width": 696.515625,
+                "height": 290,
                 "type": "dock-h",
                 "children": [
                   {
-                    "width": 285.75,
-                    "height": 286.3828125,
-=======
-            "width": 707.5,
-            "height": 738,
-            "type": "dock-v",
-            "children": [
-              {
-                "width": 707.5,
-                "height": 369.4921875,
-                "type": "dock-h",
-                "children": [
-                  {
-                    "width": 333.765625,
-                    "height": 369.4921875,
->>>>>>> origin/minki
+                    "width": 354.75,
+                    "height": 290,
                     "type": "panel",
                     "active": 0,
                     "children": [
@@ -94,13 +57,8 @@
                     ]
                   },
                   {
-<<<<<<< HEAD
-                    "width": 272.765625,
-                    "height": 286.3828125,
-=======
-                    "width": 370.734375,
-                    "height": 369.4921875,
->>>>>>> origin/minki
+                    "width": 338.7578125,
+                    "height": 290,
                     "type": "panel",
                     "active": 0,
                     "children": [
@@ -110,13 +68,8 @@
                 ]
               },
               {
-<<<<<<< HEAD
-                "width": 561.515625,
-                "height": 452.609375,
-=======
-                "width": 707.5,
-                "height": 365.5,
->>>>>>> origin/minki
+                "width": 696.515625,
+                "height": 457.9921875,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -128,13 +81,8 @@
             ]
           },
           {
-<<<<<<< HEAD
-            "width": 347.703125,
-            "height": 742,
-=======
-            "width": 426.6953125,
-            "height": 738,
->>>>>>> origin/minki
+            "width": 431.6953125,
+            "height": 751,
             "type": "panel",
             "active": 0,
             "children": [
@@ -155,22 +103,12 @@
         "inspector",
         "cocos-services"
       ]
-<<<<<<< HEAD
-    },
-    " common-asset-worker-worker": {}
+    }
   },
   "panels": {
     "project-settings": {
       "x": 450,
       "y": 165,
-=======
-    }
-  },
-  "panels": {
-    "project-settings": {
-      "x": 432,
-      "y": 147,
->>>>>>> origin/minki
       "width": 598,
       "height": 562
     },
@@ -185,15 +123,12 @@
       "y": 147,
       "width": 598,
       "height": 562
-<<<<<<< HEAD
     },
     "builder": {
       "x": 462,
       "y": 47,
       "width": 514,
       "height": 736
-=======
->>>>>>> origin/minki
     }
   },
   "panelLabelWidth": {}

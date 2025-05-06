@@ -33,6 +33,7 @@ var ThreeMatchManager = /** @class */ (function (_super) {
         _this.boardNode = null;
         _this.comboGauge = null;
         _this.feverLabel = null;
+        _this.exitButton = null;
         _this.totalTime = 120;
         _this.currentTime = 120;
         _this.score = 0;
@@ -63,11 +64,11 @@ var ThreeMatchManager = /** @class */ (function (_super) {
             this.unschedule(this.updateTimer);
             this.onGameOver();
         }
-        this.timerLabel.string = "\uB0A8\uC740 \uC2DC\uAC04: " + this.currentTime;
+        this.timerLabel.string = "\uC2DC\uAC04: " + this.currentTime;
     };
     ThreeMatchManager.prototype.updateScore = function (amount) {
         this.score += amount;
-        this.scoreLabel.string = "\uD68D\uB4DD \uC810\uC218: " + this.score;
+        this.scoreLabel.string = "" + this.score;
         // 점수 획득시 콤보게이지 추가 메서드 실행    
         this.increaseComboGauge(amount);
     };
@@ -106,6 +107,10 @@ var ThreeMatchManager = /** @class */ (function (_super) {
         cc.log("게임 종료!");
         // 이후 게임 종료 처리 추가 가능
     };
+    ThreeMatchManager.prototype.loadList = function () {
+        console.log("싱글 게임 리스트로 돌아가기기");
+        cc.director.loadScene('SingleGameList');
+    };
     __decorate([
         property(cc.Label)
     ], ThreeMatchManager.prototype, "timerLabel", void 0);
@@ -121,8 +126,11 @@ var ThreeMatchManager = /** @class */ (function (_super) {
     __decorate([
         property(cc.Node)
     ], ThreeMatchManager.prototype, "feverLabel", void 0);
+    __decorate([
+        property(cc.Button)
+    ], ThreeMatchManager.prototype, "exitButton", void 0);
     ThreeMatchManager = __decorate([
-        ccclass("ThreeMatchManager")
+        ccclass
     ], ThreeMatchManager);
     return ThreeMatchManager;
 }(cc.Component));

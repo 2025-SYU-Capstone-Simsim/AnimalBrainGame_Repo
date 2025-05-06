@@ -18,6 +18,9 @@ export default class ThreeMatchManager extends cc.Component {
     @property(cc.Node)
     feverLabel: cc.Node = null;
 
+    @property(cc.Button)
+    exitButton: cc.Button = null;
+
 
     private totalTime: number = 120;
     private currentTime: number = 120;
@@ -113,5 +116,10 @@ export default class ThreeMatchManager extends cc.Component {
     onGameOver() {
         cc.log("게임 종료!");
         // 이후 게임 종료 처리 추가 가능
+    }
+
+    loadList(){
+        console.log("싱글 게임 리스트로 돌아가기기");
+        cc.director.loadScene('SingleGameList');
     }
 }

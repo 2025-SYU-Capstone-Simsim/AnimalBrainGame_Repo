@@ -2,6 +2,8 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class GameScene extends cc.Component {
+    // 리스트로 돌아가기 버튼 
+    @property(cc.Button) exitButton: cc.Node = null;
 
     // 구멍 노드 설정 (3x3 = 9개)
     @property(cc.Node) Hole1: cc.Node = null;
@@ -165,5 +167,16 @@ export default class GameScene extends cc.Component {
     
         // 선택: "게임 종료!" 표시
         console.log("게임 종료!");
+    }
+
+    
+    loadList(){
+        console.log("싱글 게임 리스트로 돌아가기기");
+        // 마우스 포인터 다시 보이게 하기
+        const canvas = document.getElementById('GameCanvas');
+        if (canvas) {
+            canvas.style.cursor = 'default';
+        }
+        cc.director.loadScene('SingleGameList');
     }
 }

@@ -35,6 +35,11 @@ export default class GameController extends cc.Component {
     @property(cc.Label)
     timeoutLabel: cc.Label = null;
 
+    // 리스트 돌아가기 버튼
+    @property(cc.Button)
+    exitButton: cc.Button = null;
+
+
     private colorSequence: string[] = [];
     private userInput: string[] = [];
     private score: number = 0;
@@ -261,4 +266,9 @@ export default class GameController extends cc.Component {
         this.greenButton.interactable  = !disable;
         this.blueButton.interactable   = !disable;
     }
+
+    loadList(){
+        console.log("싱글 게임 리스트로 돌아가기");
+        cc.director.loadScene('SingleGameList');
+      }
 }

@@ -34,6 +34,9 @@ export default class GameManager extends cc.Component {
   @property(cc.Label)
   timeLabel: cc.Label = null;
 
+  // 리스트로 돌아가기 버튼 
+  @property(cc.Button) exitButton: cc.Node = null;
+
   private correctCount: number = 0;
   private score: number = 0;
   private answered: boolean = false;
@@ -273,4 +276,11 @@ export default class GameManager extends cc.Component {
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
   }
+
+  loadList(){
+    console.log("싱글 게임 리스트로 돌아가기기");
+    cc.director.loadScene('SingleGameList');
+  }
+
+  
 }

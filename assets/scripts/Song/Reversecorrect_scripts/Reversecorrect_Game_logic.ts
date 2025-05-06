@@ -13,6 +13,7 @@ export default class Game_logic extends cc.Component {
     @property(cc.Label)
     sequence_label : cc.Label = null;
 
+
     public static player_label_arr: number[] = [];
     public static count: number = 0;
     
@@ -63,4 +64,5 @@ export default class Game_logic extends cc.Component {
             this.qna.showNewQuestion();
         }
     }
+
 }

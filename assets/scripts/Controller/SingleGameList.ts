@@ -30,6 +30,15 @@ export default class MainController extends cc.Component {
         cc.director.loadScene('StartMazeScene');
     }
     
+    loadReverseCorrectGame() {
+        console.log("숫자 거꾸로 맞추기 게임으로 이동");
+        cc.director.loadScene('Reversecorrect_mainscene');
+    }
+
+    loadRottenacornGame() {
+        console.log("도토리리 게임으로 이동");
+        cc.director.loadScene('Rottenacorn_mainscene');
+    }
     
  // 추후 실제 씬이름 추가 , 코코스 내 빌드파일에도 추가
     // loadGame3() {

@@ -9,6 +9,10 @@ export default class Game_init extends cc.Component {
     @property(show_QnA)
     qna: show_QnA = null;
 
+    // 리스트 돌아가기 버튼
+    @property(cc.Button)
+    exitButton: cc.Button = null;
+
     private currentTime: number = 120;
     private score: number = 0;
     static instance: Game_init = null;
@@ -35,4 +39,9 @@ export default class Game_init extends cc.Component {
         this.score += value;
         this.score_label.string = `${this.score}`;
     }
+
+    loadList(){
+        console.log("싱글 게임 리스트로 돌아가기");
+        cc.director.loadScene('SingleGameList');
+      }
 }
