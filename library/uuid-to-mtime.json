@@ -1,33 +1,13 @@
 {
   "76f008b1-60a8-433f-b935-4312e118b593": {
-    "asset": 1744353594024,
-    "meta": 1744471080797,
+    "asset": 1746539179596,
+    "meta": 1746539179722,
     "relativePath": "resources"
   },
-  "8ed0f2d3-a172-4f50-bd15-170842a4a5c9": {
-    "asset": 1744199872310,
-    "meta": 1744246223864,
-    "relativePath": "resources\\Fonts"
-  },
-  "d41c1863-9ec2-411b-8c90-2cfa27f7ab12": {
-    "asset": 1744199880632,
-    "meta": 1744246223867,
-    "relativePath": "resources\\Sound"
-  },
-  "972f017d-a08d-4bdb-b02c-4a40d9397d44": {
-    "asset": 1744200343420,
-    "meta": 1744246223850,
-    "relativePath": "config"
-  },
   "ce1d6fcf-0deb-499e-b19a-d92bd2f2d69e": {
-    "asset": 1744266052744,
-    "meta": 1744266077084,
+    "asset": 1746539179580,
+    "meta": 1746539179722,
     "relativePath": "prefabs"
-  },
-  "21ff5251-7a9e-4b51-9d3c-4bcbd16de076": {
-    "asset": 1744199763909,
-    "meta": 1744266077086,
-    "relativePath": "prefabs\\Common"
   },
   "f8ad6d67-25ba-4185-913a-7577f2b1fce7": {
     "asset": 1746521176205,
@@ -38,11 +18,6 @@
     "asset": 1746519564180,
     "meta": 1746536316954,
     "relativePath": "prefabs\\Sim"
-  },
-  "6614d745-f93f-4c4c-a702-49ba34ab1bbc": {
-    "asset": 1744199785958,
-    "meta": 1744266077090,
-    "relativePath": "prefabs\\Song"
   },
   "3feed3f0-25d2-4c28-ad19-97032d23c9de": {
     "asset": 1744981815315,
@@ -60,8 +35,8 @@
     "relativePath": "prefabs\\Yu\\Tile.prefab"
   },
   "d85d6820-cdd5-449e-831f-9c8ac5ff6d54": {
-    "asset": 1744266052744,
-    "meta": 1744353615006,
+    "asset": 1746539179627,
+    "meta": 1746539179744,
     "relativePath": "resources\\Images"
   },
   "cdd6bae8-5c57-4859-950a-464ac9bc854a": {
@@ -78,11 +53,6 @@
     "asset": 1746519564207,
     "meta": 1746536316956,
     "relativePath": "resources\\Images\\Sim"
-  },
-  "2ee15ce2-3581-4e39-854b-0ff86d08b1ed": {
-    "asset": 1744199846071,
-    "meta": 1744353615013,
-    "relativePath": "resources\\Images\\Song"
   },
   "a6efa13a-9276-4823-b309-3e38934c673d": {
     "asset": 1744785205457,
@@ -760,8 +730,8 @@
     "relativePath": "resources\\Images\\Jang\\background.png"
   },
   "2c2fb490-faa4-4093-beb1-cdd7d536dc5f": {
-    "asset": 1746521176284,
-    "meta": 1746536316952,
+    "asset": 1746539511297,
+    "meta": 1746539817281,
     "relativePath": "scenes"
   },
   "5b90faf3-1a88-40cc-9de6-3cb35c198e5f": {
@@ -770,19 +740,14 @@
     "relativePath": "scenes\\Common"
   },
   "eec9d046-3ba5-417b-817d-2b6c8783570b": {
-    "asset": 1746521244162,
-    "meta": 1746521607806,
+    "asset": 1746536665484,
+    "meta": 1746539179744,
     "relativePath": "scenes\\Jang"
   },
   "7c52d2ce-1761-499f-a6e9-887620ed5403": {
     "asset": 1746519564217,
     "meta": 1746521607822,
     "relativePath": "scenes\\Sim"
-  },
-  "691e09ab-20d0-4e7d-99af-6a5cc86d5062": {
-    "asset": 1744199586905,
-    "meta": 1746521607822,
-    "relativePath": "scenes\\Song"
   },
   "b85a7e0d-c6ef-4288-9b3a-94b820772d70": {
     "asset": 1744356486278,
@@ -810,8 +775,8 @@
     "relativePath": "scenes\\Yu\\MoleGame"
   },
   "b3c24d42-0247-4ce8-abe3-4ea51a42e62b": {
-    "asset": 1746521244162,
-    "meta": 1746536316952,
+    "asset": 1746539179612,
+    "meta": 1746539179738,
     "relativePath": "scripts"
   },
   "d3f95b67-16b1-4430-97b9-3f854b3ac9f4": {
@@ -829,11 +794,6 @@
     "meta": 1746521607838,
     "relativePath": "scripts\\Sim"
   },
-  "826bf544-5f21-4398-b24e-395064c5ee17": {
-    "asset": 1744199652908,
-    "meta": 1746521607838,
-    "relativePath": "scripts\\Song"
-  },
   "8d2684f9-c319-4e85-ae08-bb56ce0d32b9": {
     "asset": 1744786147129,
     "meta": 1746521607838,
@@ -845,8 +805,8 @@
     "relativePath": "scripts\\Controller\\LoginManager.ts"
   },
   "41bf07b0-468e-4c9b-9fb3-4c4601c64f63": {
-    "asset": 1746172351110,
-    "meta": 1746521607900,
+    "asset": 1746539060966,
+    "meta": 1746539179770,
     "relativePath": "scripts\\Controller\\MainMenuScene.ts"
   },
   "401947f4-3b11-49a3-bc63-b6389987f69c": {
@@ -924,25 +884,10 @@
     "meta": 1746521608428,
     "relativePath": "scripts\\Yu\\3Match\\Tile.ts"
   },
-  "dd2e9acd-d1e7-4ffc-9827-d5bc50c956d3": {
-    "asset": 1746521176284,
-    "meta": 1746521608428,
-    "relativePath": "scenes\\MainScene.fire"
-  },
   "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
     "asset": 1745855689981,
     "meta": 1746521608460,
     "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
-  },
-  "235e2038-7eef-4b64-b2cf-da6bafa2e11d": {
-    "asset": 1746521176268,
-    "meta": 1746521608460,
-    "relativePath": "scenes\\FirstScene.fire"
-  },
-  "006efd29-0f48-4b66-aea0-ad73d06f3386": {
-    "asset": 1746521176268,
-    "meta": 1746521608460,
-    "relativePath": "scenes\\GameOver.fire"
   },
   "b6afebc5-c715-4a73-8ff2-3adda89602d0": {
     "asset": 1746172677755,
@@ -998,5 +943,265 @@
     "asset": 1746536786504,
     "meta": 1746536791455,
     "relativePath": "scripts\\Controller\\SingleGameList.ts"
+  },
+  "6614d745-f93f-4c4c-a702-49ba34ab1bbc": {
+    "asset": 1746540161178,
+    "meta": 1746540161612,
+    "relativePath": "prefabs\\Song"
+  },
+  "1c2968c1-889d-4fca-b611-3fc3eec25f64": {
+    "asset": 1746540153820,
+    "meta": 1746540161612,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab"
+  },
+  "88076359-2216-408f-8c2a-6aef5feb0385": {
+    "asset": 1746540153824,
+    "meta": 1746540161620,
+    "relativePath": "prefabs\\Song\\Rottenacorn_prefab"
+  },
+  "2ee15ce2-3581-4e39-854b-0ff86d08b1ed": {
+    "asset": 1746540161318,
+    "meta": 1746540161638,
+    "relativePath": "resources\\Images\\Song"
+  },
+  "d3f94817-bdb6-4a34-9320-e622293e61b3": {
+    "asset": 1746540153958,
+    "meta": 1746540161638,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images"
+  },
+  "0d66cda3-c0c7-44a3-a756-3cafd6fc3466": {
+    "asset": 1746540154032,
+    "meta": 1746540161648,
+    "relativePath": "resources\\Images\\Song\\Rottenacorn_images"
+  },
+  "3f0714f6-4ea3-47b2-9bef-b3c84a60531a": {
+    "asset": 1746540153807,
+    "meta": 1746540161699,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_background_prefab.prefab"
+  },
+  "5b34b4c9-92fd-43ed-84b0-322d6374fba1": {
+    "asset": 1746540153811,
+    "meta": 1746540161705,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number2.prefab"
+  },
+  "cf721f9e-0671-45c9-9579-dc0a5e4d9cc6": {
+    "asset": 1746540153807,
+    "meta": 1746540161708,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_correct_numberbox_prefab.prefab"
+  },
+  "6459dfc3-d748-4b20-89ba-aba7b25de5b5": {
+    "asset": 1746540153811,
+    "meta": 1746540161715,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number 1.prefab"
+  },
+  "0e355886-2531-4f67-be5d-426b2dd93ccb": {
+    "asset": 1746540153813,
+    "meta": 1746540161723,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number3.prefab"
+  },
+  "02abe924-ea7a-484c-a0b2-b697fa240cab": {
+    "asset": 1746540153817,
+    "meta": 1746540161729,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number6.prefab"
+  },
+  "98dbcd92-b32b-4847-a564-2fbda763b003": {
+    "asset": 1746540153813,
+    "meta": 1746540161734,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number4.prefab"
+  },
+  "341070a3-17b7-4519-bcdd-d944c35997c6": {
+    "asset": 1746540153815,
+    "meta": 1746540161738,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number5.prefab"
+  },
+  "ee73caf3-0981-4986-a03b-487f63895fff": {
+    "asset": 1746540153820,
+    "meta": 1746540161742,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number9.prefab"
+  },
+  "a40011e0-8898-4719-91b2-16ead5b24c26": {
+    "asset": 1746540153818,
+    "meta": 1746540161748,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number7.prefab"
+  },
+  "46cf436d-159e-4975-bc15-3b97698ebd86": {
+    "asset": 1746540153819,
+    "meta": 1746540161774,
+    "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_number8.prefab"
+  },
+  "2c3152a9-c999-4f49-9783-27d4bb5136ff": {
+    "asset": 1746540153823,
+    "meta": 1746540161800,
+    "relativePath": "prefabs\\Song\\Rottenacorn_prefab\\Rottenacorn_tmpinsect_prefab.prefab"
+  },
+  "14240807-2aee-469c-acb2-c3e87c6ba531": {
+    "asset": 1746540153822,
+    "meta": 1746540161807,
+    "relativePath": "prefabs\\Song\\Rottenacorn_prefab\\Rottenacorn_tmpacorn_prefab.prefab"
+  },
+  "691e09ab-20d0-4e7d-99af-6a5cc86d5062": {
+    "asset": 1746540161491,
+    "meta": 1746540161811,
+    "relativePath": "scenes\\Song"
+  },
+  "bfd7cd8e-ae9e-45ff-9bf5-cf5a02d3f612": {
+    "asset": 1746540154032,
+    "meta": 1746540161814,
+    "relativePath": "scenes\\Song\\Reversecorrect_Scenes"
+  },
+  "aa00c980-edcf-4edc-a9b9-d57b93fe63e8": {
+    "asset": 1746540154032,
+    "meta": 1746540161819,
+    "relativePath": "scenes\\Song\\Rottenacorn_Scenes"
+  },
+  "235e2038-7eef-4b64-b2cf-da6bafa2e11d": {
+    "asset": 1746540135767,
+    "meta": 1746540161838,
+    "relativePath": "scenes\\FirstScene.fire"
+  },
+  "006efd29-0f48-4b66-aea0-ad73d06f3386": {
+    "asset": 1746540135767,
+    "meta": 1746540161860,
+    "relativePath": "scenes\\GameOver.fire"
+  },
+  "826bf544-5f21-4398-b24e-395064c5ee17": {
+    "asset": 1746540161522,
+    "meta": 1746540161862,
+    "relativePath": "scripts\\Song"
+  },
+  "009fffb4-2983-41a0-b324-18f234ac709b": {
+    "asset": 1746540154040,
+    "meta": 1746540161864,
+    "relativePath": "scripts\\Song\\Reversecorrect_scripts"
+  },
+  "cf45a641-9c10-4ffa-94d8-633f87f8fb31": {
+    "asset": 1746540154048,
+    "meta": 1746540161869,
+    "relativePath": "scripts\\Song\\Rottenacorn_scripts"
+  },
+  "f919f980-ef65-4a89-9460-bd4c31d34cc3": {
+    "asset": 1746540154032,
+    "meta": 1746540161919,
+    "relativePath": "scripts\\Song\\Reversecorrect_scripts\\Reversecorrect_Button.ts"
+  },
+  "c4754254-1677-4932-92d0-91e5a38d4b1c": {
+    "asset": 1746540154040,
+    "meta": 1746540161972,
+    "relativePath": "scripts\\Song\\Reversecorrect_scripts\\Reversecorrect_Game_init.ts"
+  },
+  "2c71868c-3391-4af1-901b-1c844dca0b90": {
+    "asset": 1746540154040,
+    "meta": 1746540162025,
+    "relativePath": "scripts\\Song\\Reversecorrect_scripts\\Reversecorrect_Game_logic.ts"
+  },
+  "dd2e9acd-d1e7-4ffc-9827-d5bc50c956d3": {
+    "asset": 1746540135769,
+    "meta": 1746540162031,
+    "relativePath": "scenes\\MainScene.fire"
+  },
+  "d5e77baa-9d86-4df1-9733-c78530e8b323": {
+    "asset": 1746540154040,
+    "meta": 1746540162096,
+    "relativePath": "scripts\\Song\\Reversecorrect_scripts\\Reversecorrect_Show_QnA.ts"
+  },
+  "b481094e-ab20-4679-99d4-fb2fcfe63d18": {
+    "asset": 1746540154040,
+    "meta": 1746540162131,
+    "relativePath": "scripts\\Song\\Rottenacorn_scripts\\Rottenacorn_acorn.ts"
+  },
+  "f5a9e004-663b-4db8-8ca6-1242f4db5ee1": {
+    "asset": 1746540154040,
+    "meta": 1746540162158,
+    "relativePath": "scripts\\Song\\Rottenacorn_scripts\\Rottenacorn_acorn_manager.ts"
+  },
+  "51d5e6a6-e904-4c95-8b56-e65d743fcc47": {
+    "asset": 1746540154048,
+    "meta": 1746540162174,
+    "relativePath": "scripts\\Song\\Rottenacorn_scripts\\Rottenacorn_game_init.ts"
+  },
+  "5d79fd27-67ae-4805-b134-6d6ef9481a08": {
+    "asset": 1746540154048,
+    "meta": 1746540162254,
+    "relativePath": "scripts\\Song\\Rottenacorn_scripts\\Rottenacorn_game_logic.ts"
+  },
+  "147d4f68-3e44-43c6-be71-2e717a2ead88": {
+    "asset": 1746540154032,
+    "meta": 1746540162263,
+    "relativePath": "scenes\\Song\\Reversecorrect_Scenes\\Reversecorrect_mainscene.fire"
+  },
+  "20b4c1c9-ebd5-4d8a-97ee-4835afb971b4": {
+    "asset": 1746540154032,
+    "meta": 1746540162265,
+    "relativePath": "scenes\\Song\\Rottenacorn_Scenes\\Rottenacorn_mainscene.fire"
+  },
+  "c90a2230-5bd9-4861-8d18-2f1e78ae1f3e": {
+    "asset": 1746540153958,
+    "meta": 1746540162099,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\background.jpg"
+  },
+  "6df6e329-15e3-4cc4-badc-b69ce1987401": {
+    "asset": 1746540154032,
+    "meta": 1746540162315,
+    "relativePath": "resources\\Images\\Song\\Rottenacorn_images\\insect.jpg"
+  },
+  "536e35f0-9277-4a6d-8ac0-ea75ef68327f": {
+    "asset": 1746540153836,
+    "meta": 1746540162432,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 3일 오후 10_56_06.png"
+  },
+  "78d056f8-7441-4a62-88a3-ed7612061cef": {
+    "asset": 1746540153852,
+    "meta": 1746540162455,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_29.png"
+  },
+  "28b10ac0-2a4c-48d2-bdf8-240af967d9e8": {
+    "asset": 1746540153862,
+    "meta": 1746540162474,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_36.png"
+  },
+  "c6b5389d-4a89-4fa7-a9fb-fedabef9c59e": {
+    "asset": 1746540153955,
+    "meta": 1746540162483,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_46.png"
+  },
+  "64824403-2049-4368-bd52-3a65524e21cf": {
+    "asset": 1746540153876,
+    "meta": 1746540162496,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_39.png"
+  },
+  "b8b54682-2514-4fd1-b2dd-b825d449cf4f": {
+    "asset": 1746540153888,
+    "meta": 1746540162505,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_40.png"
+  },
+  "7a328a83-b46d-409f-a00d-0f908d1b8dfe": {
+    "asset": 1746540153904,
+    "meta": 1746540162552,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_41.png"
+  },
+  "44c2323d-4aee-41df-9f0e-6e39e2acdafd": {
+    "asset": 1746540153918,
+    "meta": 1746540162560,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_42.png"
+  },
+  "8e7e0365-0fb1-4b49-9bba-12f776b05671": {
+    "asset": 1746540153943,
+    "meta": 1746540162587,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_44.png"
+  },
+  "bcf5dbf1-3b71-48e9-9cfe-0f1edf7ead2c": {
+    "asset": 1746540153926,
+    "meta": 1746540162597,
+    "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\ChatGPT Image 2025년 5월 4일 오전 01_48_43.png"
+  },
+  "65c29b2a-246d-4621-b7b9-ab67a9565299": {
+    "asset": 1746540153983,
+    "meta": 1746540162667,
+    "relativePath": "resources\\Images\\Song\\Rottenacorn_images\\background.png"
+  },
+  "96f937b3-9753-4947-a0d8-817f8e6eae8a": {
+    "asset": 1746540154024,
+    "meta": 1746540162804,
+    "relativePath": "resources\\Images\\Song\\Rottenacorn_images\\bubble.png"
   }
 }
