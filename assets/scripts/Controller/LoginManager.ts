@@ -24,13 +24,13 @@ export default class LoginManager extends cc.Component {
 
   onSelectCharacter(event: cc.Event, character: string) {
     this.selectedCharacter = character;
-    // cc.log("캐릭터 선택됨:", character); 
+    cc.log("캐릭터 선택됨:", character); 
     this.checkFormValid();
   }
   
 
   onNicknameChanged() {
-    // cc.log("닉네임 입력 중:", this.nicknameInput.string);
+    cc.log("닉네임 입력 중:", this.nicknameInput.string);
     this.checkFormValid();
   }
 
@@ -47,12 +47,12 @@ export default class LoginManager extends cc.Component {
     cc.log("Start 버튼 클릭됨 - 닉네임:", nickname, "캐릭터:", character);
 
     if (!nickname) {
-      // cc.log("닉네임을 입력해주세요.");
+      cc.log("닉네임을 입력해주세요.");
       return;
     }
 
     if (!character) {
-      // cc.log("캐릭터를 선택해주세요.");
+      cc.log("캐릭터를 선택해주세요.");
       return;
     }
 
