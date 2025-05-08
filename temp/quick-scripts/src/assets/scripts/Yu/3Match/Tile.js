@@ -31,11 +31,11 @@ var Tile = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.sprite = null; // 기존 sprite 속성 복구
         _this.explosionPrefab = null;
-        _this.colors = [
-            cc.Color.RED, cc.Color.BLUE, cc.Color.GREEN, cc.Color.YELLOW, cc.Color.ORANGE
-        ];
+        _this.fruitSprites = [];
         _this.row = 0;
         _this.col = 0;
+        _this.touchStartPos = null;
+        _this.fruitIndex = 0; // 현재 과일 인덱스
         return _this;
     }
     Tile_1 = Tile;
@@ -46,23 +46,27 @@ var Tile = /** @class */ (function (_super) {
         if (!this.sprite) {
             this.sprite = this.node.addComponent(cc.Sprite);
         }
-        this.node.on(cc.Node.EventType.TOUCH_END, this.onTileClicked, this);
+        // this.node.on(cc.Node.EventType.TOUCH_END, this.onTileClicked, this);
+        // 드래그 감지용 이벤트 등록
+        this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
     };
-    Tile.prototype.setRandomColor = function () {
-        var randomIndex = Math.floor(Math.random() * this.colors.length);
-        this.node.color = this.colors[randomIndex];
+    Tile.prototype.setRandomFruit = function () {
+        var randomIndex = Math.floor(Math.random() * this.fruitSprites.length);
+        this.fruitIndex = randomIndex;
+        this.sprite.spriteFrame = this.fruitSprites[randomIndex];
     };
-    Tile.prototype.setRandomColorExcluding = function (excludeColors) {
-        var availableColors = this.colors.filter(function (color) {
-            return !excludeColors.some(function (ex) { return ex.equals(color); });
-        });
-        // 혹시 모든 색이 제외되면 그냥 랜덤으로 (안전장치)
-        if (availableColors.length === 0) {
-            availableColors = this.colors;
+    Tile.prototype.setRandomFruitExcluding = function (excludeIndices) {
+        var availableIndices = this.fruitSprites
+            .map(function (_, index) { return index; })
+            .filter(function (index) { return !excludeIndices.includes(index); });
+        if (availableIndices.length === 0) {
+            availableIndices = this.fruitSprites.map(function (_, index) { return index; });
         }
-        var randomIndex = Math.floor(Math.random() * availableColors.length);
-        var color = availableColors[randomIndex];
-        this.node.color = color;
+        var randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        this.fruitIndex = randomIndex;
+        this.sprite.spriteFrame = this.fruitSprites[randomIndex];
     };
     Tile.prototype.addOutline = function () {
         // 기존에 있던 Graphics가 있으면 제거
@@ -83,49 +87,66 @@ var Tile = /** @class */ (function (_super) {
         graphics.rect(-size.width / 2, -size.height / 2, size.width, size.height);
         graphics.stroke();
     };
-    Tile.prototype.onTileClicked = function () {
-        if (!cc.isValid(this.node))
+    Tile.prototype.onTouchStart = function (event) {
+        this.touchStartPos = event.getLocation();
+        // 또는 this.touchStartPos = this.node.convertToNodeSpaceAR(event.getLocation());
+        console.log("드래그 시작 위치:", this.touchStartPos);
+    };
+    Tile.prototype.onTouchEnd = function (event) {
+        var endPos = event.getLocation();
+        var delta = endPos.sub(this.touchStartPos);
+        console.log("드래그 끝 위치:", endPos);
+        console.log("드래그 거리:", delta);
+        // 최소 거리 체크 (조금 더 유연하게, 예: 3픽셀 이상이면 처리)
+        if (delta.len() < 3) {
+            console.log("드래그 너무 짧아서 무시됨");
             return;
-        if (Tile_1.selectedTile === null) {
-            Tile_1.selectedTile = this;
-            this.highlight(true);
+        }
+        var absX = Math.abs(delta.x);
+        var absY = Math.abs(delta.y);
+        // 아주 작은 delta.x나 delta.y일 경우, 방향 보정
+        if (absX < 1 && absY < 1) {
+            console.log("움직임이 너무 작아서 무시됨");
+            return;
+        }
+        var direction = "";
+        if (absX > absY) {
+            direction = delta.x > 0 ? "right" : "left";
         }
         else {
-            if (!cc.isValid(Tile_1.selectedTile.node)) {
-                Tile_1.selectedTile = null;
-                return;
-            }
-            if (Tile_1.selectedTile === this) {
-                this.highlight(false);
-                Tile_1.selectedTile = null;
-                return;
-            }
-            this.highlight(false);
-            Tile_1.selectedTile.highlight(false);
-            var board = this.node.parent.getComponent(_3MatchBoard_1.default);
-            if (board) {
-                board.swapTiles(this, Tile_1.selectedTile);
-            }
-            Tile_1.selectedTile = null;
+            direction = delta.y > 0 ? "up" : "down";
         }
-    };
-    Tile.prototype.highlight = function (enable) {
-        if (!this.node || !cc.isValid(this.node))
-            return; // 추가
-        this.node.scale = enable ? 1.1 : 1.0;
-    };
-    Tile.prototype.swapPosition = function (otherTile) {
-        // 위치 바꾸기
-        var tempPos = this.node.getPosition();
-        this.node.setPosition(otherTile.node.getPosition());
-        otherTile.node.setPosition(tempPos);
-        // row, col 교환
-        var tempRow = this.row;
-        var tempCol = this.col;
-        this.row = otherTile.row;
-        this.col = otherTile.col;
-        otherTile.row = tempRow;
-        otherTile.col = tempCol;
+        console.log("드래그 방향:", direction);
+        var board = this.node.parent.getComponent(_3MatchBoard_1.default);
+        if (!board || !board["board"]) {
+            console.warn("ThreeMatchBoard를 찾을 수 없음");
+            return;
+        }
+        var targetTile = null;
+        var row = this.row;
+        var col = this.col;
+        switch (direction) {
+            case "up":
+                if (row > 0)
+                    targetTile = board["board"][row - 1][col];
+                break;
+            case "down":
+                if (row < board["boardSize"] - 1)
+                    targetTile = board["board"][row + 1][col];
+                break;
+            case "left":
+                if (col > 0)
+                    targetTile = board["board"][row][col - 1];
+                break;
+            case "right":
+                if (col < board["boardSize"] - 1)
+                    targetTile = board["board"][row][col + 1];
+                break;
+        }
+        if (targetTile) {
+            console.log("\uD0C0\uC77C \uAD50\uD658: (" + row + ", " + col + ") <-> (" + targetTile.row + ", " + targetTile.col + ")");
+            board.swapTiles(this, targetTile);
+        }
     };
     Tile.prototype.explode = function () {
         var _this = this;
@@ -160,6 +181,9 @@ var Tile = /** @class */ (function (_super) {
     __decorate([
         property(cc.Prefab) // 폭발 효과 프리팹 속성 추가
     ], Tile.prototype, "explosionPrefab", void 0);
+    __decorate([
+        property([cc.SpriteFrame])
+    ], Tile.prototype, "fruitSprites", void 0);
     Tile = Tile_1 = __decorate([
         ccclass
     ], Tile);

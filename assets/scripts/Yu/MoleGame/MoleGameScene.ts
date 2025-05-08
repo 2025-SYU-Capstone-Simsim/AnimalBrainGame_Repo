@@ -27,6 +27,11 @@ export default class GameScene extends cc.Component {
     @property(cc.SpriteFrame)
     hammerSprite: cc.SpriteFrame = null;
 
+    // 파티클 프리팹 추가
+    @property(cc.Prefab)
+    hitParticlePrefab: cc.Prefab = null;
+
+
     private hammerNode: cc.Node = null;
 
     private moleHoles: cc.Node[] = [];  // 구멍을 저장할 배열
@@ -41,7 +46,7 @@ export default class GameScene extends cc.Component {
         sprite.spriteFrame = this.hammerSprite;
         this.hammerNode.parent = this.node;
         this.hammerNode.zIndex = 999; // 제일 위에 보이도록
-        this.hammerNode.setContentSize(200, 300); // 크기 조절
+        this.hammerNode.setContentSize(200, 200); // 크기 조절
         this.hammerNode.anchorX = 0.2; 
         this.hammerNode.anchorY = 0.8;   // 위쪽 (해머 머리 쪽 기준)
 
@@ -107,12 +112,17 @@ export default class GameScene extends cc.Component {
     onMoleClick(event: cc.Event.EventTouch) {
         const mole = event.target;
         if (!mole.active) return;
-
+    
         this.score += 10;
         this.updateScoreLabel();
-
         mole.active = false;
+    
+        // 💥 파티클 효과 추가
+        const hitEffect = cc.instantiate(this.hitParticlePrefab);
+        hitEffect.setPosition(mole.getPosition());  // 두더지 위치에 생성
+        mole.parent.addChild(hitEffect);  // 부모는 해당 구멍
     }
+    
 
     onLoad() {
         cc.Canvas.instance.node.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);

@@ -110,8 +110,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
+      "width": 1080,
+      "height": 1920
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -122,8 +122,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        480,
-        320,
+        540,
+        960,
         0,
         0,
         0,
@@ -2202,7 +2202,10 @@
       "__id__": 38
     },
     "hammerSprite": {
-      "__uuid__": "eb5bd0f5-f8bc-43cb-b4ba-988a33089d85"
+      "__uuid__": "48c7909d-d09c-434f-b2ff-1b9861b3f1ed"
+    },
+    "hitParticlePrefab": {
+      "__uuid__": "24ddd553-ddda-48e2-8531-3b4f60e86cd0"
     },
     "_id": "6bN++yavtN+4pLYJVbyS91"
   }

@@ -8,9 +8,8 @@ export default class Tile extends cc.Component {
     @property(cc.Prefab) // 폭발 효과 프리팹 속성 추가
     explosionPrefab: cc.Prefab = null;
 
-    private colors: cc.Color[] = [
-        cc.Color.RED, cc.Color.BLUE, cc.Color.GREEN, cc.Color.YELLOW, cc.Color.ORANGE
-    ];
+    @property([cc.SpriteFrame])
+    fruitSprites: cc.SpriteFrame[] = [];
 
     public row: number = 0;
     public col: number = 0;
@@ -34,25 +33,29 @@ export default class Tile extends cc.Component {
 
     }
 
-    setRandomColor() {
-        let randomIndex = Math.floor(Math.random() * this.colors.length);
-        this.node.color = this.colors[randomIndex];
-    }
+    private fruitIndex: number = 0; // 현재 과일 인덱스
 
-    setRandomColorExcluding(excludeColors: cc.Color[]) {
-        let availableColors = this.colors.filter(color => {
-            return !excludeColors.some(ex => ex.equals(color));
-        });
+    setRandomFruit() {
+        const randomIndex = Math.floor(Math.random() * this.fruitSprites.length);
+        this.fruitIndex = randomIndex;
+        this.sprite.spriteFrame = this.fruitSprites[randomIndex];
+    }
     
-        // 혹시 모든 색이 제외되면 그냥 랜덤으로 (안전장치)
-        if (availableColors.length === 0) {
-            availableColors = this.colors;
+
+    setRandomFruitExcluding(excludeIndices: number[]) {
+        let availableIndices = this.fruitSprites
+            .map((_, index) => index)
+            .filter(index => !excludeIndices.includes(index));
+    
+        if (availableIndices.length === 0) {
+            availableIndices = this.fruitSprites.map((_, index) => index);
         }
     
-        const randomIndex = Math.floor(Math.random() * availableColors.length);
-        const color = availableColors[randomIndex];
-        this.node.color = color;
+        const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        this.fruitIndex = randomIndex;
+        this.sprite.spriteFrame = this.fruitSprites[randomIndex];
     }
+    
     
 
     addOutline() {

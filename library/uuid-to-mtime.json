@@ -1,12 +1,12 @@
 {
   "76f008b1-60a8-433f-b935-4312e118b593": {
-    "asset": 1746539179596,
-    "meta": 1746539179722,
+    "asset": 1746540161146,
+    "meta": 1746598313276,
     "relativePath": "resources"
   },
   "ce1d6fcf-0deb-499e-b19a-d92bd2f2d69e": {
-    "asset": 1746539179580,
-    "meta": 1746539179722,
+    "asset": 1746540161146,
+    "meta": 1746598313274,
     "relativePath": "prefabs"
   },
   "f8ad6d67-25ba-4185-913a-7577f2b1fce7": {
@@ -20,23 +20,23 @@
     "relativePath": "prefabs\\Sim"
   },
   "3feed3f0-25d2-4c28-ad19-97032d23c9de": {
-    "asset": 1744981815315,
-    "meta": 1745062286517,
+    "asset": 1746664591985,
+    "meta": 1746680642878,
     "relativePath": "prefabs\\Yu"
   },
   "5e8aa9ed-e9c9-4037-a1c9-404a58136cc6": {
     "asset": 1744249066811,
-    "meta": 1744266077269,
-    "relativePath": "prefabs\\Yu\\ExplosionEffect.prefab"
+    "meta": 1746664592003,
+    "relativePath": "prefabs\\Yu\\3MExplosionEffect.prefab"
   },
   "f620e8a3-53f6-4c9b-a0c3-f5377961e416": {
-    "asset": 1744250754845,
-    "meta": 1744266077272,
+    "asset": 1746681979026,
+    "meta": 1746681979052,
     "relativePath": "prefabs\\Yu\\Tile.prefab"
   },
   "d85d6820-cdd5-449e-831f-9c8ac5ff6d54": {
-    "asset": 1746539179627,
-    "meta": 1746539179744,
+    "asset": 1746540153824,
+    "meta": 1746598313280,
     "relativePath": "resources\\Images"
   },
   "cdd6bae8-5c57-4859-950a-464ac9bc854a": {
@@ -85,8 +85,8 @@
     "relativePath": "resources\\Images\\Yu\\3match\\ComboBar.png"
   },
   "69f7ec51-0c2e-41e3-b8ee-6927f5b859a5": {
-    "asset": 1745856116221,
-    "meta": 1746015393167,
+    "asset": 1746664388531,
+    "meta": 1746680642880,
     "relativePath": "resources\\Images\\Yu\\MoleGame"
   },
   "9836134e-b892-4283-b6b2-78b5acf3ed45": {
@@ -604,11 +604,6 @@
     "meta": 1746536316258,
     "relativePath": "model\\primitives.fbx"
   },
-  "5607209a-45f9-49b3-8f3a-a803d7eece42": {
-    "asset": 1745476640996,
-    "meta": 1745476641051,
-    "relativePath": "resources\\Images\\Yu\\MoleGame\\hammer.png"
-  },
   "660ebec7-0da4-415c-a4e6-26a02d55c47d": {
     "asset": 1745856116219,
     "meta": 1745856116252,
@@ -730,8 +725,8 @@
     "relativePath": "resources\\Images\\Jang\\background.png"
   },
   "2c2fb490-faa4-4093-beb1-cdd7d536dc5f": {
-    "asset": 1746539511297,
-    "meta": 1746539817281,
+    "asset": 1746540546467,
+    "meta": 1746598313278,
     "relativePath": "scenes"
   },
   "5b90faf3-1a88-40cc-9de6-3cb35c198e5f": {
@@ -775,8 +770,8 @@
     "relativePath": "scenes\\Yu\\MoleGame"
   },
   "b3c24d42-0247-4ce8-abe3-4ea51a42e62b": {
-    "asset": 1746539179612,
-    "meta": 1746539179738,
+    "asset": 1746540154032,
+    "meta": 1746598313278,
     "relativePath": "scripts"
   },
   "d3f95b67-16b1-4430-97b9-3f854b3ac9f4": {
@@ -798,11 +793,6 @@
     "asset": 1744786147129,
     "meta": 1746521607838,
     "relativePath": "scripts\\Yu"
-  },
-  "276420bf-bb79-4d29-9e32-c51e8f4cafd1": {
-    "asset": 1746170913973,
-    "meta": 1746521607889,
-    "relativePath": "scripts\\Controller\\LoginManager.ts"
   },
   "41bf07b0-468e-4c9b-9fb3-4c4601c64f63": {
     "asset": 1746539060966,
@@ -854,16 +844,6 @@
     "meta": 1746521608132,
     "relativePath": "scripts\\Yu\\MoleGame"
   },
-  "76cf1ded-18f9-469a-a135-5e43e9f79a20": {
-    "asset": 1744857485694,
-    "meta": 1746521608365,
-    "relativePath": "scripts\\Yu\\3Match\\3MatchBoard.ts"
-  },
-  "3f3cbd22-e503-4d2e-b475-738c0c014c36": {
-    "asset": 1744859449026,
-    "meta": 1746521608428,
-    "relativePath": "scripts\\Yu\\3Match\\Tile.ts"
-  },
   "b6afebc5-c715-4a73-8ff2-3adda89602d0": {
     "asset": 1746172677755,
     "meta": 1746521608460,
@@ -890,8 +870,8 @@
     "relativePath": "scenes\\Common\\SingleGameList.fire"
   },
   "a9f075f6-ea37-4672-97f5-7e779f6fa8e9": {
-    "asset": 1746543085893,
-    "meta": 1746543085935,
+    "asset": 1746685053247,
+    "meta": 1746685053278,
     "relativePath": "scenes\\Yu\\3Match\\3M_GameScene.fire"
   },
   "d74e7888-ac3a-42d4-b5ac-84d1473a2ddc": {
@@ -900,8 +880,8 @@
     "relativePath": "scenes\\Jang\\MazeScene.fire"
   },
   "e80fe891-358a-4761-bc47-3cf9350636b7": {
-    "asset": 1746543313193,
-    "meta": 1746543313218,
+    "asset": 1746664695223,
+    "meta": 1746664695242,
     "relativePath": "scenes\\Yu\\MoleGame\\MoleGameScene.fire"
   },
   "5b216a33-47d2-4d77-9f6f-debf194a3abc": {
@@ -1184,9 +1164,74 @@
     "meta": 1746544512136,
     "relativePath": "scripts\\Song\\Rottenacorn_scripts\\Rottenacorn_game_init.ts"
   },
+  "276420bf-bb79-4d29-9e32-c51e8f4cafd1": {
+    "asset": 1746545512851,
+    "meta": 1746545543464,
+    "relativePath": "scripts\\Controller\\LoginManager.ts"
+  },
+  "fbb5539d-abe9-48bf-bb7b-b354c8c73d8f": {
+    "asset": 1746663652896,
+    "meta": 1746663652923,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\hammer.png"
+  },
+  "2a8a2ada-5e8d-46d6-96d2-e3cdbf5e4ab9": {
+    "asset": 1746664388529,
+    "meta": 1746664388600,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\particle.png"
+  },
+  "24ddd553-ddda-48e2-8531-3b4f60e86cd0": {
+    "asset": 1746665323380,
+    "meta": 1746665323397,
+    "relativePath": "prefabs\\Yu\\MoleExplosionEffect .prefab"
+  },
   "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
-    "asset": 1746544878429,
-    "meta": 1746545200481,
+    "asset": 1746664669507,
+    "meta": 1746664675563,
     "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
+  },
+  "6002da1e-82c3-461d-b41c-1db713c21229": {
+    "asset": 1746681457931,
+    "meta": 1746681458034,
+    "relativePath": "resources\\Images\\Yu\\3match\\Grape.png"
+  },
+  "e9bbc8f8-359b-469f-800f-0eef65dcedba": {
+    "asset": 1746681457934,
+    "meta": 1746681458036,
+    "relativePath": "resources\\Images\\Yu\\3match\\BlueBerry.png"
+  },
+  "5c6acef1-59c0-473d-8ada-c7b99cb1519e": {
+    "asset": 1746681457931,
+    "meta": 1746681458050,
+    "relativePath": "resources\\Images\\Yu\\3match\\Strawberry.png"
+  },
+  "0e52cb6f-96f1-4752-b6c7-77d5bcd8e641": {
+    "asset": 1746681457934,
+    "meta": 1746681458053,
+    "relativePath": "resources\\Images\\Yu\\3match\\WaterMelon.png"
+  },
+  "354141f0-9451-4707-9a6c-15d8a3ca499f": {
+    "asset": 1746681457936,
+    "meta": 1746681458055,
+    "relativePath": "resources\\Images\\Yu\\3match\\Orange.png"
+  },
+  "3f3cbd22-e503-4d2e-b475-738c0c014c36": {
+    "asset": 1746681825218,
+    "meta": 1746681839574,
+    "relativePath": "scripts\\Yu\\3Match\\Tile.ts"
+  },
+  "76cf1ded-18f9-469a-a135-5e43e9f79a20": {
+    "asset": 1746682281737,
+    "meta": 1746682290843,
+    "relativePath": "scripts\\Yu\\3Match\\3MatchBoard.ts"
+  },
+  "22bdb65d-0414-4169-b583-572d0f5e22d5": {
+    "asset": 1746682620018,
+    "meta": 1746683971290,
+    "relativePath": "resources\\Images\\Yu\\3match\\FeverGauge.png"
+  },
+  "0415a834-9a88-4a54-b649-13460c5b55b5": {
+    "asset": 1746682650147,
+    "meta": 1746684037828,
+    "relativePath": "resources\\Images\\Yu\\3match\\Feverbar.png"
   }
 }
