@@ -1,11 +1,9 @@
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameScene extends cc.Component {
-    // 리스트로 돌아가기 버튼 
     @property(cc.Button) exitButton: cc.Node = null;
 
-    // 구멍 노드 설정 (3x3 = 9개)
     @property(cc.Node) Hole1: cc.Node = null;
     @property(cc.Node) Hole2: cc.Node = null;
     @property(cc.Node) Hole3: cc.Node = null;
@@ -16,177 +14,179 @@ export default class GameScene extends cc.Component {
     @property(cc.Node) Hole8: cc.Node = null;
     @property(cc.Node) Hole9: cc.Node = null;
 
-    // 두더지 프리팹 설정
     @property(cc.Prefab) molePrefab: cc.Prefab = null;
-
-    // 점수 및 타이머
+    @property(cc.Prefab) molePrefabGood: cc.Prefab = null; // 순한 두더지
     @property(cc.Label) scoreLabel: cc.Label = null;
     @property(cc.Label) timerLabel: cc.Label = null;
-
-    // 망치 마우스 포인터 노드 설정
-    @property(cc.SpriteFrame)
-    hammerSprite: cc.SpriteFrame = null;
-
-    // 파티클 프리팹 추가
-    @property(cc.Prefab)
-    hitParticlePrefab: cc.Prefab = null;
+    @property(cc.SpriteFrame) hammerSprite: cc.SpriteFrame = null;
+    @property(cc.Prefab) hitParticlePrefab: cc.Prefab = null;
 
 
     private hammerNode: cc.Node = null;
-
-    private moleHoles: cc.Node[] = [];  // 구멍을 저장할 배열
-    private score: number = 0;  // 점수
-    private timer: number = 30;  // 타이머 30초
+    private moleHoles: cc.Node[] = [];
+    private holeStates: boolean[] = [];
+    private score: number = 0;
+    private timer: number = 30;
     private isGameOver: boolean = false;
+    private moleSpawnCallback: Function = null;
 
-    // 게임 시작
+
+
     start() {
-        this.hammerNode = new cc.Node("Hammer");
-        const sprite = this.hammerNode.addComponent(cc.Sprite);
-        sprite.spriteFrame = this.hammerSprite;
-        this.hammerNode.parent = this.node;
-        this.hammerNode.zIndex = 999; // 제일 위에 보이도록
-        this.hammerNode.setContentSize(200, 200); // 크기 조절
-        this.hammerNode.anchorX = 0.2; 
-        this.hammerNode.anchorY = 0.8;   // 위쪽 (해머 머리 쪽 기준)
-
-
-        // 구멍 노드 배열에 추가
         this.moleHoles = [
             this.Hole1, this.Hole2, this.Hole3,
             this.Hole4, this.Hole5, this.Hole6,
             this.Hole7, this.Hole8, this.Hole9
         ];
-
-        // 게임 시작 시 타이머와 점수 초기화
+        this.holeStates = new Array(this.moleHoles.length).fill(false);
+        this.createHammer();  // 해머 생성 (기본 비활성)
         this.score = 0;
         this.timer = 30;
         this.updateScoreLabel();
         this.updateTimerLabel();
 
-        // 타이머 감소 스케줄링
         this.schedule(this.decreaseTimer, 1);
-
-        // 두더지 생성 시작
         this.spawnMoles();
     }
 
-    // 타이머 감소
-    decreaseTimer() {
-        this.timer--;
-        this.updateTimerLabel();
+    
 
-        if (this.timer <= 0) {
-            this.gameOver();
-        }
+    createHammer() {
+        this.hammerNode = new cc.Node("Hammer");
+        const sprite = this.hammerNode.addComponent(cc.Sprite);
+        sprite.spriteFrame = this.hammerSprite;
+        this.hammerNode.parent = this.node;
+        this.hammerNode.zIndex = 999;
+        this.hammerNode.setContentSize(200, 200);
+        this.hammerNode.anchorX = 0.2;
+        this.hammerNode.anchorY = 0.8;
+        this.hammerNode.active = false; // 기본 숨김
     }
 
-    updateTimerLabel() {
-        this.timerLabel.string = `시간: ${this.timer}`;
+    decreaseTimer() {
+        if (this.isGameOver) return;
+        this.timer--;
+        this.updateTimerLabel();
+        if (this.timer <= 0) this.gameOver();
     }
 
     updateScoreLabel() {
         this.scoreLabel.string = `점수: ${this.score}`;
     }
 
-    // 두더지 랜덤 생성
+    updateTimerLabel() {
+        this.timerLabel.string = `시간: ${this.timer}`;
+    }
+
     spawnMoles() {
-        this.schedule(() => {
-            const randomHoleIndex = Math.floor(Math.random() * this.moleHoles.length);
-            const selectedHole = this.moleHoles[randomHoleIndex];
+        if (this.moleSpawnCallback) this.unschedule(this.moleSpawnCallback);
 
-            const mole = cc.instantiate(this.molePrefab);
-            mole.name = "Mole";
-            mole.active = true;
-            selectedHole.addChild(mole);
+this.moleSpawnCallback = () => {
+    if (this.isGameOver) return;
 
-            mole.on(cc.Node.EventType.TOUCH_END, this.onMoleClick, this);
+    const available = this.holeStates
+        .map((v, i) => (!v ? i : -1))
+        .filter(i => i !== -1);
+    if (available.length === 0) return;
 
-            this.scheduleOnce(() => {
-                mole.active = false;
-            }, 1);
-        }, 0.5, cc.macro.REPEAT_FOREVER);
-    }
-    
+    const idx = available[Math.floor(Math.random() * available.length)];
+    const hole = this.moleHoles[idx];
 
-    onMoleClick(event: cc.Event.EventTouch) {
-        const mole = event.target;
-        if (!mole.active) return;
-    
-        this.score += 10;
-        this.updateScoreLabel();
-        mole.active = false;
-    
-        // 💥 파티클 효과 추가
-        const hitEffect = cc.instantiate(this.hitParticlePrefab);
-        hitEffect.setPosition(mole.getPosition());  // 두더지 위치에 생성
-        mole.parent.addChild(hitEffect);  // 부모는 해당 구멍
-    }
-    
+    // 두더지 타입 랜덤 결정
+    const isBadMole = Math.random() < 0.2;
+    const mole = cc.instantiate(isBadMole ? this.molePrefabGood : this.molePrefab);
+    mole.name = "Mole";
+    hole.addChild(mole);
+    mole.setPosition(0, -130);
+    mole.active = true;
+    this.holeStates[idx] = true;
 
-    onLoad() {
-        cc.Canvas.instance.node.on(cc.Node.EventType.MOUSE_MOVE, this.onMouseMove, this);
-        cc.Canvas.instance.node.on(cc.Node.EventType.MOUSE_DOWN, this.onMouseClick, this);
-        // 기본 마우스 포인터 숨기기
-        // cocos2.X 버전에선 보통 Canvas ID를 GameCanvas로 자동 할당함
-        const canvas = document.getElementById('GameCanvas'); 
-        if (canvas) {
-            canvas.style.cursor = 'none'; // 기본 커서 숨김 
+    const onHit = (e: cc.Event.EventTouch) => {
+        e.stopPropagation();
+        if (!mole.active || this.isGameOver) return;
+
+        const worldPos = mole.convertToWorldSpaceAR(cc.v2(0, 0));
+        const localPos = this.node.convertToNodeSpaceAR(worldPos);
+        this.showHammerEffect(localPos);
+
+        if (isBadMole) {
+            this.score -= 10;
+        } else {
+            this.score += 10;
         }
-    }
-    
-    onMouseMove(event: cc.Event.EventMouse) {
-        // 마우스의 화면 좌표를 가져옴
-        const location = event.getLocation();
-    
-        // 화면 좌표를 Canvas(Local) 좌표로 변환
-        const localPos = cc.Canvas.instance.node.convertToNodeSpaceAR(location);
-    
-        // 망치 노드를 해당 위치로 이동
-        this.hammerNode.setPosition(localPos);
-    }
+        this.updateScoreLabel();
 
-    onMouseClick() {
-        // 클릭 시 망치 살짝 내리치는 애니메이션 (간단한 scale 애니메이션)
-        this.hammerNode.stopAllActions();
-        this.hammerNode.runAction(
-            cc.sequence(
-                cc.scaleTo(0.05, 0.9),
-                cc.scaleTo(0.05, 1.0)
-            )
-        );
-    }
-    
+        mole.off(cc.Node.EventType.TOUCH_END, onHit, this);
+        mole.destroy();
+        this.holeStates[idx] = false;
+
+        const hit = cc.instantiate(this.hitParticlePrefab);
+        hit.setPosition(mole.getPosition());
+        hole.addChild(hit);
+    };
+
+    mole.on(cc.Node.EventType.TOUCH_END, onHit, this);
+
+    cc.tween(mole)
+        .to(0.2, { position: cc.v3(0, -20) }, { easing: 'sineOut' })
+        .delay(1.0)
+        .call(() => {
+            if (mole.isValid) {
+                mole.off(cc.Node.EventType.TOUCH_END, onHit, this);
+                mole.destroy();
+                this.holeStates[idx] = false;
+            }
+        })
+        .start();
+};
+
+
+    this.schedule(this.moleSpawnCallback, 0.5, cc.macro.REPEAT_FOREVER);
+}
+
+showHammerEffect(pos: cc.Vec2) {
+    this.hammerNode.setPosition(pos);
+    this.hammerNode.active = true;
+
+    cc.tween(this.hammerNode)
+        .set({ scale: 1.0 })
+        .parallel(
+            cc.tween().to(0.05, { scale: 1.2 }, { easing: 'cubicOut' }),
+            cc.tween().by(0.05, { position: cc.v3(0, -30) })
+        )
+        .parallel(
+            cc.tween().to(0.1, { scale: 1.0 }, { easing: 'bounceOut' }),
+            cc.tween().by(0.1, { position: cc.v3(0, 30) })
+        )
+        .call(() => {
+            this.hammerNode.active = false;
+        })
+        .start();
+}
+
+
 
     gameOver() {
         if (this.isGameOver) return;
-    
         this.isGameOver = true;
-    
-        this.unscheduleAllCallbacks(); // 모든 타이머 스케줄 정지
+        if (this.moleSpawnCallback) this.unschedule(this.moleSpawnCallback);
+        this.unscheduleAllCallbacks();
         this.timer = 0;
         this.updateTimerLabel();
-    
-        // 선택: 모든 두더지 비활성화
-        for (const hole of this.moleHoles) {
+
+        this.moleHoles.forEach(hole => {
             const mole = hole.getChildByName("Mole");
-            if (mole) {
-                mole.active = false;
-            }
-        }
-    
-        // 선택: "게임 종료!" 표시
+            if (mole) mole.active = false;
+        });
+
+        this.hammerNode.active = false;
         console.log("게임 종료!");
     }
 
-    
-    loadList(){
-        console.log("싱글 게임 리스트로 돌아가기기");
-        // 마우스 포인터 다시 보이게 하기
+    loadList() {
+        console.log("싱글 게임 리스트로 돌아가기");
         const canvas = document.getElementById('GameCanvas');
-        if (canvas) {
-            canvas.style.cursor = 'default';
-        }
+        if (canvas) canvas.style.cursor = 'default';
         cc.director.loadScene('SingleGameList');
     }
 }

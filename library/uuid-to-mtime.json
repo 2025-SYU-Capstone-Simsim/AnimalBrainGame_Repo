@@ -60,8 +60,8 @@
     "relativePath": "resources\\Images\\Yu"
   },
   "8cc44e95-3831-44f6-834d-d288a9732ac1": {
-    "asset": 1746016853856,
-    "meta": 1746080241060,
+    "asset": 1746682650150,
+    "meta": 1746766878237,
     "relativePath": "resources\\Images\\Yu\\3match"
   },
   "a844156c-9401-4319-8737-57f880d0ced7": {
@@ -119,19 +119,9 @@
     "meta": 1746536304904,
     "relativePath": "effects\\__builtin-editor-gizmo.effect"
   },
-  "d64e7ae7-a18d-4da5-8c90-8e54161d92bd": {
-    "asset": 1744981192875,
-    "meta": 1744981193152,
-    "relativePath": "resources\\Images\\Yu\\MoleGame\\background.png"
-  },
-  "7ae153bd-48e4-46b1-bd39-432215496991": {
-    "asset": 1744981736339,
-    "meta": 1744981736406,
-    "relativePath": "resources\\Images\\Yu\\MoleGame\\mole.png"
-  },
   "ca890f69-2c82-43c3-9c4d-ca3cef224692": {
-    "asset": 1745478352854,
-    "meta": 1745478352865,
+    "asset": 1746777429640,
+    "meta": 1746777429650,
     "relativePath": "prefabs\\Yu\\Mole.prefab"
   },
   "f8e6b000-5643-4b86-9080-aa680ce1f599": {
@@ -880,8 +870,8 @@
     "relativePath": "scenes\\Jang\\MazeScene.fire"
   },
   "e80fe891-358a-4761-bc47-3cf9350636b7": {
-    "asset": 1746664695223,
-    "meta": 1746664695242,
+    "asset": 1746778023923,
+    "meta": 1746778023934,
     "relativePath": "scenes\\Yu\\MoleGame\\MoleGameScene.fire"
   },
   "5b216a33-47d2-4d77-9f6f-debf194a3abc": {
@@ -1184,11 +1174,6 @@
     "meta": 1746665323397,
     "relativePath": "prefabs\\Yu\\MoleExplosionEffect .prefab"
   },
-  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
-    "asset": 1746664669507,
-    "meta": 1746664675563,
-    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
-  },
   "6002da1e-82c3-461d-b41c-1db713c21229": {
     "asset": 1746681457931,
     "meta": 1746681458034,
@@ -1233,5 +1218,40 @@
     "asset": 1746682650147,
     "meta": 1746684037828,
     "relativePath": "resources\\Images\\Yu\\3match\\Feverbar.png"
+  },
+  "bdaccb88-329e-487a-9c9b-16bdfc4961b1": {
+    "asset": 1746769029410,
+    "meta": 1746769029459,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\MoleBack.png"
+  },
+  "eeb83d80-d559-4ae4-b1df-a36916341644": {
+    "asset": 1746769409533,
+    "meta": 1746769409583,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\hole.png"
+  },
+  "3fcb8e17-cec3-411c-b3c8-26ee36fb83e3": {
+    "asset": 1746777376368,
+    "meta": 1746777376406,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\GoodMole.png"
+  },
+  "ee347fb5-8cdf-45cf-b1af-f6959677d9c1": {
+    "asset": 1746777376368,
+    "meta": 1746777376408,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\BadMole.png"
+  },
+  "f09311ef-7f2a-4b5d-9c5a-1813f5a03f6c": {
+    "asset": 1746777556563,
+    "meta": 1746777556566,
+    "relativePath": "prefabs\\Yu\\GoodMole.prefab"
+  },
+  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
+    "asset": 1746778000970,
+    "meta": 1746778004917,
+    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
+  },
+  "b2a09f2f-ab84-4e9c-8e91-5aba5a9a2158": {
+    "asset": 1746778316490,
+    "meta": 1746778316520,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\Goback.png"
   }
 }
