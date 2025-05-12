@@ -2320,14 +2320,17 @@
     "hammerSprite": {
       "__uuid__": "48c7909d-d09c-434f-b2ff-1b9861b3f1ed"
     },
-    "hitParticlePrefab": {
-      "__uuid__": "24ddd553-ddda-48e2-8531-3b4f60e86cd0"
-    },
     "timerDisplayPrefab": {
       "__uuid__": "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0"
     },
     "scoreDisplayPrefab": {
       "__uuid__": "c3c2b61d-8f95-425b-b548-5057de0511f1"
+    },
+    "moleHitSprite": {
+      "__uuid__": "c06d6cee-5ac1-43ab-aebb-96bd9e22d2d0"
+    },
+    "goodMoleHitSprite": {
+      "__uuid__": "4542c5e8-7cb8-405e-afc5-a9dd46d28d50"
     },
     "_id": "6bN++yavtN+4pLYJVbyS91"
   }

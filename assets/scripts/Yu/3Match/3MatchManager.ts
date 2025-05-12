@@ -3,11 +3,18 @@ import ThreeMatchBoard from "./3MatchBoard";
 
 @ccclass
 export default class ThreeMatchManager extends cc.Component {
-    @property(cc.Label)
-    timerLabel: cc.Label = null;
+    // @property(cc.Label)
+    // timerLabel: cc.Label = null;
 
-    @property(cc.Label)
-    scoreLabel: cc.Label = null;
+    // @property(cc.Label)
+    // scoreLabel: cc.Label = null;
+
+    @property(cc.Prefab)
+    timerDisplayPrefab: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    scoreDisplayPrefab: cc.Prefab = null;
+
 
     @property(cc.Node)
     boardNode: cc.Node = null;
@@ -16,7 +23,7 @@ export default class ThreeMatchManager extends cc.Component {
     comboGauge: cc.ProgressBar = null;
 
     @property(cc.Node)
-    feverLabel: cc.Node = null;
+    feverSprite: cc.Node = null;
 
     @property(cc.Button)
     exitButton: cc.Button = null;
@@ -26,59 +33,60 @@ export default class ThreeMatchManager extends cc.Component {
     private currentTime: number = 120;
     private score: number = 0;
 
+    private timerNode: cc.Node = null;
+    private scoreNode: cc.Node = null;
+
+    private timerLabel: cc.Label = null;
+    private scoreLabel: cc.Label = null;
+
+
     private comboValue: number = 0;
     private comboMax: number = 300;
     private isFeverTime: boolean = false;
 
 
-    onLoad() {
-        this.schedule(this.updateTimer, 1);
+    start() {
+        // 타이머 프리팹 인스턴스화
+        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
+        this.node.addChild(this.timerNode);
+        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
+        this.updateTimer();
+
+        // 점수 프리팹 인스턴스화
+        this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
+        this.node.addChild(this.scoreNode);
+        this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScore(0);
-            // 콤보 게이지 관련 초기화
+
+        // 나머지 초기화
         this.comboValue = 0;
-        this.comboMax = 200; // 혹은 필요에 따라 값 설정
+        this.comboMax = 200;
         this.comboGauge.progress = 0;
-
-
-        // 피버타임 UI 초기화
         this.isFeverTime = false;
-        this.feverLabel.active = false;
+        this.feverSprite.active = false;
 
-        // const label = this.feverLabel.getComponent(cc.Label);
-        // label.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        // label.verticalAlign = cc.Label.VerticalAlign.CENTER;
-        // label.overflow = cc.Label.Overflow.SHRINK;  // 너무 길면 축소
-
+        this.schedule(this.updateTimer, 1);
     }
 
-    updateTimer() {
-        this.currentTime--;
 
-        if (this.currentTime <= 0) {
-            this.currentTime = 0;
-            this.unschedule(this.updateTimer);
-            this.onGameOver();
-        }
 
-        this.timerLabel.string = `시간: ${this.currentTime}`;
+updateTimer() {
+    this.currentTime--;
+    if (this.currentTime <= 0) {
+        this.currentTime = 0;
+        this.unschedule(this.updateTimer);
+        this.onGameOver();
     }
 
-    updateScore(amount: number) {
-        this.score += amount;
-        this.scoreLabel.string = `${this.score}`;
-        // 점수 획득시 콤보게이지 추가 메서드 실행    
-        this.increaseComboGauge(amount);  
-    }
-    
-    public addMatchScore(matchCount: number) {
+    this.timerLabel.string = `${this.currentTime}`;
+}
 
-        const scoreToAdd = matchCount * 10; // 피버 아닐 때 점수 추가
-    
-        // 피버타임이면 점수 2배로 설정
-        const finalScore = this.isFeverTime ? scoreToAdd * 2 : scoreToAdd;
-    
-        this.updateScore(finalScore);
-    }
+updateScore(amount: number) {
+    this.score += amount;
+    this.scoreLabel.string = `${this.score}`;
+    this.increaseComboGauge(amount);
+}
+
     
 
     increaseComboGauge(amount: number) {
@@ -94,7 +102,7 @@ export default class ThreeMatchManager extends cc.Component {
 
     startFeverTime() {
         this.isFeverTime = true;
-        this.feverLabel.active = true; // 피버 UI 보여주기
+        this.feverSprite.active = true; // 피버 UI 보여주기
     
     
         // 10초 후 종료
@@ -102,12 +110,19 @@ export default class ThreeMatchManager extends cc.Component {
             this.endFeverTime();
         }, 10);
     }
+
+    public addMatchScore(matchCount: number) {
+    const scoreToAdd = matchCount * 10;
+    const finalScore = this.isFeverTime ? scoreToAdd * 2 : scoreToAdd;
+    this.updateScore(finalScore); // 콤보 게이지까지 처리됨
+    }
+
     
     endFeverTime() {
         this.isFeverTime = false; // 피버타임 상태 false로
         this.comboValue = 0; // 현재 콤보 밸류, ui 초기화
         this.comboGauge.progress = 0;
-        this.feverLabel.active = false; // 피버 UI 숨기기
+        this.feverSprite.active = false; // 피버 UI 숨기기
 
     }
     

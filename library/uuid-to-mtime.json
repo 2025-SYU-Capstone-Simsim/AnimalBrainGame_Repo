@@ -860,8 +860,8 @@
     "relativePath": "scenes\\Common\\SingleGameList.fire"
   },
   "a9f075f6-ea37-4672-97f5-7e779f6fa8e9": {
-    "asset": 1746685053247,
-    "meta": 1746685053278,
+    "asset": 1747032748229,
+    "meta": 1747032748239,
     "relativePath": "scenes\\Yu\\3Match\\3M_GameScene.fire"
   },
   "d74e7888-ac3a-42d4-b5ac-84d1473a2ddc": {
@@ -870,8 +870,8 @@
     "relativePath": "scenes\\Jang\\MazeScene.fire"
   },
   "e80fe891-358a-4761-bc47-3cf9350636b7": {
-    "asset": 1747027246039,
-    "meta": 1747027246051,
+    "asset": 1747032227699,
+    "meta": 1747032227714,
     "relativePath": "scenes\\Yu\\MoleGame\\MoleGameScene.fire"
   },
   "5b216a33-47d2-4d77-9f6f-debf194a3abc": {
@@ -1119,11 +1119,6 @@
     "meta": 1746540884569,
     "relativePath": "scripts\\Controller\\SingleGameList.ts"
   },
-  "c77b4ab3-cc86-4cb4-88b2-24e9bf38633a": {
-    "asset": 1746543061270,
-    "meta": 1746543062323,
-    "relativePath": "scripts\\Yu\\3Match\\3MatchManager.ts"
-  },
   "8f2d2321-218b-4e5f-91e5-26272de48261": {
     "asset": 1746543543022,
     "meta": 1746543545928,
@@ -1298,5 +1293,15 @@
     "asset": 1747030051439,
     "meta": 1747030054508,
     "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
+  },
+  "96c62a4a-80ec-4e71-b539-6733dd470bb8": {
+    "asset": 1747031273428,
+    "meta": 1747031273456,
+    "relativePath": "resources\\Images\\Yu\\3match\\Fever.png"
+  },
+  "c77b4ab3-cc86-4cb4-88b2-24e9bf38633a": {
+    "asset": 1747032405963,
+    "meta": 1747032407822,
+    "relativePath": "scripts\\Yu\\3Match\\3MatchManager.ts"
   }
 }

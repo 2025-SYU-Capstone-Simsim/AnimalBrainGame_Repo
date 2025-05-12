@@ -27,35 +27,47 @@ var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
 var ThreeMatchManager = /** @class */ (function (_super) {
     __extends(ThreeMatchManager, _super);
     function ThreeMatchManager() {
+        // @property(cc.Label)
+        // timerLabel: cc.Label = null;
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.timerLabel = null;
-        _this.scoreLabel = null;
+        // @property(cc.Label)
+        // scoreLabel: cc.Label = null;
+        _this.timerDisplayPrefab = null;
+        _this.scoreDisplayPrefab = null;
         _this.boardNode = null;
         _this.comboGauge = null;
-        _this.feverLabel = null;
+        _this.feverSprite = null;
         _this.exitButton = null;
         _this.totalTime = 120;
         _this.currentTime = 120;
         _this.score = 0;
+        _this.timerNode = null;
+        _this.scoreNode = null;
+        _this.timerLabel = null;
+        _this.scoreLabel = null;
         _this.comboValue = 0;
         _this.comboMax = 300;
         _this.isFeverTime = false;
         return _this;
     }
-    ThreeMatchManager.prototype.onLoad = function () {
-        this.schedule(this.updateTimer, 1);
+    ThreeMatchManager.prototype.start = function () {
+        // 타이머 프리팹 인스턴스화
+        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
+        this.node.addChild(this.timerNode);
+        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
+        this.updateTimer();
+        // 점수 프리팹 인스턴스화
+        this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
+        this.node.addChild(this.scoreNode);
+        this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScore(0);
-        // 콤보 게이지 관련 초기화
+        // 나머지 초기화
         this.comboValue = 0;
-        this.comboMax = 200; // 혹은 필요에 따라 값 설정
+        this.comboMax = 200;
         this.comboGauge.progress = 0;
-        // 피버타임 UI 초기화
         this.isFeverTime = false;
-        this.feverLabel.active = false;
-        // const label = this.feverLabel.getComponent(cc.Label);
-        // label.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        // label.verticalAlign = cc.Label.VerticalAlign.CENTER;
-        // label.overflow = cc.Label.Overflow.SHRINK;  // 너무 길면 축소
+        this.feverSprite.active = false;
+        this.schedule(this.updateTimer, 1);
     };
     ThreeMatchManager.prototype.updateTimer = function () {
         this.currentTime--;
@@ -64,19 +76,12 @@ var ThreeMatchManager = /** @class */ (function (_super) {
             this.unschedule(this.updateTimer);
             this.onGameOver();
         }
-        this.timerLabel.string = "\uC2DC\uAC04: " + this.currentTime;
+        this.timerLabel.string = "" + this.currentTime;
     };
     ThreeMatchManager.prototype.updateScore = function (amount) {
         this.score += amount;
         this.scoreLabel.string = "" + this.score;
-        // 점수 획득시 콤보게이지 추가 메서드 실행    
         this.increaseComboGauge(amount);
-    };
-    ThreeMatchManager.prototype.addMatchScore = function (matchCount) {
-        var scoreToAdd = matchCount * 10; // 피버 아닐 때 점수 추가
-        // 피버타임이면 점수 2배로 설정
-        var finalScore = this.isFeverTime ? scoreToAdd * 2 : scoreToAdd;
-        this.updateScore(finalScore);
     };
     ThreeMatchManager.prototype.increaseComboGauge = function (amount) {
         if (this.isFeverTime)
@@ -91,17 +96,22 @@ var ThreeMatchManager = /** @class */ (function (_super) {
     ThreeMatchManager.prototype.startFeverTime = function () {
         var _this = this;
         this.isFeverTime = true;
-        this.feverLabel.active = true; // 피버 UI 보여주기
+        this.feverSprite.active = true; // 피버 UI 보여주기
         // 10초 후 종료
         this.scheduleOnce(function () {
             _this.endFeverTime();
         }, 10);
     };
+    ThreeMatchManager.prototype.addMatchScore = function (matchCount) {
+        var scoreToAdd = matchCount * 10;
+        var finalScore = this.isFeverTime ? scoreToAdd * 2 : scoreToAdd;
+        this.updateScore(finalScore); // 콤보 게이지까지 처리됨
+    };
     ThreeMatchManager.prototype.endFeverTime = function () {
         this.isFeverTime = false; // 피버타임 상태 false로
         this.comboValue = 0; // 현재 콤보 밸류, ui 초기화
         this.comboGauge.progress = 0;
-        this.feverLabel.active = false; // 피버 UI 숨기기
+        this.feverSprite.active = false; // 피버 UI 숨기기
     };
     ThreeMatchManager.prototype.onGameOver = function () {
         cc.log("게임 종료!");
@@ -112,11 +122,11 @@ var ThreeMatchManager = /** @class */ (function (_super) {
         cc.director.loadScene('SingleGameList');
     };
     __decorate([
-        property(cc.Label)
-    ], ThreeMatchManager.prototype, "timerLabel", void 0);
+        property(cc.Prefab)
+    ], ThreeMatchManager.prototype, "timerDisplayPrefab", void 0);
     __decorate([
-        property(cc.Label)
-    ], ThreeMatchManager.prototype, "scoreLabel", void 0);
+        property(cc.Prefab)
+    ], ThreeMatchManager.prototype, "scoreDisplayPrefab", void 0);
     __decorate([
         property(cc.Node)
     ], ThreeMatchManager.prototype, "boardNode", void 0);
@@ -125,7 +135,7 @@ var ThreeMatchManager = /** @class */ (function (_super) {
     ], ThreeMatchManager.prototype, "comboGauge", void 0);
     __decorate([
         property(cc.Node)
-    ], ThreeMatchManager.prototype, "feverLabel", void 0);
+    ], ThreeMatchManager.prototype, "feverSprite", void 0);
     __decorate([
         property(cc.Button)
     ], ThreeMatchManager.prototype, "exitButton", void 0);
