@@ -16,20 +16,24 @@ export default class GameScene extends cc.Component {
 
     @property(cc.Prefab) molePrefab: cc.Prefab = null;
     @property(cc.Prefab) molePrefabGood: cc.Prefab = null; // 순한 두더지
-    @property(cc.Label) scoreLabel: cc.Label = null;
+    // @property(cc.Label) scoreLabel: cc.Label = null;
     // @property(cc.Label) timerLabel: cc.Label = null;
     @property(cc.SpriteFrame) hammerSprite: cc.SpriteFrame = null;
     @property(cc.Prefab) hitParticlePrefab: cc.Prefab = null;
     @property(cc.Prefab) timerDisplayPrefab: cc.Prefab = null;
+    @property(cc.Prefab) scoreDisplayPrefab: cc.Prefab = null;
 
 
     private hammerNode: cc.Node = null;
     private moleHoles: cc.Node[] = [];
     private holeStates: boolean[] = [];
     private score: number = 0;
-    private timer: number = 30;
+    private timer: number = 60;
     private timerNode: cc.Node = null;
     private timerLabel: cc.Label = null;
+    private scoreNode: cc.Node = null;
+    private scoreLabel: cc.Label = null;
+
     private isGameOver: boolean = false;
     private moleSpawnCallback: Function = null;
 
@@ -48,11 +52,16 @@ export default class GameScene extends cc.Component {
         // 타이머 프리팹 인스턴스화
         this.timerNode = cc.instantiate(this.timerDisplayPrefab);
         this.node.addChild(this.timerNode);
-        // 라벨 찾기
         this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
         this.updateTimerLabel();
 
+        // 2. 점수 프리팹 인스턴스화
+        this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
+        this.node.addChild(this.scoreNode);
+        this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScoreLabel();
+
+
         this.schedule(this.decreaseTimer, 1);
         this.spawnMoles();
     }
@@ -79,8 +88,9 @@ export default class GameScene extends cc.Component {
     }
 
     updateScoreLabel() {
-        this.scoreLabel.string = `점수: ${this.score}`;
+        this.scoreLabel.string = `${this.score}`;
     }
+
 
     updateTimerLabel() {
         this.timerLabel.string = `${this.timer}`;
@@ -120,7 +130,7 @@ export default class GameScene extends cc.Component {
         if (isBadMole) {
             this.score -= 10;
         } else {
-            this.score += 10;
+            this.score += 1000;
         }
         this.updateScoreLabel();
 

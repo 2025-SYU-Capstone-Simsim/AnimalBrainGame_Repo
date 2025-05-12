@@ -870,8 +870,8 @@
     "relativePath": "scenes\\Jang\\MazeScene.fire"
   },
   "e80fe891-358a-4761-bc47-3cf9350636b7": {
-    "asset": 1747024925403,
-    "meta": 1747024925413,
+    "asset": 1747026535296,
+    "meta": 1747026535307,
     "relativePath": "scenes\\Yu\\MoleGame\\MoleGameScene.fire"
   },
   "5b216a33-47d2-4d77-9f6f-debf194a3abc": {
@@ -1252,12 +1252,7 @@
   "ed3690fa-08d9-4ea2-b0f6-e3f72bb21dbc": {
     "asset": 1746943174732,
     "meta": 1746943174769,
-    "relativePath": "resources\\Images\\Yu\\MoleGame\\Timer.png"
-  },
-  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
-    "asset": 1747024320109,
-    "meta": 1747024341591,
-    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
+    "relativePath": "resources\\Images\\Common\\Timer.png"
   },
   "99c7b9ad-c614-4bf5-8cec-294652311c6a": {
     "asset": 1747024509801,
@@ -1275,8 +1270,23 @@
     "relativePath": "prefabs\\Common"
   },
   "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0": {
-    "asset": 1747025068857,
-    "meta": 1747025068870,
+    "asset": 1747027024000,
+    "meta": 1747027024003,
     "relativePath": "prefabs\\Common\\TimerPrefab.prefab"
+  },
+  "4d2c4b21-dfb1-40d9-90f9-60594dc89165": {
+    "asset": 1747025751520,
+    "meta": 1747025751555,
+    "relativePath": "resources\\Images\\Common\\ScoreBoard.png"
+  },
+  "c3c2b61d-8f95-425b-b548-5057de0511f1": {
+    "asset": 1747027167391,
+    "meta": 1747027167395,
+    "relativePath": "prefabs\\Common\\ScoreNode.prefab"
+  },
+  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
+    "asset": 1747026938179,
+    "meta": 1747026939862,
+    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
   }
 }
