@@ -17,9 +17,10 @@ export default class GameScene extends cc.Component {
     @property(cc.Prefab) molePrefab: cc.Prefab = null;
     @property(cc.Prefab) molePrefabGood: cc.Prefab = null; // 순한 두더지
     @property(cc.Label) scoreLabel: cc.Label = null;
-    @property(cc.Label) timerLabel: cc.Label = null;
+    // @property(cc.Label) timerLabel: cc.Label = null;
     @property(cc.SpriteFrame) hammerSprite: cc.SpriteFrame = null;
     @property(cc.Prefab) hitParticlePrefab: cc.Prefab = null;
+    @property(cc.Prefab) timerDisplayPrefab: cc.Prefab = null;
 
 
     private hammerNode: cc.Node = null;
@@ -27,6 +28,8 @@ export default class GameScene extends cc.Component {
     private holeStates: boolean[] = [];
     private score: number = 0;
     private timer: number = 30;
+    private timerNode: cc.Node = null;
+    private timerLabel: cc.Label = null;
     private isGameOver: boolean = false;
     private moleSpawnCallback: Function = null;
 
@@ -41,10 +44,15 @@ export default class GameScene extends cc.Component {
         this.holeStates = new Array(this.moleHoles.length).fill(false);
         this.createHammer();  // 해머 생성 (기본 비활성)
         this.score = 0;
-        this.timer = 30;
-        this.updateScoreLabel();
+        
+        // 타이머 프리팹 인스턴스화
+        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
+        this.node.addChild(this.timerNode);
+        // 라벨 찾기
+        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
         this.updateTimerLabel();
 
+        this.updateScoreLabel();
         this.schedule(this.decreaseTimer, 1);
         this.spawnMoles();
     }
@@ -75,13 +83,13 @@ export default class GameScene extends cc.Component {
     }
 
     updateTimerLabel() {
-        this.timerLabel.string = `시간: ${this.timer}`;
+        this.timerLabel.string = `${this.timer}`;
     }
 
     spawnMoles() {
         if (this.moleSpawnCallback) this.unschedule(this.moleSpawnCallback);
 
-this.moleSpawnCallback = () => {
+    this.moleSpawnCallback = () => {
     if (this.isGameOver) return;
 
     const available = this.holeStates
@@ -93,7 +101,7 @@ this.moleSpawnCallback = () => {
     const hole = this.moleHoles[idx];
 
     // 두더지 타입 랜덤 결정
-    const isBadMole = Math.random() < 0.2;
+    const isBadMole = Math.random() < 0.3;
     const mole = cc.instantiate(isBadMole ? this.molePrefabGood : this.molePrefab);
     mole.name = "Mole";
     hole.addChild(mole);

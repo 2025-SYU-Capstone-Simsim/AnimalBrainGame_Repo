@@ -20,8 +20,8 @@
     "relativePath": "prefabs\\Sim"
   },
   "3feed3f0-25d2-4c28-ad19-97032d23c9de": {
-    "asset": 1746664591985,
-    "meta": 1746680642878,
+    "asset": 1746777545132,
+    "meta": 1746941558485,
     "relativePath": "prefabs\\Yu"
   },
   "5e8aa9ed-e9c9-4037-a1c9-404a58136cc6": {
@@ -85,8 +85,8 @@
     "relativePath": "resources\\Images\\Yu\\3match\\ComboBar.png"
   },
   "69f7ec51-0c2e-41e3-b8ee-6927f5b859a5": {
-    "asset": 1746664388531,
-    "meta": 1746680642880,
+    "asset": 1746943174734,
+    "meta": 1747023649639,
     "relativePath": "resources\\Images\\Yu\\MoleGame"
   },
   "9836134e-b892-4283-b6b2-78b5acf3ed45": {
@@ -870,8 +870,8 @@
     "relativePath": "scenes\\Jang\\MazeScene.fire"
   },
   "e80fe891-358a-4761-bc47-3cf9350636b7": {
-    "asset": 1746778023923,
-    "meta": 1746778023934,
+    "asset": 1747024925403,
+    "meta": 1747024925413,
     "relativePath": "scenes\\Yu\\MoleGame\\MoleGameScene.fire"
   },
   "5b216a33-47d2-4d77-9f6f-debf194a3abc": {
@@ -1244,14 +1244,39 @@
     "meta": 1746777556566,
     "relativePath": "prefabs\\Yu\\GoodMole.prefab"
   },
-  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
-    "asset": 1746778000970,
-    "meta": 1746778004917,
-    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
-  },
   "b2a09f2f-ab84-4e9c-8e91-5aba5a9a2158": {
     "asset": 1746778316490,
     "meta": 1746778316520,
     "relativePath": "resources\\Images\\Yu\\MoleGame\\Goback.png"
+  },
+  "ed3690fa-08d9-4ea2-b0f6-e3f72bb21dbc": {
+    "asset": 1746943174732,
+    "meta": 1746943174769,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\Timer.png"
+  },
+  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
+    "asset": 1747024320109,
+    "meta": 1747024341591,
+    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
+  },
+  "99c7b9ad-c614-4bf5-8cec-294652311c6a": {
+    "asset": 1747024509801,
+    "meta": 1747024509802,
+    "relativePath": "resources\\fonts"
+  },
+  "288b58d1-60b1-405b-b1df-520c93fc99ab": {
+    "asset": 1747024522438,
+    "meta": 1747024522451,
+    "relativePath": "resources\\fonts\\RixInooAriDuri Regular.ttf"
+  },
+  "3d6befa7-2d45-48d4-b123-4358c0f891fe": {
+    "asset": 1747024939403,
+    "meta": 1747024939404,
+    "relativePath": "prefabs\\Common"
+  },
+  "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0": {
+    "asset": 1747025068857,
+    "meta": 1747025068870,
+    "relativePath": "prefabs\\Common\\TimerPrefab.prefab"
   }
 }
