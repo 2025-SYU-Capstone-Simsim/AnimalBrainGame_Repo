@@ -16,13 +16,13 @@ export default class GameScene extends cc.Component {
 
     @property(cc.Prefab) molePrefab: cc.Prefab = null;
     @property(cc.Prefab) molePrefabGood: cc.Prefab = null; // 순한 두더지
-    // @property(cc.Label) scoreLabel: cc.Label = null;
-    // @property(cc.Label) timerLabel: cc.Label = null;
     @property(cc.SpriteFrame) hammerSprite: cc.SpriteFrame = null;
-    @property(cc.Prefab) hitParticlePrefab: cc.Prefab = null;
+    // @property(cc.Prefab) hitParticlePrefab: cc.Prefab = null; 
     @property(cc.Prefab) timerDisplayPrefab: cc.Prefab = null;
     @property(cc.Prefab) scoreDisplayPrefab: cc.Prefab = null;
 
+    @property(cc.SpriteFrame) moleHitSprite: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame) goodMoleHitSprite: cc.SpriteFrame = null;
 
     private hammerNode: cc.Node = null;
     private moleHoles: cc.Node[] = [];
@@ -33,11 +33,8 @@ export default class GameScene extends cc.Component {
     private timerLabel: cc.Label = null;
     private scoreNode: cc.Node = null;
     private scoreLabel: cc.Label = null;
-
     private isGameOver: boolean = false;
     private moleSpawnCallback: Function = null;
-
-
 
     start() {
         this.moleHoles = [
@@ -46,27 +43,22 @@ export default class GameScene extends cc.Component {
             this.Hole7, this.Hole8, this.Hole9
         ];
         this.holeStates = new Array(this.moleHoles.length).fill(false);
-        this.createHammer();  // 해머 생성 (기본 비활성)
+        this.createHammer();
         this.score = 0;
-        
-        // 타이머 프리팹 인스턴스화
+
         this.timerNode = cc.instantiate(this.timerDisplayPrefab);
         this.node.addChild(this.timerNode);
         this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
         this.updateTimerLabel();
 
-        // 2. 점수 프리팹 인스턴스화
         this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
         this.node.addChild(this.scoreNode);
         this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScoreLabel();
 
-
         this.schedule(this.decreaseTimer, 1);
         this.spawnMoles();
     }
-
-    
 
     createHammer() {
         this.hammerNode = new cc.Node("Hammer");
@@ -77,7 +69,7 @@ export default class GameScene extends cc.Component {
         this.hammerNode.setContentSize(200, 200);
         this.hammerNode.anchorX = 0.2;
         this.hammerNode.anchorY = 0.8;
-        this.hammerNode.active = false; // 기본 숨김
+        this.hammerNode.active = false;
     }
 
     decreaseTimer() {
@@ -91,7 +83,6 @@ export default class GameScene extends cc.Component {
         this.scoreLabel.string = `${this.score}`;
     }
 
-
     updateTimerLabel() {
         this.timerLabel.string = `${this.timer}`;
     }
@@ -99,90 +90,103 @@ export default class GameScene extends cc.Component {
     spawnMoles() {
         if (this.moleSpawnCallback) this.unschedule(this.moleSpawnCallback);
 
-    this.moleSpawnCallback = () => {
-    if (this.isGameOver) return;
+        this.moleSpawnCallback = () => {
+            if (this.isGameOver) return;
 
-    const available = this.holeStates
-        .map((v, i) => (!v ? i : -1))
-        .filter(i => i !== -1);
-    if (available.length === 0) return;
+            const available = this.holeStates
+                .map((v, i) => (!v ? i : -1))
+                .filter(i => i !== -1);
+            if (available.length === 0) return;
 
-    const idx = available[Math.floor(Math.random() * available.length)];
-    const hole = this.moleHoles[idx];
+            const idx = available[Math.floor(Math.random() * available.length)];
+            const hole = this.moleHoles[idx];
 
-    // 두더지 타입 랜덤 결정
-    const isBadMole = Math.random() < 0.3;
-    const mole = cc.instantiate(isBadMole ? this.molePrefabGood : this.molePrefab);
-    mole.name = "Mole";
-    hole.addChild(mole);
-    mole.setPosition(0, -130);
-    mole.active = true;
-    this.holeStates[idx] = true;
+            const isGoodMole = Math.random() < 0.3;
+            const mole = cc.instantiate(isGoodMole ? this.molePrefabGood : this.molePrefab);
+            mole.name = "Mole";
+            hole.addChild(mole);
+            mole.setPosition(0, -130);
+            mole.active = true;
+            this.holeStates[idx] = true;
 
-    const onHit = (e: cc.Event.EventTouch) => {
-        e.stopPropagation();
-        if (!mole.active || this.isGameOver) return;
+            const onHit = (e: cc.Event.EventTouch) => {
+                e.stopPropagation();
+                if (!mole.active || this.isGameOver) return;
 
-        const worldPos = mole.convertToWorldSpaceAR(cc.v2(0, 0));
-        const localPos = this.node.convertToNodeSpaceAR(worldPos);
-        this.showHammerEffect(localPos);
+                const worldPos = mole.convertToWorldSpaceAR(cc.v2(0, 0));
+                const localPos = this.node.convertToNodeSpaceAR(worldPos);
+                this.showHammerEffect(localPos);
 
-        if (isBadMole) {
-            this.score -= 10;
-        } else {
-            this.score += 10;
-        }
-        this.updateScoreLabel();
+                const sprite = mole.getComponent(cc.Sprite);
+                if (sprite) {
+                    sprite.spriteFrame = isGoodMole ? this.goodMoleHitSprite : this.moleHitSprite;
+                }
 
-        mole.off(cc.Node.EventType.TOUCH_END, onHit, this);
-        mole.destroy();
-        this.holeStates[idx] = false;
+                this.score += isGoodMole ? -10 : 10;
+                this.updateScoreLabel();
 
-        const hit = cc.instantiate(this.hitParticlePrefab);
-        hit.setPosition(mole.getPosition());
-        hole.addChild(hit);
-    };
-
-    mole.on(cc.Node.EventType.TOUCH_END, onHit, this);
-
-    cc.tween(mole)
-        .to(0.2, { position: cc.v3(0, -20) }, { easing: 'sineOut' })
-        .delay(1.0)
-        .call(() => {
-            if (mole.isValid) {
                 mole.off(cc.Node.EventType.TOUCH_END, onHit, this);
-                mole.destroy();
-                this.holeStates[idx] = false;
-            }
-        })
-        .start();
-};
 
+                // 흔들리는 애니메이션
+                cc.tween(mole)
+                    .repeat(3,
+                        cc.tween()
+                            .by(0.05, { angle: 15 })
+                            .by(0.05, { angle: -30 })
+                            .by(0.05, { angle: 15 })
+                    )
+                    .delay(0.8) // 애니메이션 후 표정 유지 시간
+                    .call(() => {
+                        if (mole && mole.isValid) {
+                            mole.destroy();
+                            this.holeStates[idx] = false;
+                        }
+                    })
+                    .start();
 
-    this.schedule(this.moleSpawnCallback, 0.5, cc.macro.REPEAT_FOREVER);
-}
+                // 파티클 효과 주석 처리
+                // const hit = cc.instantiate(this.hitParticlePrefab);
+                // hit.setPosition(mole.getPosition());
+                // hole.addChild(hit);
+            };
 
-showHammerEffect(pos: cc.Vec2) {
-    this.hammerNode.setPosition(pos);
-    this.hammerNode.active = true;
+            mole.on(cc.Node.EventType.TOUCH_END, onHit, this);
 
-    cc.tween(this.hammerNode)
-        .set({ scale: 1.0 })
-        .parallel(
-            cc.tween().to(0.05, { scale: 1.2 }, { easing: 'cubicOut' }),
-            cc.tween().by(0.05, { position: cc.v3(0, -30) })
-        )
-        .parallel(
-            cc.tween().to(0.1, { scale: 1.0 }, { easing: 'bounceOut' }),
-            cc.tween().by(0.1, { position: cc.v3(0, 30) })
-        )
-        .call(() => {
-            this.hammerNode.active = false;
-        })
-        .start();
-}
+            cc.tween(mole)
+                .to(0.2, { position: cc.v3(0, -20) }, { easing: 'sineOut' })
+                .delay(1.0)
+                .call(() => {
+                    if (mole.isValid) {
+                        mole.off(cc.Node.EventType.TOUCH_END, onHit, this);
+                        mole.destroy();
+                        this.holeStates[idx] = false;
+                    }
+                })
+                .start();
+        };
 
+        this.schedule(this.moleSpawnCallback, 0.5, cc.macro.REPEAT_FOREVER);
+    }
 
+    showHammerEffect(pos: cc.Vec2) {
+        this.hammerNode.setPosition(pos);
+        this.hammerNode.active = true;
+
+        cc.tween(this.hammerNode)
+            .set({ scale: 1.0 })
+            .parallel(
+                cc.tween().to(0.05, { scale: 1.2 }, { easing: 'cubicOut' }),
+                cc.tween().by(0.05, { position: cc.v3(0, -30) })
+            )
+            .parallel(
+                cc.tween().to(0.1, { scale: 1.0 }, { easing: 'bounceOut' }),
+                cc.tween().by(0.1, { position: cc.v3(0, 30) })
+            )
+            .call(() => {
+                this.hammerNode.active = false;
+            })
+            .start();
+    }
 
     gameOver() {
         if (this.isGameOver) return;

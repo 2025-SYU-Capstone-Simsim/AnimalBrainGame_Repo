@@ -1284,9 +1284,19 @@
     "meta": 1747027167395,
     "relativePath": "prefabs\\Common\\ScoreNode.prefab"
   },
+  "a306171e-ae09-427e-a67b-52c577d429a2": {
+    "asset": 1747029347057,
+    "meta": 1747029347099,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\goodMoleHit.png"
+  },
+  "9c518a91-267b-4558-b458-7845ec831e9e": {
+    "asset": 1747029347057,
+    "meta": 1747029347101,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\MoleHit.png"
+  },
   "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
-    "asset": 1747027177745,
-    "meta": 1747027228264,
+    "asset": 1747030051439,
+    "meta": 1747030054508,
     "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
   }
 }
