@@ -130,7 +130,7 @@ export default class GameScene extends cc.Component {
         if (isBadMole) {
             this.score -= 10;
         } else {
-            this.score += 1000;
+            this.score += 10;
         }
         this.updateScoreLabel();
 

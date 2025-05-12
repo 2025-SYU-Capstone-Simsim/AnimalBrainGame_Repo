@@ -870,8 +870,8 @@
     "relativePath": "scenes\\Jang\\MazeScene.fire"
   },
   "e80fe891-358a-4761-bc47-3cf9350636b7": {
-    "asset": 1747026535296,
-    "meta": 1747026535307,
+    "asset": 1747027246039,
+    "meta": 1747027246051,
     "relativePath": "scenes\\Yu\\MoleGame\\MoleGameScene.fire"
   },
   "5b216a33-47d2-4d77-9f6f-debf194a3abc": {
@@ -1285,8 +1285,8 @@
     "relativePath": "prefabs\\Common\\ScoreNode.prefab"
   },
   "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
-    "asset": 1747026938179,
-    "meta": 1747026939862,
+    "asset": 1747027177745,
+    "meta": 1747027228264,
     "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
   }
 }
