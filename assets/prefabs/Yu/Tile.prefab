@@ -117,9 +117,23 @@
     "sprite": {
       "__id__": 2
     },
-    "explosionPrefab": {
-      "__uuid__": "5e8aa9ed-e9c9-4037-a1c9-404a58136cc6"
-    },
+    "explosionPrefabs": [
+      {
+        "__uuid__": "d82ad2fb-eb0e-439c-a03c-74c7f033a0e5"
+      },
+      {
+        "__uuid__": "5af8cb9f-9224-403e-b0fe-42b2c1a62164"
+      },
+      {
+        "__uuid__": "e7b9a644-70ab-49a2-8fe9-1adac8739155"
+      },
+      {
+        "__uuid__": "147c9d76-038c-42cd-aa4e-fc6f276c1bb7"
+      },
+      {
+        "__uuid__": "787f21d4-7444-4766-86e3-dcdff5c5f646"
+      }
+    ],
     "fruitSprites": [
       {
         "__uuid__": "94947183-7d9d-4076-a81b-52d7dfed85b5"

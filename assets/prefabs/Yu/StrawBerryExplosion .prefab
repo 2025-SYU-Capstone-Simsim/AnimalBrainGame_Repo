@@ -87,26 +87,26 @@
       }
     ],
     "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
+    "_dstBlendFactor": 1,
     "_custom": true,
     "_file": null,
     "_spriteFrame": {
-      "__uuid__": "24b9418a-2cee-4875-951e-a56072a6ad81"
+      "__uuid__": "84aa0216-df45-4400-80ee-3f4578cacda2"
     },
     "_texture": null,
     "_stopped": true,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 150,
-    "duration": 0.2,
+    "duration": 0.15,
     "emissionRate": 120,
-    "life": 0.5,
-    "lifeVar": 0.7,
+    "life": 0.25,
+    "lifeVar": 0.05,
     "_startColor": {
       "__type__": "cc.Color",
-      "r": 241,
-      "g": 102,
-      "b": 10,
+      "r": 255,
+      "g": 76,
+      "b": 76,
       "a": 255
     },
     "_startColorVar": {
@@ -130,16 +130,16 @@
       "b": 0,
       "a": 0
     },
-    "angle": 90,
-    "angleVar": 20,
-    "startSize": 40,
-    "startSizeVar": 70,
+    "angle": 360,
+    "angleVar": 180,
+    "startSize": 110,
+    "startSizeVar": 40,
     "endSize": 0,
     "endSizeVar": 0,
-    "startSpin": 0,
-    "startSpinVar": 0,
-    "endSpin": 0,
-    "endSpinVar": 0,
+    "startSpin": 60,
+    "startSpinVar": 90,
+    "endSpin": 120,
+    "endSpinVar": 60,
     "sourcePos": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -156,12 +156,12 @@
     "gravity": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -200
+      "y": 0
     },
-    "speed": 210,
-    "speedVar": 80,
-    "tangentialAccel": 30,
-    "tangentialAccelVar": 50,
+    "speed": 100,
+    "speedVar": 30,
+    "tangentialAccel": 20,
+    "tangentialAccelVar": 10,
     "radialAccel": 0,
     "radialAccelVar": 0,
     "rotationIsDir": false,

@@ -1,12 +1,12 @@
 {
   "76f008b1-60a8-433f-b935-4312e118b593": {
-    "asset": 1746540161146,
-    "meta": 1746598313276,
+    "asset": 1747024516018,
+    "meta": 1747111251311,
     "relativePath": "resources"
   },
   "ce1d6fcf-0deb-499e-b19a-d92bd2f2d69e": {
-    "asset": 1746540161146,
-    "meta": 1746598313274,
+    "asset": 1747024941544,
+    "meta": 1747111251309,
     "relativePath": "prefabs"
   },
   "f8ad6d67-25ba-4185-913a-7577f2b1fce7": {
@@ -20,18 +20,13 @@
     "relativePath": "prefabs\\Sim"
   },
   "3feed3f0-25d2-4c28-ad19-97032d23c9de": {
-    "asset": 1746777545132,
-    "meta": 1746941558485,
+    "asset": 1747187828877,
+    "meta": 1747189013193,
     "relativePath": "prefabs\\Yu"
   },
-  "5e8aa9ed-e9c9-4037-a1c9-404a58136cc6": {
-    "asset": 1744249066811,
-    "meta": 1746664592003,
-    "relativePath": "prefabs\\Yu\\3MExplosionEffect.prefab"
-  },
   "f620e8a3-53f6-4c9b-a0c3-f5377961e416": {
-    "asset": 1746681979026,
-    "meta": 1746681979052,
+    "asset": 1747113896239,
+    "meta": 1747113896251,
     "relativePath": "prefabs\\Yu\\Tile.prefab"
   },
   "d85d6820-cdd5-449e-831f-9c8ac5ff6d54": {
@@ -40,8 +35,8 @@
     "relativePath": "resources\\Images"
   },
   "cdd6bae8-5c57-4859-950a-464ac9bc854a": {
-    "asset": 1746170414560,
-    "meta": 1746191476367,
+    "asset": 1747025755093,
+    "meta": 1747111251316,
     "relativePath": "resources\\Images\\Common"
   },
   "c5adad79-c1d6-4159-ab0f-a49f18907ca9": {
@@ -60,8 +55,8 @@
     "relativePath": "resources\\Images\\Yu"
   },
   "8cc44e95-3831-44f6-834d-d288a9732ac1": {
-    "asset": 1746682650150,
-    "meta": 1746766878237,
+    "asset": 1747112313307,
+    "meta": 1747187751546,
     "relativePath": "resources\\Images\\Yu\\3match"
   },
   "a844156c-9401-4319-8737-57f880d0ced7": {
@@ -85,8 +80,8 @@
     "relativePath": "resources\\Images\\Yu\\3match\\ComboBar.png"
   },
   "69f7ec51-0c2e-41e3-b8ee-6927f5b859a5": {
-    "asset": 1746943174734,
-    "meta": 1747023649639,
+    "asset": 1747029347070,
+    "meta": 1747111251319,
     "relativePath": "resources\\Images\\Yu\\MoleGame"
   },
   "9836134e-b892-4283-b6b2-78b5acf3ed45": {
@@ -1194,11 +1189,6 @@
     "meta": 1746681458055,
     "relativePath": "resources\\Images\\Yu\\3match\\Orange.png"
   },
-  "3f3cbd22-e503-4d2e-b475-738c0c014c36": {
-    "asset": 1746681825218,
-    "meta": 1746681839574,
-    "relativePath": "scripts\\Yu\\3Match\\Tile.ts"
-  },
   "76cf1ded-18f9-469a-a135-5e43e9f79a20": {
     "asset": 1746682281737,
     "meta": 1746682290843,
@@ -1250,8 +1240,8 @@
     "relativePath": "resources\\Images\\Common\\Timer.png"
   },
   "99c7b9ad-c614-4bf5-8cec-294652311c6a": {
-    "asset": 1747024509801,
-    "meta": 1747024509802,
+    "asset": 1747024522440,
+    "meta": 1747111251314,
     "relativePath": "resources\\fonts"
   },
   "288b58d1-60b1-405b-b1df-520c93fc99ab": {
@@ -1260,8 +1250,8 @@
     "relativePath": "resources\\fonts\\RixInooAriDuri Regular.ttf"
   },
   "3d6befa7-2d45-48d4-b123-4358c0f891fe": {
-    "asset": 1747024939403,
-    "meta": 1747024939404,
+    "asset": 1747026552132,
+    "meta": 1747111251313,
     "relativePath": "prefabs\\Common"
   },
   "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0": {
@@ -1303,5 +1293,60 @@
     "asset": 1747032405963,
     "meta": 1747032407822,
     "relativePath": "scripts\\Yu\\3Match\\3MatchManager.ts"
+  },
+  "b1e41785-6333-4960-b6a2-d3e9dddec73d": {
+    "asset": 1747111479656,
+    "meta": 1747112279178,
+    "relativePath": "resources\\Images\\Yu\\3match\\3MParticleOrange.png"
+  },
+  "6261b86f-a863-4ce2-9856-8f8c5d9f8aeb": {
+    "asset": 1747112178978,
+    "meta": 1747112289754,
+    "relativePath": "resources\\Images\\Yu\\3match\\3MparticleStrawBerry.png"
+  },
+  "42a6b4c1-a33f-4ab5-af1e-6e62da39231b": {
+    "asset": 1747112201982,
+    "meta": 1747112274480,
+    "relativePath": "resources\\Images\\Yu\\3match\\3MparitcleWaterMelon.png"
+  },
+  "a3163a68-7e7e-4908-aeca-48e35428d1b2": {
+    "asset": 1747112225994,
+    "meta": 1747112226018,
+    "relativePath": "resources\\Images\\Yu\\3match\\3MparticleGrape.png"
+  },
+  "56994eae-53d9-4388-9e67-54df1f49df84": {
+    "asset": 1747112313304,
+    "meta": 1747112313324,
+    "relativePath": "resources\\Images\\Yu\\3match\\3MparticleBlueberry.png"
+  },
+  "787f21d4-7444-4766-86e3-dcdff5c5f646": {
+    "asset": 1747190258686,
+    "meta": 1747190258702,
+    "relativePath": "prefabs\\Yu\\WatermelonExplosion.prefab"
+  },
+  "d82ad2fb-eb0e-439c-a03c-74c7f033a0e5": {
+    "asset": 1747190192683,
+    "meta": 1747190192696,
+    "relativePath": "prefabs\\Yu\\StrawBerryExplosion .prefab"
+  },
+  "5af8cb9f-9224-403e-b0fe-42b2c1a62164": {
+    "asset": 1747189910659,
+    "meta": 1747189910675,
+    "relativePath": "prefabs\\Yu\\BlueberryExplosion .prefab"
+  },
+  "e7b9a644-70ab-49a2-8fe9-1adac8739155": {
+    "asset": 1747190082891,
+    "meta": 1747190082909,
+    "relativePath": "prefabs\\Yu\\OrangeExplosion.prefab"
+  },
+  "147c9d76-038c-42cd-aa4e-fc6f276c1bb7": {
+    "asset": 1747190016987,
+    "meta": 1747190017007,
+    "relativePath": "prefabs\\Yu\\GrapeExplosion.prefab"
+  },
+  "3f3cbd22-e503-4d2e-b475-738c0c014c36": {
+    "asset": 1747190625999,
+    "meta": 1747190628992,
+    "relativePath": "scripts\\Yu\\3Match\\Tile.ts"
   }
 }

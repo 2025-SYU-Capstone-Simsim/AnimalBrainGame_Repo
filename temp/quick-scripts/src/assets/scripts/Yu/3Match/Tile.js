@@ -30,7 +30,7 @@ var Tile = /** @class */ (function (_super) {
     function Tile() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.sprite = null; // 기존 sprite 속성 복구
-        _this.explosionPrefab = null;
+        _this.explosionPrefabs = [];
         _this.fruitSprites = [];
         _this.row = 0;
         _this.col = 0;
@@ -151,24 +151,29 @@ var Tile = /** @class */ (function (_super) {
     Tile.prototype.explode = function () {
         var _this = this;
         console.log("explode() \uC2E4\uD589: (" + this.row + ", " + this.col + ")");
-        // 이펙트 생성
-        if (this.explosionPrefab) {
-            console.log("\uD3ED\uBC1C \uC774\uD399\uD2B8 \uC0DD\uC131: (" + this.row + ", " + this.col + ")");
-            var effect_1 = cc.instantiate(this.explosionPrefab);
+        var prefab = this.explosionPrefabs[this.fruitIndex];
+        if (prefab) {
+            console.log("\uD3ED\uBC1C \uC774\uD399\uD2B8 \uC0DD\uC131 (fruitIndex " + this.fruitIndex + "): (" + this.row + ", " + this.col + ")");
+            var effect_1 = cc.instantiate(prefab);
             effect_1.parent = this.node.parent;
             effect_1.setPosition(this.node.getPosition());
-            // 효과가 끝나면 자동 제거
+            effect_1.setScale(1.2);
+            effect_1.angle = Math.random() * 360;
             var ps = effect_1.getComponent(cc.ParticleSystem);
-            ps && ps.resetSystem();
+            if (ps) {
+                ps.startSize = 160; // 파티클 자체 크기 키움
+                ps.startSizeVar = 80; // 다양한 크기 조합
+                ps.life = 0.25;
+                ps.lifeVar = 0.05;
+                ps.resetSystem();
+            }
             this.scheduleOnce(function () {
-                console.log("\uD3ED\uBC1C \uC774\uD399\uD2B8 \uC81C\uAC70: (" + _this.row + ", " + _this.col + ")");
                 effect_1.destroy();
             }, 1);
         }
-        // 애니메이션 + 파괴
-        this.node.runAction(cc.sequence(cc.spawn(cc.scaleTo(0.2, 1.5).easing(cc.easeBackOut()), cc.fadeOut(0.2)), cc.callFunc(function () {
+        this.node.runAction(cc.sequence(cc.spawn(cc.scaleTo(0.1, 1.8).easing(cc.easeCubicActionOut()), cc.fadeOut(0.15)), cc.callFunc(function () {
             if (Tile_1.selectedTile === _this) {
-                Tile_1.selectedTile = null; // 사라질 때 선택 해제
+                Tile_1.selectedTile = null;
             }
             _this.node.destroy();
         })));
@@ -179,8 +184,8 @@ var Tile = /** @class */ (function (_super) {
         property(cc.Sprite) // 스프라이트 컴포넌트 연결
     ], Tile.prototype, "sprite", void 0);
     __decorate([
-        property(cc.Prefab) // 폭발 효과 프리팹 속성 추가
-    ], Tile.prototype, "explosionPrefab", void 0);
+        property([cc.Prefab])
+    ], Tile.prototype, "explosionPrefabs", void 0);
     __decorate([
         property([cc.SpriteFrame])
     ], Tile.prototype, "fruitSprites", void 0);
