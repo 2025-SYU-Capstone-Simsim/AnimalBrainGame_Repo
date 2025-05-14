@@ -1,3 +1,4 @@
+import GameState from "../../Controller/CommonUI/GameState";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -202,7 +203,10 @@ export default class GameScene extends cc.Component {
         });
 
         this.hammerNode.active = false;
+
         console.log("게임 종료!");
+        GameState.lastGameScene = cc.director.getScene().name;
+        cc.director.loadScene("GameOver");
     }
 
     loadList() {

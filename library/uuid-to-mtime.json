@@ -587,17 +587,17 @@
   "6bfaf502-f9f3-4938-84a8-076c67709828": {
     "asset": 1746081133686,
     "meta": 1746081133720,
-    "relativePath": "resources\\Images\\Common\\Rabbit.png"
+    "relativePath": "resources\\Images\\Common\\Character\\Rabbit.png"
   },
   "60470fe7-19f1-470f-bae9-0d57dc1b19b8": {
     "asset": 1746081136190,
     "meta": 1746081136221,
-    "relativePath": "resources\\Images\\Common\\Dog.png"
+    "relativePath": "resources\\Images\\Common\\Character\\Dog.png"
   },
   "04a5d9eb-1d80-4eaf-9b6d-a5e020848aeb": {
     "asset": 1746081138101,
     "meta": 1746081138122,
-    "relativePath": "resources\\Images\\Common\\tiger.png"
+    "relativePath": "resources\\Images\\Common\\Character\\tiger.png"
   },
   "e57031f0-aa28-4da0-b2fb-6a60beed592e": {
     "asset": 1746083711059,
@@ -612,7 +612,7 @@
   "c224d44e-d531-4418-bcff-43b4d31c88af": {
     "asset": 1746170351288,
     "meta": 1746170351311,
-    "relativePath": "resources\\Images\\Common\\MainBackground.png"
+    "relativePath": "resources\\Images\\Common\\BackgroundImg\\MainBackground.png"
   },
   "12919c2c-c4fc-45b9-a8f2-dbc6bef3316e": {
     "asset": 1746170414558,
@@ -767,7 +767,7 @@
   "41bf07b0-468e-4c9b-9fb3-4c4601c64f63": {
     "asset": 1746539060966,
     "meta": 1746539179770,
-    "relativePath": "scripts\\Controller\\MainMenuScene.ts"
+    "relativePath": "scripts\\Controller\\CommonUI\\MainMenuScene.ts"
   },
   "401947f4-3b11-49a3-bc63-b6389987f69c": {
     "asset": 1746521176284,
@@ -817,12 +817,12 @@
   "b6afebc5-c715-4a73-8ff2-3adda89602d0": {
     "asset": 1746172677755,
     "meta": 1746521608460,
-    "relativePath": "scenes\\Common\\MainScene.fire"
+    "relativePath": "scenes\\Common\\CommonUI\\MainScene.fire"
   },
   "7d61a626-36ac-488f-8555-edcbe3ed1544": {
     "asset": 1746110265312,
     "meta": 1746521608460,
-    "relativePath": "scenes\\Common\\LoginScene.fire"
+    "relativePath": "scenes\\Common\\CommonUI\\LoginScene.fire"
   },
   "5291f500-ccb7-44e8-af02-10b56f059995": {
     "asset": 1746521176284,
@@ -837,7 +837,7 @@
   "6b298d5f-c67b-4e74-806d-d132c52ed0a4": {
     "asset": 1746542598498,
     "meta": 1746542598525,
-    "relativePath": "scenes\\Common\\SingleGameList.fire"
+    "relativePath": "scenes\\Common\\Single\\SingleGameList.fire"
   },
   "a9f075f6-ea37-4672-97f5-7e779f6fa8e9": {
     "asset": 1747191630592,
@@ -1097,7 +1097,7 @@
   "d26b1918-6f23-4ac8-a9c6-70f5fd81a612": {
     "asset": 1746540881106,
     "meta": 1746540884569,
-    "relativePath": "scripts\\Controller\\SingleGameList.ts"
+    "relativePath": "scripts\\Controller\\Single\\SingleGameList.ts"
   },
   "8f2d2321-218b-4e5f-91e5-26272de48261": {
     "asset": 1746543543022,
@@ -1132,7 +1132,7 @@
   "276420bf-bb79-4d29-9e32-c51e8f4cafd1": {
     "asset": 1746545512851,
     "meta": 1746545543464,
-    "relativePath": "scripts\\Controller\\LoginManager.ts"
+    "relativePath": "scripts\\Controller\\CommonUI\\LoginManager.ts"
   },
   "fbb5539d-abe9-48bf-bb7b-b354c8c73d8f": {
     "asset": 1746663652896,
@@ -1222,7 +1222,7 @@
   "ed3690fa-08d9-4ea2-b0f6-e3f72bb21dbc": {
     "asset": 1746943174732,
     "meta": 1746943174769,
-    "relativePath": "resources\\Images\\Common\\Timer.png"
+    "relativePath": "resources\\Images\\Common\\CommonUI\\Timer.png"
   },
   "99c7b9ad-c614-4bf5-8cec-294652311c6a": {
     "asset": 1747024522440,
@@ -1247,7 +1247,7 @@
   "4d2c4b21-dfb1-40d9-90f9-60594dc89165": {
     "asset": 1747025751520,
     "meta": 1747025751555,
-    "relativePath": "resources\\Images\\Common\\ScoreBoard.png"
+    "relativePath": "resources\\Images\\Common\\CommonUI\\ScoreBoard.png"
   },
   "c3c2b61d-8f95-425b-b548-5057de0511f1": {
     "asset": 1747027167391,
@@ -1263,11 +1263,6 @@
     "asset": 1747029347057,
     "meta": 1747029347101,
     "relativePath": "resources\\Images\\Yu\\MoleGame\\MoleHit.png"
-  },
-  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
-    "asset": 1747030051439,
-    "meta": 1747030054508,
-    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
   },
   "96c62a4a-80ec-4e71-b539-6733dd470bb8": {
     "asset": 1747031273428,
@@ -1329,14 +1324,99 @@
     "meta": 1747190628992,
     "relativePath": "scripts\\Yu\\3Match\\Tile.ts"
   },
-  "c77b4ab3-cc86-4cb4-88b2-24e9bf38633a": {
-    "asset": 1747191562799,
-    "meta": 1747191566053,
-    "relativePath": "scripts\\Yu\\3Match\\3MatchManager.ts"
-  },
   "1f59df39-7f0c-43a4-a8ac-2076f0e026ed": {
     "asset": 1747191613274,
     "meta": 1747191613339,
     "relativePath": "resources\\Images\\Yu\\3match\\FruitBackground.png"
+  },
+  "879c6a5e-6445-47fd-9b2e-db56dc34ac80": {
+    "asset": 1747192075429,
+    "meta": 1747192075430,
+    "relativePath": "scenes\\Common\\Single"
+  },
+  "c296e58a-3303-4cfe-be39-9a140e8d4ac0": {
+    "asset": 1747192086593,
+    "meta": 1747192086595,
+    "relativePath": "scenes\\Common\\Multi"
+  },
+  "87454f6e-19c0-4202-8538-d13c09e11ef4": {
+    "asset": 1747192091689,
+    "meta": 1747192091691,
+    "relativePath": "scenes\\Common\\CommonUI"
+  },
+  "2c5521ae-a2fb-4723-a706-333a48b0ba55": {
+    "asset": 1747194017753,
+    "meta": 1747194017765,
+    "relativePath": "scenes\\Common\\CommonUI\\GameOver.fire"
+  },
+  "b8dd3ee4-eccd-4ff6-b26f-d4437acc0a7c": {
+    "asset": 1747192281940,
+    "meta": 1747192271507,
+    "relativePath": "resources\\Images\\Common\\Character"
+  },
+  "14487be2-9b76-4b03-bfba-676b70854a47": {
+    "asset": 1747192309913,
+    "meta": 1747192309915,
+    "relativePath": "resources\\Images\\Common\\Button"
+  },
+  "dc87c5a1-3906-45e8-add1-91ee43bb967a": {
+    "asset": 1747192338470,
+    "meta": 1747192333697,
+    "relativePath": "resources\\Images\\Common\\CommonUI"
+  },
+  "a2529a5c-1fcf-4e9d-9762-16c89f595da1": {
+    "asset": 1747192359663,
+    "meta": 1747192359665,
+    "relativePath": "resources\\Images\\Common\\BackgroundImg"
+  },
+  "7de05f06-058c-446e-933d-fe819ddb618a": {
+    "asset": 1747192432623,
+    "meta": 1747192432681,
+    "relativePath": "resources\\Images\\Common\\BackgroundImg\\GameoverBackground.png"
+  },
+  "6832aec8-3c97-439e-b0bd-94925f0543b0": {
+    "asset": 1747192542586,
+    "meta": 1747192542626,
+    "relativePath": "resources\\Images\\Common\\Button\\GameoverButton.png"
+  },
+  "91552fea-5973-46b9-aa4f-c27f893b4fed": {
+    "asset": 1747192795960,
+    "meta": 1747192795978,
+    "relativePath": "resources\\fonts\\NPSfont_bold.ttf"
+  },
+  "5ddb9d61-1a9f-4c01-b66c-9d1bea986d12": {
+    "asset": 1747192947258,
+    "meta": 1747192947259,
+    "relativePath": "scripts\\Controller\\CommonUI"
+  },
+  "3d2fd8de-a198-4baa-8273-92836f8d3da5": {
+    "asset": 1747192955461,
+    "meta": 1747192955462,
+    "relativePath": "scripts\\Controller\\Single"
+  },
+  "99f0874a-6dad-4869-9a47-096cd38cff38": {
+    "asset": 1747192960119,
+    "meta": 1747192960120,
+    "relativePath": "scripts\\Controller\\Multi"
+  },
+  "cb5f4645-077e-4511-a415-4d50d0cffbc0": {
+    "asset": 1747194996570,
+    "meta": 1747195024627,
+    "relativePath": "scripts\\Controller\\CommonUI\\GameOver.ts"
+  },
+  "e4db5615-37f5-4bda-b7b5-e82caa3197ec": {
+    "asset": 1747194782642,
+    "meta": 1747195024665,
+    "relativePath": "scripts\\Controller\\CommonUI\\GameState.ts"
+  },
+  "c60ce001-8047-451b-b1a2-b7c34585a4b3": {
+    "asset": 1747194897143,
+    "meta": 1747195024811,
+    "relativePath": "scripts\\Yu\\MoleGame\\MoleGameScene.ts"
+  },
+  "c77b4ab3-cc86-4cb4-88b2-24e9bf38633a": {
+    "asset": 1747195371900,
+    "meta": 1747195375813,
+    "relativePath": "scripts\\Yu\\3Match\\3MatchManager.ts"
   }
 }

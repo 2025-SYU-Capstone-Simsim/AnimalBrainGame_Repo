@@ -1,5 +1,6 @@
 const { ccclass, property } = cc._decorator;
 import ThreeMatchBoard from "./3MatchBoard";
+import GameState from "../../Controller/CommonUI/GameState";
 
 @ccclass
 export default class ThreeMatchManager extends cc.Component {
@@ -87,8 +88,6 @@ updateScore(amount: number) {
     this.increaseComboGauge(amount);
 }
 
-    
-
     increaseComboGauge(amount: number) {
         if (this.isFeverTime) return; // 피버타임중엔 게이지 안올라감감
     
@@ -126,15 +125,15 @@ updateScore(amount: number) {
 
     }
     
-    
+onGameOver() {
+    cc.log("게임 종료!");
+    GameState.lastGameScene = cc.director.getScene().name;
+    cc.director.loadScene('GameOver');
+}
 
-    onGameOver() {
-        cc.log("게임 종료!");
-        // 이후 게임 종료 처리 추가 가능
-    }
 
     loadList(){
-        console.log("싱글 게임 리스트로 돌아가기기");
-        cc.director.loadScene('SingleGameList');
+        console.log("싱글 게임 리스트로 돌아가기");
+        cc.director.loadScene("GameOver");
     }
 }

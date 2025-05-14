@@ -24,6 +24,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var GameState_1 = require("../../Controller/CommonUI/GameState");
 var ThreeMatchManager = /** @class */ (function (_super) {
     __extends(ThreeMatchManager, _super);
     function ThreeMatchManager() {
@@ -115,11 +116,12 @@ var ThreeMatchManager = /** @class */ (function (_super) {
     };
     ThreeMatchManager.prototype.onGameOver = function () {
         cc.log("게임 종료!");
-        // 이후 게임 종료 처리 추가 가능
+        GameState_1.default.lastGameScene = cc.director.getScene().name;
+        cc.director.loadScene('GameOver');
     };
     ThreeMatchManager.prototype.loadList = function () {
-        console.log("싱글 게임 리스트로 돌아가기기");
-        cc.director.loadScene('SingleGameList');
+        console.log("싱글 게임 리스트로 돌아가기");
+        cc.director.loadScene("GameOver");
     };
     __decorate([
         property(cc.Prefab)

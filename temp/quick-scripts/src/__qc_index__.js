@@ -1,7 +1,9 @@
 
-require('./assets/scripts/Controller/LoginManager');
-require('./assets/scripts/Controller/MainMenuScene');
-require('./assets/scripts/Controller/SingleGameList');
+require('./assets/scripts/Controller/CommonUI/GameOver');
+require('./assets/scripts/Controller/CommonUI/GameState');
+require('./assets/scripts/Controller/CommonUI/LoginManager');
+require('./assets/scripts/Controller/CommonUI/MainMenuScene');
+require('./assets/scripts/Controller/Single/SingleGameList');
 require('./assets/scripts/Jang/GameData');
 require('./assets/scripts/Jang/GameOverManager');
 require('./assets/scripts/Jang/MainMenuManager');
