@@ -117,6 +117,8 @@ var ThreeMatchManager = /** @class */ (function (_super) {
     ThreeMatchManager.prototype.onGameOver = function () {
         cc.log("게임 종료!");
         GameState_1.default.lastGameScene = cc.director.getScene().name;
+        GameState_1.default.score = this.score;
+        GameState_1.default.gameId = "FruitPuzzle";
         cc.director.loadScene('GameOver');
     };
     ThreeMatchManager.prototype.loadList = function () {

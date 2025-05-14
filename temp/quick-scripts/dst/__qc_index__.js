@@ -10,11 +10,11 @@
                     };
                     function __define (exports, require, module) {
                         if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}
-require('./assets/scripts/Controller/CommonUI/GameOver');
 require('./assets/scripts/Controller/CommonUI/GameState');
 require('./assets/scripts/Controller/CommonUI/LoginManager');
 require('./assets/scripts/Controller/CommonUI/MainMenuScene');
 require('./assets/scripts/Controller/Single/SingleGameList');
+require('./assets/scripts/Controller/Single/SingleGameOver');
 require('./assets/scripts/Jang/GameData');
 require('./assets/scripts/Jang/GameOverManager');
 require('./assets/scripts/Jang/MainMenuManager');

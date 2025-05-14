@@ -125,11 +125,13 @@ updateScore(amount: number) {
 
     }
     
-onGameOver() {
-    cc.log("게임 종료!");
-    GameState.lastGameScene = cc.director.getScene().name;
-    cc.director.loadScene('GameOver');
-}
+    onGameOver() {
+        cc.log("게임 종료!");
+        GameState.lastGameScene = cc.director.getScene().name;
+        GameState.score = this.score;
+        GameState.gameId = "FruitPuzzle";
+        cc.director.loadScene('GameOver');
+    }
 
 
     loadList(){

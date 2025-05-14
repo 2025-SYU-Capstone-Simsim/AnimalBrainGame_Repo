@@ -206,6 +206,8 @@ export default class GameScene extends cc.Component {
 
         console.log("게임 종료!");
         GameState.lastGameScene = cc.director.getScene().name;
+        GameState.score = this.score; // 두더지 게임 점수
+        GameState.gameId = "Molegame"; // 백엔드에 저장될 ID
         cc.director.loadScene("GameOver");
     }
 
