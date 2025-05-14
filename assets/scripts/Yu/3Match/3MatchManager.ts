@@ -29,8 +29,8 @@ export default class ThreeMatchManager extends cc.Component {
     exitButton: cc.Button = null;
 
 
-    private totalTime: number = 120;
-    private currentTime: number = 120;
+    private totalTime: number = 60;
+    private currentTime: number = 60;
     private score: number = 0;
 
     private timerNode: cc.Node = null;

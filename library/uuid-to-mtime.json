@@ -64,21 +64,6 @@
     "meta": 1744353615283,
     "relativePath": "resources\\Images\\Yu\\3match\\star.png"
   },
-  "313368e8-957d-472a-8c5e-b73203d067ba": {
-    "asset": 1743663142717,
-    "meta": 1744353615294,
-    "relativePath": "resources\\Images\\Yu\\3match\\tileImg.png"
-  },
-  "ada466d4-bc37-41b1-a9fb-bd2ca90708b8": {
-    "asset": 1744356471853,
-    "meta": 1744356471875,
-    "relativePath": "resources\\Images\\Yu\\3match\\ComboGauge.png"
-  },
-  "f2818a4d-3cc9-4a66-96a7-0d8b93079399": {
-    "asset": 1744356715998,
-    "meta": 1744356716020,
-    "relativePath": "resources\\Images\\Yu\\3match\\ComboBar.png"
-  },
   "69f7ec51-0c2e-41e3-b8ee-6927f5b859a5": {
     "asset": 1747029347070,
     "meta": 1747111251319,
@@ -855,8 +840,8 @@
     "relativePath": "scenes\\Common\\SingleGameList.fire"
   },
   "a9f075f6-ea37-4672-97f5-7e779f6fa8e9": {
-    "asset": 1747032748229,
-    "meta": 1747032748239,
+    "asset": 1747191630592,
+    "meta": 1747191630607,
     "relativePath": "scenes\\Yu\\3Match\\3M_GameScene.fire"
   },
   "d74e7888-ac3a-42d4-b5ac-84d1473a2ddc": {
@@ -1289,11 +1274,6 @@
     "meta": 1747031273456,
     "relativePath": "resources\\Images\\Yu\\3match\\Fever.png"
   },
-  "c77b4ab3-cc86-4cb4-88b2-24e9bf38633a": {
-    "asset": 1747032405963,
-    "meta": 1747032407822,
-    "relativePath": "scripts\\Yu\\3Match\\3MatchManager.ts"
-  },
   "b1e41785-6333-4960-b6a2-d3e9dddec73d": {
     "asset": 1747111479656,
     "meta": 1747112279178,
@@ -1348,5 +1328,15 @@
     "asset": 1747190625999,
     "meta": 1747190628992,
     "relativePath": "scripts\\Yu\\3Match\\Tile.ts"
+  },
+  "c77b4ab3-cc86-4cb4-88b2-24e9bf38633a": {
+    "asset": 1747191562799,
+    "meta": 1747191566053,
+    "relativePath": "scripts\\Yu\\3Match\\3MatchManager.ts"
+  },
+  "1f59df39-7f0c-43a4-a8ac-2076f0e026ed": {
+    "asset": 1747191613274,
+    "meta": 1747191613339,
+    "relativePath": "resources\\Images\\Yu\\3match\\FruitBackground.png"
   }
 }
