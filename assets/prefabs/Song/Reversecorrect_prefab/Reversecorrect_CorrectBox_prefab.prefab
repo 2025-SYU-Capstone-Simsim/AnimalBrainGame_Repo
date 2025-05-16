@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "number2",
+    "_name": "Correct_box",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -36,8 +36,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 198,
-      "height": 200
+      "width": 714,
+      "height": 224
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -89,7 +89,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "9d7cbf17-3635-4d90-8520-9bcdd32273be"
+      "__uuid__": "1e1b9c49-dedf-45a7-aaa9-21c020a7a888"
     },
     "_type": 0,
     "_sizeMode": 1,

@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "number2",
+    "_name": "Group 19",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -89,7 +89,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "9d7cbf17-3635-4d90-8520-9bcdd32273be"
+      "__uuid__": "7ff80b25-1ffe-42cb-8ff0-ebcd837aaa05"
     },
     "_type": 0,
     "_sizeMode": 1,
