@@ -1064,11 +1064,6 @@
     "meta": 1747547434375,
     "relativePath": "resources\\Images\\Jang\\monkey_frame_3.png"
   },
-  "e1b90feb-a217-4493-849d-9a611900d683": {
-    "asset": 1747546563380,
-    "meta": 1747547434662,
-    "relativePath": "scripts\\Sim\\RememberGame\\RememberGameController.ts"
-  },
   "4de5d9a1-529f-4115-a49b-0b326855f954": {
     "asset": 1747546563368,
     "meta": 1747547434410,
@@ -1468,5 +1463,10 @@
     "asset": 1747547875848,
     "meta": 1747547878457,
     "relativePath": "scenes\\Sim\\RememberGame\\RememberGameScene.fire"
+  },
+  "e1b90feb-a217-4493-849d-9a611900d683": {
+    "asset": 1747547943870,
+    "meta": 1747547951150,
+    "relativePath": "scripts\\Sim\\RememberGame\\RememberGameController.ts"
   }
 }
