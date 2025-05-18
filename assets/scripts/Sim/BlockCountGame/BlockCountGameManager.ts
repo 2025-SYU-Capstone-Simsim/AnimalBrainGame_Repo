@@ -53,10 +53,7 @@ export default class GameManager extends cc.Component {
   ];
 
   onLoad() {
-<<<<<<< HEAD
-=======
     cc.debug.setDisplayStats(false);
->>>>>>> 3c97828376fae611d05c5213c7f7123adcfd3357
     // Next/Skip 버튼 클릭
     if (this.nextButton) {
       this.nextButton.node.on('click', this.nextQuestion, this);
@@ -65,11 +62,7 @@ export default class GameManager extends cc.Component {
     // Score 초기화
     this.score = 0;
     if (this.scoreLabel) {
-<<<<<<< HEAD
-      this.scoreLabel.string = `점수 : ${this.score}점`;
-=======
       this.scoreLabel.string = `${this.score}`;
->>>>>>> 3c97828376fae611d05c5213c7f7123adcfd3357
     }
 
     // TIMEOUT 레이블 숨기기
@@ -80,11 +73,7 @@ export default class GameManager extends cc.Component {
     // 남은 시간 레이블 초기화
     this.timeLeft = 100;
     if (this.timeLabel) {
-<<<<<<< HEAD
-      this.timeLabel.string = `남은 시간: ${this.timeLeft}초`;
-=======
       this.timeLabel.string = `${this.timeLeft}`;
->>>>>>> 3c97828376fae611d05c5213c7f7123adcfd3357
     }
 
     // 전체 게임 100초 카운트다운 시작
@@ -99,11 +88,7 @@ export default class GameManager extends cc.Component {
     this.unschedule(this.updateTimer);
     this.timeLeft = 100;
     if (this.timeLabel) {
-<<<<<<< HEAD
-      this.timeLabel.string = `남은 시간: ${this.timeLeft}초`;
-=======
       this.timeLabel.string = `${this.timeLeft}`;
->>>>>>> 3c97828376fae611d05c5213c7f7123adcfd3357
     }
     this.schedule(this.updateTimer, 1);
   }
@@ -112,11 +97,7 @@ export default class GameManager extends cc.Component {
   private updateTimer() {
     this.timeLeft--;
     if (this.timeLabel) {
-<<<<<<< HEAD
-      this.timeLabel.string = `남은 시간: ${this.timeLeft}초`;
-=======
       this.timeLabel.string = `${this.timeLeft}`;
->>>>>>> 3c97828376fae611d05c5213c7f7123adcfd3357
     }
     if (this.timeLeft <= 0) {
       this.unschedule(this.updateTimer);
@@ -182,11 +163,7 @@ export default class GameManager extends cc.Component {
         this.resultLabel.string = '🎉 정답입니다!';
         this.score += 20;  // 맞았을 때 +10
         if (this.scoreLabel) {
-<<<<<<< HEAD
-          this.scoreLabel.string = `점수 : ${this.score}점`;
-=======
           this.scoreLabel.string = `${this.score}`;
->>>>>>> 3c97828376fae611d05c5213c7f7123adcfd3357
         }
         if (this.nextButton) {
           const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
@@ -198,11 +175,7 @@ export default class GameManager extends cc.Component {
         this.resultLabel.string = '❌ 틀렸습니다!';
         this.score -= 10;  // 틀렸을 때 -10
         if (this.scoreLabel) {
-<<<<<<< HEAD
-          this.scoreLabel.string = `점수 : ${this.score}점`;
-=======
           this.scoreLabel.string = `${this.score}`;
->>>>>>> 3c97828376fae611d05c5213c7f7123adcfd3357
         }
         if (this.nextButton) {
           const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
