@@ -291,10 +291,10 @@
       "__id__": 2
     },
     "_enabled": true,
-    "retryButton": {
+    "retryBtn": {
       "__id__": 8
     },
-    "mainMenuButton": {
+    "mainBtn": {
       "__id__": 15
     },
     "_id": "aekhky+45ERqetZ+JHW2WU"
