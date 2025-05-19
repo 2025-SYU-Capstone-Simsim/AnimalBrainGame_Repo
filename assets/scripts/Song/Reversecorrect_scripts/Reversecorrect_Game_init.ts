@@ -17,6 +17,8 @@ export default class Game_init extends cc.Component {
     private currentTime: number = 120;
     private score: number = 0;
     static instance: Game_init = null;
+
+
     onLoad(){
         Game_init.instance = this;
         this.schedule(this.updateTimer,1);
@@ -42,6 +44,7 @@ export default class Game_init extends cc.Component {
         this.score += value;
         this.score_label.string = `${this.score}`;
     }
+    
     loadList(){
         console.log("싱글 게임 리스트로 돌아가기");
         cc.director.loadScene('SingleGameList');

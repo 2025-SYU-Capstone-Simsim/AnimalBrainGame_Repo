@@ -10,11 +10,17 @@ export default class GameInit extends cc.Component {
     wrong_sign: cc.Node = null;
     @property(cc.Button)
     exitButton: cc.Button = null;
+
     onLoad() {
         const manager = cc.director.getPhysicsManager();
         manager.enabled = true;
         manager.gravity = cc.v2(0, 0);
         // manager.debugDrawFlags = cc.PhysicsManager.DrawBits.e_shapeBit;
+    }
+
+    loadList(){
+        console.log("싱글 게임 리스트로 돌아가기");
+        cc.director.loadScene('SingleGameList');
     }
 }
 

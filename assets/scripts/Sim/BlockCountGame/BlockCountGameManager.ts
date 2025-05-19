@@ -55,6 +55,7 @@ export default class GameManager extends cc.Component {
   ];
 
   onLoad() {
+    GameState.lastGameScene = cc.director.getScene().name;
     cc.debug.setDisplayStats(false);
     // Next/Skip 버튼 클릭
     if (this.nextButton) {

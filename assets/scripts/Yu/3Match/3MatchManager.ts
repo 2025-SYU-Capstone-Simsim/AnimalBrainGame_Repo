@@ -47,6 +47,7 @@ export default class ThreeMatchManager extends cc.Component {
 
 
     start() {
+        GameState.lastGameScene = cc.director.getScene().name;
         // 타이머 프리팹 인스턴스화
         this.timerNode = cc.instantiate(this.timerDisplayPrefab);
         this.node.addChild(this.timerNode);
@@ -71,22 +72,22 @@ export default class ThreeMatchManager extends cc.Component {
 
 
 
-updateTimer() {
-    this.currentTime--;
-    if (this.currentTime <= 0) {
-        this.currentTime = 0;
-        this.unschedule(this.updateTimer);
-        this.onGameOver();
+    updateTimer() {
+        this.currentTime--;
+        if (this.currentTime <= 0) {
+            this.currentTime = 0;
+            this.unschedule(this.updateTimer);
+            this.onGameOver();
+        }
+
+        this.timerLabel.string = `${this.currentTime}`;
     }
 
-    this.timerLabel.string = `${this.currentTime}`;
-}
-
-updateScore(amount: number) {
-    this.score += amount;
-    this.scoreLabel.string = `${this.score}`;
-    this.increaseComboGauge(amount);
-}
+    updateScore(amount: number) {
+        this.score += amount;
+        this.scoreLabel.string = `${this.score}`;
+        this.increaseComboGauge(amount);
+    }
 
     increaseComboGauge(amount: number) {
         if (this.isFeverTime) return; // 피버타임중엔 게이지 안올라감감

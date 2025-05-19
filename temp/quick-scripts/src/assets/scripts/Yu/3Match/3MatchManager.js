@@ -52,6 +52,7 @@ var ThreeMatchManager = /** @class */ (function (_super) {
         return _this;
     }
     ThreeMatchManager.prototype.start = function () {
+        GameState_1.default.lastGameScene = cc.director.getScene().name;
         // 타이머 프리팹 인스턴스화
         this.timerNode = cc.instantiate(this.timerDisplayPrefab);
         this.node.addChild(this.timerNode);

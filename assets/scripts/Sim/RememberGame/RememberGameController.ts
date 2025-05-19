@@ -27,6 +27,7 @@ export default class GameController extends cc.Component {
     private colors: string[] = ["red", "yellow", "green", "blue"];
 
     onLoad() {
+        GameState.lastGameScene = cc.director.getScene().name;
         cc.debug.setDisplayStats(false);
 
         this.buttonMap = {

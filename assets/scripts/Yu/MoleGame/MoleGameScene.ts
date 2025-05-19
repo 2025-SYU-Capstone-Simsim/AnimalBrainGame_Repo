@@ -38,6 +38,9 @@ export default class GameScene extends cc.Component {
     private moleSpawnCallback: Function = null;
 
     start() {
+        //게임 씬 시작 시 무조건 GameState.lastGameScene 업데이트 해서 나가기 버튼 정상 작동 유지 
+        GameState.lastGameScene = cc.director.getScene().name;
+
         this.moleHoles = [
             this.Hole1, this.Hole2, this.Hole3,
             this.Hole4, this.Hole5, this.Hole6,
@@ -69,7 +72,7 @@ export default class GameScene extends cc.Component {
         this.hammerNode.zIndex = 999;
         this.hammerNode.setContentSize(200, 200);
         this.hammerNode.anchorX = 0.2;
-        this.hammerNode.anchorY = 0.8;
+        this.hammerNode.anchorY = 0.2;
         this.hammerNode.active = false;
     }
 

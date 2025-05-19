@@ -81,14 +81,11 @@
         "__id__": 65
       },
       {
-        "__id__": 89
+        "__id__": 87
       }
     ],
     "_active": true,
     "_components": [
-      {
-        "__id__": 91
-      },
       {
         "__id__": 92
       },
@@ -97,6 +94,9 @@
       },
       {
         "__id__": 94
+      },
+      {
+        "__id__": 95
       }
     ],
     "_prefab": null,
@@ -275,11 +275,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 87
+        "__id__": 90
       }
     ],
     "_prefab": {
-      "__id__": 88
+      "__id__": 91
     },
     "_opacity": 255,
     "_color": {
@@ -3544,7 +3544,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 86
+      "__id__": 89
     },
     "_opacity": 255,
     "_color": {
@@ -3637,7 +3637,11 @@
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 86
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 0,
@@ -3690,62 +3694,20 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": null,
+    "_N$target": {
+      "__id__": 87
+    },
     "_id": "bdZFMO8TNIvolN9ko/H+s5"
   },
   {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 5
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 87
     },
-    "asset": {
-      "__uuid__": "3f0714f6-4ea3-47b2-9bef-b3c84a60531a"
-    },
-    "fileId": "ec4C6bGVFBoLfMFHHqqBYY",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 5
-    },
-    "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "3432165d-5f76-43f3-b525-cc5f7e3152a7"
-    },
-    "_type": 0,
-    "_sizeMode": 0,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_atlas": null,
-    "_id": "37FmJo1YROL6nQ6c9INxTW"
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 5
-    },
-    "asset": {
-      "__uuid__": "3f0714f6-4ea3-47b2-9bef-b3c84a60531a"
-    },
-    "fileId": "",
-    "sync": false
+    "component": "",
+    "_componentId": "c4754JUFndJMpLQkeWjjUsc",
+    "handler": "loadList",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Node",
@@ -3758,7 +3720,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 90
+        "__id__": 88
       }
     ],
     "_prefab": null,
@@ -3814,7 +3776,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 89
+      "__id__": 87
     },
     "_enabled": true,
     "timer_label": {
@@ -3836,6 +3798,60 @@
       "__id__": 77
     },
     "_id": "a08Ra/o0VCkYOiG1to+CQ2"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 5
+    },
+    "asset": {
+      "__uuid__": "3f0714f6-4ea3-47b2-9bef-b3c84a60531a"
+    },
+    "fileId": "ec4C6bGVFBoLfMFHHqqBYY",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": {
+      "__uuid__": "3432165d-5f76-43f3-b525-cc5f7e3152a7"
+    },
+    "_type": 0,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": "37FmJo1YROL6nQ6c9INxTW"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 5
+    },
+    "asset": {
+      "__uuid__": "3f0714f6-4ea3-47b2-9bef-b3c84a60531a"
+    },
+    "fileId": "",
+    "sync": false
   },
   {
     "__type__": "cc.Canvas",
