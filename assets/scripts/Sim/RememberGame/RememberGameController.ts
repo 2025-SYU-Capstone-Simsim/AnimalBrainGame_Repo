@@ -1,3 +1,4 @@
+import GameState from "../../Controller/CommonUI/GameState";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -177,7 +178,16 @@ export default class GameController extends cc.Component {
         this.startButton.interactable = false;
         this.timeoutLabel.string = "TimeOut!";
         this.timeoutLabel.node.active = true;
+
+        // 게임 상태 저장
+        GameState.lastGameScene = cc.director.getScene().name;
+        GameState.score = this.score;
+        GameState.gameId = "remember-game"; // 기억력 게임 고유 식별자
+
+        // 게임 오버 씬으로 이동
+        cc.director.loadScene("GameOver");
     }
+
 
     private checkUserInput() {
         let correct = true;

@@ -1,3 +1,5 @@
+import GameState from "../../Controller/CommonUI/GameState";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -112,12 +114,22 @@ export default class GameManager extends cc.Component {
       this.timeoutLabel.node.active = true;
       this.timeoutLabel.string = 'TIMEOUT';
     }
+
     // 모든 버튼 비활성화
     this.optionButtons.forEach(btn => btn.interactable = false);
     if (this.nextButton) {
       this.nextButton.interactable = false;
     }
+
+    // 게임 상태 저장
+    GameState.lastGameScene = cc.director.getScene().name;
+    GameState.score = this.score;
+    GameState.gameId = "block-count-game"; // 원하는 식별자
+
+    // 게임오버 씬으로 이동
+    cc.director.loadScene("GameOver");
   }
+
 
   /** 새 문제 생성 (시간은 계속 흐릅니다) */
   generateQuestion() {
@@ -279,7 +291,7 @@ export default class GameManager extends cc.Component {
   }
 
   loadList(){
-    console.log("싱글 게임 리스트로 돌아가기기");
+    console.log("싱글 게임 리스트로 돌아가기");
     cc.director.loadScene('SingleGameList');
   }
 
