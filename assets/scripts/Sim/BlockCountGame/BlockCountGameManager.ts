@@ -44,7 +44,7 @@ export default class GameManager extends cc.Component {
   private answered: boolean = false;
 
   // 전체 게임 시간 (초)
-  private timeLeft: number = 100;
+  private timeLeft: number = 60;
 
   // y축(높이)마다 사용할 색상
   private layerColors: cc.Color[] = [

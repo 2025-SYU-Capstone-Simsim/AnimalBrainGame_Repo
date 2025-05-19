@@ -137,6 +137,6 @@ export default class ThreeMatchManager extends cc.Component {
 
     loadList(){
         console.log("싱글 게임 리스트로 돌아가기");
-        cc.director.loadScene("GameOver");
+        cc.director.loadScene("SingleGameList");
     }
 }

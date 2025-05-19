@@ -22,12 +22,20 @@ export default class LoginManager extends cc.Component {
     // cc.log("LoginManager loaded");
   }
 
-  onSelectCharacter(event: cc.Event, character: string) {
+onSelectCharacter(event: cc.Event, character: any) {
+  // 강제 캐스팅 또는 타입 체크
+  if (typeof character === 'string') {
     this.selectedCharacter = character;
     cc.log("캐릭터 선택됨:", character); 
-    this.checkFormValid();
+  } else {
+    cc.warn("잘못된 캐릭터 선택값:", character);
+    this.selectedCharacter = '';
   }
-  
+  this.checkFormValid();
+}
+
+
+
 
   onNicknameChanged() {
     cc.log("닉네임 입력 중:", this.nicknameInput.string);

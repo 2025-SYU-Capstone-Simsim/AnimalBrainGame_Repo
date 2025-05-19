@@ -166,7 +166,7 @@ export default class GameController extends cc.Component {
 
     private startTimer() {
         this.unschedule(this.tickCallback);
-        this.remainingTime = 100;
+        this.remainingTime = 60;
         this.timerLabel.string = `${this.remainingTime}`;
         this.timerLabel.node.active = true;
         this.timeoutLabel.node.active = false;

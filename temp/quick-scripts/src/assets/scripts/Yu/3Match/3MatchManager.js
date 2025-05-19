@@ -124,7 +124,7 @@ var ThreeMatchManager = /** @class */ (function (_super) {
     };
     ThreeMatchManager.prototype.loadList = function () {
         console.log("싱글 게임 리스트로 돌아가기");
-        cc.director.loadScene("GameOver");
+        cc.director.loadScene("SingleGameList");
     };
     __decorate([
         property(cc.Prefab)
