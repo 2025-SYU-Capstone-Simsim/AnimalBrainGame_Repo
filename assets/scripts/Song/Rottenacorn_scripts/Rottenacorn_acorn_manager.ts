@@ -44,6 +44,7 @@ export default class AcornManager extends cc.Component {
         if (acornScript) {
             acornScript.activate(isRotten);
         }
+        
 
         // 랜덤 위치 분산 배치
         const x = Math.random() * 400 - 200;  // -200 ~ +200

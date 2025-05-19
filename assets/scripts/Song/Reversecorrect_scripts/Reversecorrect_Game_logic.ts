@@ -16,14 +16,13 @@ export default class Game_logic extends cc.Component {
 
     public static player_label_arr: number[] = [];
     public static count: number = 0;
-    
     //사용자가 입력하는 label 업데이트
     updateInputLabel() {
         const numString = Game_logic.player_label_arr.join("");
         this.player_label_display.string = numString;
     }
 
-    //사용자가 입력하는 매 숫자가 맞는지 확인하는 함수
+    //사용자가 입력하는 매 숫자가 맞는지 확인하는 함수 맞는다면 맞는 표시 틀리면 틀리는 표시 2초로 설정
     checkAnswer() {
         if (show_QnA.isGameOver) return;
 
@@ -34,14 +33,29 @@ export default class Game_logic extends cc.Component {
 
         for (let i = 0; i < input.length; i++) {
             if (input[i] !== correct[i]) {
+            Game_init.instance.wrong_sign.active = true;
+            this.qna.setButtonsInteractable(false);
+            cc.director.pause();
+            setTimeout(() => {
+                cc.director.resume();
+                Game_init.instance.wrong_sign.active = false;
                 this.nextProblem(false);
-                return;
+                }, 1500);
+            return;
             }
         }
 
         if (input.length === correct.length) {
             Game_init.instance.addScore(10);
-            this.nextProblem(true);
+            Game_init.instance.correct_sign.active = true;
+            this.qna.setButtonsInteractable(false);
+            cc.director.pause();
+            setTimeout(() => {
+                cc.director.resume();
+                Game_init.instance.correct_sign.active = false;
+                this.nextProblem(true);
+            }, 1500);
+            
         }
     }
 

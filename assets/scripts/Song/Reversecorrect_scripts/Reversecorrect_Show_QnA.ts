@@ -9,26 +9,30 @@ export default class show_QnA extends cc.Component {
     buttonLayout: cc.Node = null;
 
     @property(cc.Label)
-    sequence_label: cc.Label = null; // 
+    sequence_label: cc.Label = null;
 
-    private cnt: number = 3;
+    private cnt: number = 3; // 시작 문제 자리수
     private hideDelay: number = 1.5;
-    private defaultHideDelay: number = 2; // 기본값 유지용
-    private minHideDelay: number = 0.1;   // 최소 표시 시간
+    private defaultHideDelay: number = 2;
+    private minHideDelay: number = 0.1;
+
+    private lastMilestone: number = 0; //
+
     static correctCount: number = 0;
     static qa: number[] = [];
     static isGameOver: boolean = false;
-    static isReverse: boolean = false; //
+    static isReverse: boolean = false;
 
     start() {
         this.showNewQuestion();
     }
 
-    //문제 보여주는 로직 + 문제 맞출 수록 시간 초 조정 처음 1.6초 다음 1.4 다음 1.2
+    // 문제 표시 및 방향 설정, 숨김 시간 조절
     public showNewQuestion() {
-        const roundIndex = show_QnA.correctCount % 3; 
+        const roundIndex = show_QnA.correctCount % 3;
         this.hideDelay = 1.6 - (roundIndex * 0.2);
-        show_QnA.isReverse = Math.random() < 0.5; // 
+
+        show_QnA.isReverse = Math.random() < 0.5;
 
         const randomNum = this.print_randnum();
         this.random_label.string = `${randomNum}`;
@@ -42,32 +46,40 @@ export default class show_QnA extends cc.Component {
 
         this.scheduleOnce(() => {
             this.random_label.node.active = false;
+
             if (this.sequence_label) {
                 this.sequence_label.string = show_QnA.isReverse ? "역방향" : "정방향";
                 this.sequence_label.node.active = true;
-            }
-            if (!show_QnA.isGameOver) {
                 this.setButtonsInteractable(true);
+            }
+
+            if (show_QnA.isGameOver === true) {
+                this.setButtonsInteractable(false);
             }
         }, this.hideDelay);
     }
 
-    //비교 가능한 랜덤 난수 배열로 만드는 로직 + 3문제 마다 시간을 다시 초기화 
+    // 문제 숫자 배열 생성 + 자리수 조절
     make_randnum(): number[] {
         show_QnA.qa = [];
         let candid = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        if (show_QnA.correctCount > 0 && show_QnA.correctCount % 3 === 0) {
+
+        const milestone = Math.floor(show_QnA.correctCount / 3);
+        if (milestone > this.lastMilestone) {
             this.cnt++;
-            this.hideDelay = this.defaultHideDelay; // 3문제 맞췄으면 시간 초기화
+            this.lastMilestone = milestone;
+            this.hideDelay = this.defaultHideDelay;
         }
+
         for (let i = 0; i < this.cnt; i++) {
             const rand = candid[Math.floor(Math.random() * candid.length)];
             show_QnA.qa.push(rand);
         }
+
         return show_QnA.qa;
     }
 
-    // 랜덤 난수 생성 로직
+    // 숫자 배열을 실제 숫자 값으로 출력
     print_randnum(): number {
         const numbers = this.make_randnum();
         let result = 0;
@@ -77,7 +89,7 @@ export default class show_QnA extends cc.Component {
         return result;
     }
 
-    //숫자 버튼 클릭 로직
+    // 버튼 인터랙션 켜고 끄기
     setButtonsInteractable(state: boolean) {
         const buttons = this.buttonLayout.getComponentsInChildren(cc.Button);
         for (let btn of buttons) {

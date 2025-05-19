@@ -8,18 +8,21 @@ export default class Game_init extends cc.Component {
     score_label: cc.Label = null;
     @property(show_QnA)
     qna: show_QnA = null;
-
-    // 리스트 돌아가기 버튼
     @property(cc.Button)
     exitButton: cc.Button = null;
-
+    @property(cc.Node)
+    correct_sign: cc.Node = null;
+    @property(cc.Node)
+    wrong_sign: cc.Node = null;
     private currentTime: number = 120;
     private score: number = 0;
     static instance: Game_init = null;
-
     onLoad(){
         Game_init.instance = this;
         this.schedule(this.updateTimer,1);
+        this.wrong_sign.active=false;
+        this.correct_sign.active=false;
+        
     }
     start () {
         this.updateTimer();
@@ -39,7 +42,6 @@ export default class Game_init extends cc.Component {
         this.score += value;
         this.score_label.string = `${this.score}`;
     }
-
     loadList(){
         console.log("싱글 게임 리스트로 돌아가기");
         cc.director.loadScene('SingleGameList');

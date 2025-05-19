@@ -5,7 +5,6 @@ export default class Acorn extends cc.Component {
 
     @property(cc.Node)
     bugNode: cc.Node = null;
-
     private speed: number = 300;
     private minSpeed: number = 150;
 
