@@ -560,8 +560,8 @@
     "relativePath": "scenes\\Common"
   },
   "eec9d046-3ba5-417b-817d-2b6c8783570b": {
-    "asset": 1747625987438,
-    "meta": 1747630691010,
+    "asset": 1747759398033,
+    "meta": 1747808281623,
     "relativePath": "scenes\\Jang"
   },
   "7c52d2ce-1761-499f-a6e9-887620ed5403": {
@@ -585,8 +585,8 @@
     "relativePath": "scripts\\Controller"
   },
   "40bc4ca0-05e9-422e-8d8e-cc97e3e0fe21": {
-    "asset": 1747624667970,
-    "meta": 1747624708979,
+    "asset": 1747759444443,
+    "meta": 1747808281624,
     "relativePath": "scripts\\Jang"
   },
   "f4241c88-ca10-499b-ba40-5878c1ffcc1a": {
@@ -630,8 +630,8 @@
     "relativePath": "resources\\Images\\Common"
   },
   "c5adad79-c1d6-4159-ab0f-a49f18907ca9": {
-    "asset": 1746521176268,
-    "meta": 1747622683862,
+    "asset": 1747759418755,
+    "meta": 1747808281625,
     "relativePath": "resources\\Images\\Jang"
   },
   "28df675e-47bf-4f9a-873b-5ff47ba5f2c5": {
@@ -825,8 +825,8 @@
     "relativePath": "prefabs\\Song\\Reversecorrect_prefab\\Reversecorrect_background_prefab.prefab"
   },
   "dc87c5a1-3906-45e8-add1-91ee43bb967a": {
-    "asset": 1747192338470,
-    "meta": 1747622684212,
+    "asset": 1747759331112,
+    "meta": 1747808281625,
     "relativePath": "resources\\Images\\Common\\CommonUI"
   },
   "0e355886-2531-4f67-be5d-426b2dd93ccb": {
@@ -920,13 +920,13 @@
     "relativePath": "resources\\Images\\Common\\startbutton.png"
   },
   "8cc44e95-3831-44f6-834d-d288a9732ac1": {
-    "asset": 1747191613277,
-    "meta": 1747622684392,
+    "asset": 1747759655238,
+    "meta": 1747808281626,
     "relativePath": "resources\\Images\\Yu\\3match"
   },
   "69f7ec51-0c2e-41e3-b8ee-6927f5b859a5": {
-    "asset": 1747546563375,
-    "meta": 1747622684394,
+    "asset": 1747759191222,
+    "meta": 1747808281627,
     "relativePath": "resources\\Images\\Yu\\MoleGame"
   },
   "12919c2c-c4fc-45b9-a8f2-dbc6bef3316e": {
@@ -955,8 +955,8 @@
     "relativePath": "resources\\Images\\Sim\\blue.png"
   },
   "7d61a626-36ac-488f-8555-edcbe3ed1544": {
-    "asset": 1747640045951,
-    "meta": 1747640045964,
+    "asset": 1747811269638,
+    "meta": 1747811269651,
     "relativePath": "scenes\\Common\\CommonUI\\LoginScene.fire"
   },
   "b6afebc5-c715-4a73-8ff2-3adda89602d0": {
@@ -980,8 +980,8 @@
     "relativePath": "scenes\\Common\\Single\\GameOver.fire"
   },
   "6b298d5f-c67b-4e74-806d-d132c52ed0a4": {
-    "asset": 1746542598498,
-    "meta": 1747622684472,
+    "asset": 1747759564553,
+    "meta": 1747759564573,
     "relativePath": "scenes\\Common\\Single\\SingleGameList.fire"
   },
   "f78f107b-84b7-4a24-abe4-8646bba462e7": {
@@ -998,11 +998,6 @@
     "asset": 1746539060966,
     "meta": 1747622684572,
     "relativePath": "scripts\\Controller\\CommonUI\\MainMenuScene.ts"
-  },
-  "d26b1918-6f23-4ac8-a9c6-70f5fd81a612": {
-    "asset": 1746540881106,
-    "meta": 1747622684602,
-    "relativePath": "scripts\\Controller\\Single\\SingleGameList.ts"
   },
   "455fe455-40fa-46b0-ba27-7afa96d488e3": {
     "asset": 1747200142537,
@@ -1095,8 +1090,8 @@
     "relativePath": "scenes\\Song\\Rottenacorn_Scenes\\Rottenacorn_mainscene.fire"
   },
   "a9f075f6-ea37-4672-97f5-7e779f6fa8e9": {
-    "asset": 1747625988792,
-    "meta": 1747625988813,
+    "asset": 1747759758575,
+    "meta": 1747759758587,
     "relativePath": "scenes\\Yu\\3Match\\3M_GameScene.fire"
   },
   "e80fe891-358a-4761-bc47-3cf9350636b7": {
@@ -1119,11 +1114,6 @@
     "meta": 1747622685302,
     "relativePath": "resources\\Images\\Common\\BackgroundImg\\MainBackground.png"
   },
-  "60470fe7-19f1-470f-bae9-0d57dc1b19b8": {
-    "asset": 1746081136190,
-    "meta": 1747622685316,
-    "relativePath": "resources\\Images\\Common\\Character\\Dog.png"
-  },
   "6832aec8-3c97-439e-b0bd-94925f0543b0": {
     "asset": 1747192542586,
     "meta": 1747622685321,
@@ -1133,16 +1123,6 @@
     "asset": 1747192432623,
     "meta": 1747622685336,
     "relativePath": "resources\\Images\\Common\\BackgroundImg\\GameoverBackground.png"
-  },
-  "04a5d9eb-1d80-4eaf-9b6d-a5e020848aeb": {
-    "asset": 1746081138101,
-    "meta": 1747622685349,
-    "relativePath": "resources\\Images\\Common\\Character\\tiger.png"
-  },
-  "6bfaf502-f9f3-4938-84a8-076c67709828": {
-    "asset": 1746081133686,
-    "meta": 1747622685354,
-    "relativePath": "resources\\Images\\Common\\Character\\Rabbit.png"
   },
   "2bae16b1-e905-4242-8843-934f19ff4500": {
     "asset": 1747620482612,
@@ -1399,11 +1379,6 @@
     "meta": 1747622685793,
     "relativePath": "resources\\Images\\Song\\Reversecorrect_images\\Group 45.png"
   },
-  "1f59df39-7f0c-43a4-a8ac-2076f0e026ed": {
-    "asset": 1747191613274,
-    "meta": 1747622685802,
-    "relativePath": "resources\\Images\\Yu\\3match\\FruitBackground.png"
-  },
   "6002da1e-82c3-461d-b41c-1db713c21229": {
     "asset": 1746681457931,
     "meta": 1747622685805,
@@ -1529,20 +1504,10 @@
     "meta": 1747632795144,
     "relativePath": "resources\\Images\\Common\\BackgroundImg\\CharacterSelectTitle.png"
   },
-  "49c65c15-1c70-4817-af49-dc5ada937de6": {
-    "asset": 1747633081299,
-    "meta": 1747633081333,
-    "relativePath": "resources\\Images\\Common\\Character\\CharacterSpace.png"
-  },
   "de2c36f3-2e19-412e-8194-4dd883b87508": {
     "asset": 1747634940620,
     "meta": 1747634940644,
     "relativePath": "resources\\Images\\Common\\BackgroundImg\\NicknameInputBox.png"
-  },
-  "276420bf-bb79-4d29-9e32-c51e8f4cafd1": {
-    "asset": 1747639518435,
-    "meta": 1747639519530,
-    "relativePath": "scripts\\Controller\\CommonUI\\LoginManager.ts"
   },
   "d3c12711-26d4-41e8-a51a-74a1cf18b674": {
     "asset": 1747715658759,
@@ -1568,5 +1533,65 @@
     "asset": 1747759331112,
     "meta": 1747759331156,
     "relativePath": "resources\\Images\\Common\\CommonUI\\TimerImg.png"
+  },
+  "d26b1918-6f23-4ac8-a9c6-70f5fd81a612": {
+    "asset": 1747759497931,
+    "meta": 1747759529433,
+    "relativePath": "scripts\\Controller\\Single\\SingleGameList.ts"
+  },
+  "fba5db3a-3b3c-48a6-a026-694b6bfd82df": {
+    "asset": 1747759655232,
+    "meta": 1747759655307,
+    "relativePath": "resources\\Images\\Yu\\3match\\FruitPuzzleBack.png"
+  },
+  "dca886ae-238f-4f81-8017-d843fc3da08a": {
+    "asset": 1747808397568,
+    "meta": 1747808397616,
+    "relativePath": "resources\\Images\\Common\\BackgroundImg\\LoginBack.png"
+  },
+  "5f60dbcf-81a0-442f-ad18-e2408bacf553": {
+    "asset": 1747808539263,
+    "meta": 1747808539301,
+    "relativePath": "resources\\Images\\Common\\BackgroundImg\\LoginTitle.png"
+  },
+  "22571c91-5f53-4a80-8225-f99dd2ce3013": {
+    "asset": 1747808807765,
+    "meta": 1747808807795,
+    "relativePath": "resources\\Images\\Common\\Character\\CharacterSpace.png"
+  },
+  "73e024a4-d53c-46a3-9f3a-b44ec5608afd": {
+    "asset": 1747809038772,
+    "meta": 1747809038796,
+    "relativePath": "resources\\Images\\Common\\Character\\DogCharacter.png"
+  },
+  "0ab3b1b8-ff6d-42b9-9064-12c0b4192223": {
+    "asset": 1747809057006,
+    "meta": 1747809057030,
+    "relativePath": "resources\\Images\\Common\\Character\\RabbitCharacter.png"
+  },
+  "448efd4c-21c6-442d-bd7a-92ca3b1f5a20": {
+    "asset": 1747809073298,
+    "meta": 1747809073326,
+    "relativePath": "resources\\Images\\Common\\Character\\TigerCharacter.png"
+  },
+  "2c1bc090-26c4-4f7b-95eb-53cea45cd1ec": {
+    "asset": 1747809214436,
+    "meta": 1747809214449,
+    "relativePath": "prefabs\\Common\\Dog.prefab"
+  },
+  "0d62a576-9602-40e7-bdef-eb92efa81b2a": {
+    "asset": 1747809217945,
+    "meta": 1747809217956,
+    "relativePath": "prefabs\\Common\\Tiger.prefab"
+  },
+  "0dc11da4-913a-4254-a73b-7a39a324b4e6": {
+    "asset": 1747809221159,
+    "meta": 1747809221171,
+    "relativePath": "prefabs\\Common\\Rabbit.prefab"
+  },
+  "276420bf-bb79-4d29-9e32-c51e8f4cafd1": {
+    "asset": 1747811574845,
+    "meta": 1747811575936,
+    "relativePath": "scripts\\Controller\\CommonUI\\LoginManager.ts"
   }
 }
