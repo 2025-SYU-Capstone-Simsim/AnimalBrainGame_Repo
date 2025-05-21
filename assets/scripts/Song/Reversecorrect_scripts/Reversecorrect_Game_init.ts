@@ -2,10 +2,6 @@ import show_QnA from "./Reversecorrect_Show_QnA"
 const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Game_init extends cc.Component {
-    @property(cc.Label)
-    timer_label: cc.Label = null;
-    @property(cc.Label)
-    score_label: cc.Label = null;
     @property(show_QnA)
     qna: show_QnA = null;
     @property(cc.Button)
@@ -14,18 +10,31 @@ export default class Game_init extends cc.Component {
     correct_sign: cc.Node = null;
     @property(cc.Node)
     wrong_sign: cc.Node = null;
+    @property(cc.Prefab)
+    timerDisplayPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    scoreDisplayPrefab: cc.Prefab = null;
     private currentTime: number = 120;
     private score: number = 0;
+    private totalTime: number = 60;
+    private timerNode: cc.Node = null;
+    private scoreNode: cc.Node = null;
+    private timerLabel: cc.Label = null;
+    private scoreLabel: cc.Label = null;
     static instance: Game_init = null;
-    onLoad(){
-        Game_init.instance = this;
-        this.schedule(this.updateTimer,1);
-        this.wrong_sign.active=false;
-        this.correct_sign.active=false;
-        
-    }
     start () {
+        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
+        this.node.addChild(this.timerNode);
+        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
         this.updateTimer();
+        this.timerNode.setPosition(cc.v2(-350, 780));  // 화면 좌측 상단
+        // 점수 프리팹 인스턴스화
+        this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
+        this.node.addChild(this.scoreNode);
+        this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
+        this.updateScore(0);
+        this.scoreNode.setPosition(cc.v2(350,780));   //화면 우측 상단
+        this.schedule(this.updateTimer, 1);
     }
     updateTimer() {
         this.currentTime--;
@@ -35,15 +44,20 @@ export default class Game_init extends cc.Component {
             show_QnA.isGameOver = true;
             this.qna.setButtonsInteractable(false);
         }
-        this.timer_label.string = `${this.currentTime}`;
+        this.timerLabel.string = `${this.currentTime}`;
     }
-
-    public addScore(value: number) {
+    public updateScore(value: number) {
         this.score += value;
-        this.score_label.string = `${this.score}`;
+        this.scoreLabel.string = `${this.score}`;
     }
     loadList(){
         console.log("싱글 게임 리스트로 돌아가기");
         cc.director.loadScene('SingleGameList');
       }
+      onLoad(){
+        Game_init.instance = this;
+        this.schedule(this.updateTimer,1);
+        this.wrong_sign.active=false;
+        this.correct_sign.active=false; 
+    }
 }

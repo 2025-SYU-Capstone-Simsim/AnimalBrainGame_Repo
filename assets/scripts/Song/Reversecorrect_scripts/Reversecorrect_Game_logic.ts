@@ -45,7 +45,7 @@ export default class Game_logic extends cc.Component {
         }
 
         if (input.length === correct.length) {
-            Game_init.instance.addScore(10);
+            Game_init.instance.updateScore(10);
             Game_init.instance.correct_sign.active = true;
             this.qna.setButtonsInteractable(false);
             cc.director.pause();

@@ -6,6 +6,8 @@ import GameInit from "./Rottenacorn_game_init";
 
 @ccclass
 export default class RottenacornGameLogic extends cc.Component {
+    @property(GameInit)
+    game_init: GameInit = null;
 
     @property(AcornManager)
     acornManager: AcornManager = null;
@@ -18,12 +20,6 @@ export default class RottenacornGameLogic extends cc.Component {
 
     @property(cc.Node)
     choicebutton: cc.Node = null;
-
-    @property(cc.Label)
-    timerLabel: cc.Label = null;
-
-    @property(cc.Label)
-    scoreLabel: cc.Label = null;
 
     @property
     timeLimit: number = 60;
@@ -56,8 +52,6 @@ export default class RottenacornGameLogic extends cc.Component {
         this.remainingTime = this.timeLimit;
         this.isGameOver = false;
         this.score = 0;
-        this.updateScoreLabel();
-
         this.startRound();
     }
 
@@ -69,13 +63,8 @@ export default class RottenacornGameLogic extends cc.Component {
             this.remainingTime = 0;
             this.endGame();
         }
-
-        this.timerLabel.string = `${Math.ceil(this.remainingTime)}초`;
     }
 
-    updateScoreLabel(): void {
-        this.scoreLabel.string = `${this.score}`;
-    }
 
     startRound(): void {
     this.acornManager.resetAll();
@@ -172,10 +161,7 @@ export default class RottenacornGameLogic extends cc.Component {
         const acornScript = selected.getComponent(Acorn);
 
         if (isCorrect) {
-            // 점수 추가
-            this.score++;
-            this.updateScoreLabel();
-            
+            this.game_init.updateScore(10);
 
             // 벌레 보이기 유지
             if (acornScript?.bugNode) {
