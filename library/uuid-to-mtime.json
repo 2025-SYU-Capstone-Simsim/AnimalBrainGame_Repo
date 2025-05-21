@@ -1482,7 +1482,7 @@
   "de2c36f3-2e19-412e-8194-4dd883b87508": {
     "asset": 1747634940620,
     "meta": 1747634940644,
-    "relativePath": "resources\\Images\\Common\\BackgroundImg\\NicknameInputBox.png"
+    "relativePath": "resources\\Images\\Common\\Box\\NicknameInputBox.png"
   },
   "d3c12711-26d4-41e8-a51a-74a1cf18b674": {
     "asset": 1747715658759,
@@ -1613,5 +1613,60 @@
     "asset": 1747816418165,
     "meta": 1747816420048,
     "relativePath": "scripts\\Controller\\CommonUI\\MainMenuScene.ts"
+  },
+  "cd69cd4c-4c15-4ce5-8341-495d833aea76": {
+    "asset": 1747823308822,
+    "meta": 1747823308835,
+    "relativePath": "scenes\\Yu\\3Match\\3m_ExplainScene.fire"
+  },
+  "ffa3a4d3-ffb1-4c17-93b1-763000a2d02e": {
+    "asset": 1747818765926,
+    "meta": 1747818765978,
+    "relativePath": "resources\\Images\\Common\\BackgroundImg\\GameSelectExplainBack.png"
+  },
+  "c97fecb0-409e-4032-b772-9f10a1b4d9d8": {
+    "asset": 1747818819692,
+    "meta": 1747818819693,
+    "relativePath": "resources\\Images\\Common\\Box"
+  },
+  "326466d4-5557-4ddf-b9c5-e0b62d17fc9c": {
+    "asset": 1747818856333,
+    "meta": 1747818856356,
+    "relativePath": "resources\\Images\\Common\\Box\\GameExplainTitleBox.png"
+  },
+  "7af6a807-a18a-4519-8539-b1d16b127cd1": {
+    "asset": 1747818959436,
+    "meta": 1747818959456,
+    "relativePath": "resources\\Images\\Common\\CommonUI\\BackButton3.png"
+  },
+  "cf952e99-4034-4fdd-9d5a-7fd77ffc81e4": {
+    "asset": 1747819294603,
+    "meta": 1747819294636,
+    "relativePath": "resources\\Images\\Yu\\MoleGame\\MoleExplainSelectImg.png"
+  },
+  "9f0b9439-d9e0-4e28-97ad-f4c33a3e28bf": {
+    "asset": 1747819824795,
+    "meta": 1747819824818,
+    "relativePath": "resources\\Images\\Common\\Button\\GameSelctStartButton.png"
+  },
+  "2a543de0-6fbe-42a8-a5f1-9f82d79e4eb5": {
+    "asset": 1747823322245,
+    "meta": 1747823322255,
+    "relativePath": "scenes\\Yu\\MoleGame\\Mole_ExplainScene.fire"
+  },
+  "e9e1e76c-b423-4fec-a7d0-6fa7ac946220": {
+    "asset": 1747820098281,
+    "meta": 1747820098315,
+    "relativePath": "resources\\Images\\Yu\\3match\\FriutExplainSelectImg.png"
+  },
+  "4555fbaa-2b06-4bb4-83dc-f0a7398f7370": {
+    "asset": 1747823398928,
+    "meta": 1747823411367,
+    "relativePath": "scripts\\Yu\\3Match\\3MExplain.ts"
+  },
+  "244d7c7e-10c8-4121-bdb6-0fcb384c0134": {
+    "asset": 1747823405198,
+    "meta": 1747823411399,
+    "relativePath": "scripts\\Yu\\MoleGame\\MoleExplain.ts"
   }
 }

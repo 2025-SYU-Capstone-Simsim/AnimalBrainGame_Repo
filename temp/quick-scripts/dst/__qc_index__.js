@@ -25,9 +25,11 @@ require('./assets/scripts/Song/Rottenacorn_scripts/Rottenacorn_acorn');
 require('./assets/scripts/Song/Rottenacorn_scripts/Rottenacorn_acorn_manager');
 require('./assets/scripts/Song/Rottenacorn_scripts/Rottenacorn_game_init');
 require('./assets/scripts/Song/Rottenacorn_scripts/Rottenacorn_game_logic');
+require('./assets/scripts/Yu/3Match/3MExplain');
 require('./assets/scripts/Yu/3Match/3MatchBoard');
 require('./assets/scripts/Yu/3Match/3MatchManager');
 require('./assets/scripts/Yu/3Match/Tile');
+require('./assets/scripts/Yu/MoleGame/MoleExplain');
 require('./assets/scripts/Yu/MoleGame/MoleGameScene');
 
                     }
