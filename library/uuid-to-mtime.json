@@ -899,11 +899,6 @@
     "meta": 1747622684267,
     "relativePath": "prefabs\\Song\\Rottenacorn_prefab\\Rottenacorn_tmpinsect_prefab.prefab"
   },
-  "e57031f0-aa28-4da0-b2fb-6a60beed592e": {
-    "asset": 1746083711059,
-    "meta": 1747622684332,
-    "relativePath": "resources\\Images\\Common\\InputBox.png"
-  },
   "d3f94817-bdb6-4a34-9320-e622293e61b3": {
     "asset": 1747620482636,
     "meta": 1747622684383,
@@ -914,11 +909,6 @@
     "meta": 1747622684383,
     "relativePath": "resources\\Images\\Song\\Rottenacorn_images"
   },
-  "9fd6de5c-80b1-4201-b11b-a1fd26c07245": {
-    "asset": 1746084195501,
-    "meta": 1747622684335,
-    "relativePath": "resources\\Images\\Common\\startbutton.png"
-  },
   "8cc44e95-3831-44f6-834d-d288a9732ac1": {
     "asset": 1747759655238,
     "meta": 1747808281626,
@@ -928,11 +918,6 @@
     "asset": 1747759191222,
     "meta": 1747808281627,
     "relativePath": "resources\\Images\\Yu\\MoleGame"
-  },
-  "12919c2c-c4fc-45b9-a8f2-dbc6bef3316e": {
-    "asset": 1746170414558,
-    "meta": 1747622684335,
-    "relativePath": "resources\\Images\\Common\\MainBox.png"
   },
   "91bbf995-b49f-4c6d-a662-5dca3ef58401": {
     "asset": 1746519564199,
@@ -960,8 +945,8 @@
     "relativePath": "scenes\\Common\\CommonUI\\LoginScene.fire"
   },
   "b6afebc5-c715-4a73-8ff2-3adda89602d0": {
-    "asset": 1746172677755,
-    "meta": 1747622684452,
+    "asset": 1747816478581,
+    "meta": 1747816478595,
     "relativePath": "scenes\\Common\\CommonUI\\MainScene.fire"
   },
   "57a0fa77-2235-4590-8d2c-4c688a1c3371": {
@@ -993,11 +978,6 @@
     "asset": 1747199526946,
     "meta": 1747622684502,
     "relativePath": "scripts\\Controller\\CommonUI\\GameState.ts"
-  },
-  "41bf07b0-468e-4c9b-9fb3-4c4601c64f63": {
-    "asset": 1746539060966,
-    "meta": 1747622684572,
-    "relativePath": "scripts\\Controller\\CommonUI\\MainMenuScene.ts"
   },
   "455fe455-40fa-46b0-ba27-7afa96d488e3": {
     "asset": 1747200142537,
@@ -1108,11 +1088,6 @@
     "asset": 1747546563374,
     "meta": 1747622685134,
     "relativePath": "resources\\Images\\Sim\\웃는개굴.png"
-  },
-  "c224d44e-d531-4418-bcff-43b4d31c88af": {
-    "asset": 1746170351288,
-    "meta": 1747622685302,
-    "relativePath": "resources\\Images\\Common\\BackgroundImg\\MainBackground.png"
   },
   "6832aec8-3c97-439e-b0bd-94925f0543b0": {
     "asset": 1747192542586,
@@ -1416,8 +1391,8 @@
   },
   "b2a09f2f-ab84-4e9c-8e91-5aba5a9a2158": {
     "asset": 1746778316490,
-    "meta": 1747622685840,
-    "relativePath": "resources\\Images\\Yu\\MoleGame\\Goback.png"
+    "meta": 1747816202901,
+    "relativePath": "resources\\Images\\Common\\CommonUI\\BackButton1.png"
   },
   "3fcb8e17-cec3-411c-b3c8-26ee36fb83e3": {
     "asset": 1746777376368,
@@ -1590,8 +1565,53 @@
     "relativePath": "prefabs\\Common\\Rabbit.prefab"
   },
   "276420bf-bb79-4d29-9e32-c51e8f4cafd1": {
-    "asset": 1747811574845,
-    "meta": 1747811575936,
+    "asset": 1747811633573,
+    "meta": 1747811650490,
     "relativePath": "scripts\\Controller\\CommonUI\\LoginManager.ts"
+  },
+  "0c29cb7f-7125-41bd-b4c3-550489473f7c": {
+    "asset": 1747812350277,
+    "meta": 1747812350340,
+    "relativePath": "resources\\Images\\Common\\BackgroundImg\\MainBack.png"
+  },
+  "229e444e-7a55-4e78-9003-15f7cffb9435": {
+    "asset": 1747813263809,
+    "meta": 1747813263832,
+    "relativePath": "resources\\Images\\Common\\Button\\MainSceneButton.png"
+  },
+  "7f8bf333-6e9f-4411-9ea2-a93ef27d7654": {
+    "asset": 1747813718657,
+    "meta": 1747813718682,
+    "relativePath": "resources\\Images\\Common\\Button\\MainSceneButton2.png"
+  },
+  "f59a99e2-5ef8-4ed8-bb97-938f1c4a6231": {
+    "asset": 1747813800414,
+    "meta": 1747813800435,
+    "relativePath": "resources\\Images\\Common\\Button\\MainSceneMy.png"
+  },
+  "c9423331-f75a-4212-96ec-d20a9e861e07": {
+    "asset": 1747815756504,
+    "meta": 1747815756549,
+    "relativePath": "resources\\Images\\Common\\Character\\MainSceneTiger.png"
+  },
+  "8f548073-c876-4e58-976f-188116126516": {
+    "asset": 1747815756503,
+    "meta": 1747815756552,
+    "relativePath": "resources\\Images\\Common\\Character\\MainSceneDog.png"
+  },
+  "f67b2d6e-2aaa-4204-addb-51c775952dc8": {
+    "asset": 1747815756503,
+    "meta": 1747815756554,
+    "relativePath": "resources\\Images\\Common\\Character\\MainSceneRabbit.png"
+  },
+  "bdb93eb0-5397-4358-8fa0-b3cb7b50fd1c": {
+    "asset": 1747816207389,
+    "meta": 1747816207415,
+    "relativePath": "resources\\Images\\Common\\CommonUI\\BackButton2.png"
+  },
+  "41bf07b0-468e-4c9b-9fb3-4c4601c64f63": {
+    "asset": 1747816418165,
+    "meta": 1747816420048,
+    "relativePath": "scripts\\Controller\\CommonUI\\MainMenuScene.ts"
   }
 }

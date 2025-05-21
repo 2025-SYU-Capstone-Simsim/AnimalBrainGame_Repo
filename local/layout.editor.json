@@ -19,7 +19,7 @@
             "children": [
               {
                 "width": 255.8203125,
-                "height": 508.9921875,
+                "height": 261,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -28,7 +28,7 @@
               },
               {
                 "width": 255.8203125,
-                "height": 226,
+                "height": 473.9921875,
                 "type": "panel",
                 "active": 0,
                 "children": [

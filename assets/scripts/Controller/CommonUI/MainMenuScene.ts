@@ -25,4 +25,9 @@ export default class MainMenu extends cc.Component {
         cc.log("싱글 게임 버튼 클릭됨. SingleGameList 씬으로 이동.");
         cc.director.loadScene("SingleGameList");
     }
+
+    onClickLogin() {
+        cc.log("뒤로가기 버튼 클릭됨. Login 씬으로 이동.");
+        cc.director.loadScene("LoginScene");
+    }
 }

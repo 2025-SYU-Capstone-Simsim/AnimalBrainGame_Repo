@@ -48,7 +48,7 @@ export default class LoginManager extends cc.Component {
     });
   }
 
-  /** 슬롯 초기화 (모든 자식 제거) */
+  // 슬롯 초기화 (모든 자식 제거) 
   clearSlots() {
     this.dogSlot.removeAllChildren();
     this.rabbitSlot.removeAllChildren();
