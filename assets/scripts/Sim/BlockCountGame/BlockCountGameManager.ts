@@ -83,7 +83,7 @@ export default class GameManager extends cc.Component {
       this.timeLabel.string = `${this.timeLeft}`;
     }
 
-    // ✅ 카운트다운 시작 전 Overlay 보이기
+    // 카운트다운 시작 전 Overlay 보이기
     this.startOverlay.active = true;
     this.countdownLabel.node.active = true;
     this.startCountdown();
