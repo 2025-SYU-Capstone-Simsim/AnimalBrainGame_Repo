@@ -2076,8 +2076,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 45,
-      "height": 90
+      "width": 59,
+      "height": 84
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2129,7 +2129,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "183d16a9-d49b-4824-9749-7b347483f617"
+      "__uuid__": "f97ee442-c08c-4497-8442-e817ae4a7fd4"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -2331,6 +2331,12 @@
     },
     "goodMoleHitSprite": {
       "__uuid__": "4542c5e8-7cb8-405e-afc5-a9dd46d28d50"
+    },
+    "gameOverUIPrefab": {
+      "__uuid__": "6670236f-55e2-49f3-86a8-4c6f023b2389"
+    },
+    "gameStartOverlayPrefab": {
+      "__uuid__": "04d8a722-8331-4643-ab77-94390c6cabaf"
     },
     "_id": "6bN++yavtN+4pLYJVbyS91"
   }

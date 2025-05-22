@@ -12,11 +12,10 @@ export default class GameController extends cc.Component {
     @property(cc.Label) statusLabel: cc.Label = null;
     @property(cc.Label) hintLabel: cc.Label = null;
     @property(cc.Label) timerLabel: cc.Label = null;
-    @property(cc.Label) timeoutLabel: cc.Label = null;
     @property(cc.Button) exitButton: cc.Button = null;
     @property(cc.Sprite) frogSprite: cc.Sprite = null;
-    @property(cc.Node) startOverlay: cc.Node = null;
-    @property(cc.Label) countdownLabel: cc.Label = null;
+    @property(cc.Prefab) gameStartOverlayPrefab: cc.Prefab = null;
+    @property(cc.Prefab) gameOverUIPrefab: cc.Prefab = null;
 
 
     private colorSequence: string[] = [];
@@ -31,7 +30,20 @@ export default class GameController extends cc.Component {
 
     onLoad() {
         GameState.lastGameScene = cc.director.getScene().name;
+        if (this.gameStartOverlayPrefab) {
+            const overlay = cc.instantiate(this.gameStartOverlayPrefab);
+            this.node.addChild(overlay);
+            overlay.setPosition(0, 0);
+
+            // 오버레이 애니메이션 완료 후 게임 시작
+            this.scheduleOnce(() => {
+                this.beginGame(); // ← 기존 게임 시작 함수
+            }, 2); // 오버레이 애니메이션 길이에 맞게 조정
+        } else {
+            this.beginGame(); // 프리팹이 없으면 바로 시작
+        }
         cc.debug.setDisplayStats(false);
+
 
         this.buttonMap = {
             red: this.redButton,
@@ -49,59 +61,33 @@ export default class GameController extends cc.Component {
         this.setInitialButtonState();
         this.startButton.node.active = false;
         this.timerLabel.node.active = false;
-        this.timeoutLabel.node.active = false;
-
-            // ✅ 카운트다운 준비
-        this.startOverlay.active = true;
-        this.countdownLabel.node.active = true;
-        this.startCountdown();
 
         this.tickCallback = this.updateTimer.bind(this);
         this.setFrogState("neutral");
 
-            cc.find('Canvas/yellowButton').on('click', () => {
+        cc.find('Canvas/yellowButton').on('click', () => {
             console.log('yellowButton 눌림');
-            });
-            
-            cc.find('Canvas/greenButton').on('click', () => {
+        });
+
+        cc.find('Canvas/greenButton').on('click', () => {
             console.log('greenButton 눌림');
-            });
-            
-            cc.find('Canvas/blueButton').on('click', () => {
+        });
+
+        cc.find('Canvas/blueButton').on('click', () => {
             console.log('blueButton 눌림');
-            });
-            
-            cc.find('Canvas/redButton').on('click', () => {
+        });
+
+        cc.find('Canvas/redButton').on('click', () => {
             console.log('redButton 눌림');
-            });
+        });
     }
-    
-    private startCountdown() {
-        let count = 3;
-        this.countdownLabel.string = count.toString();
-        console.log("카운트다운 시작");
 
-        const countdownCallback = () => {
-            console.log("카운트:", count);
-            count--;
-            if (count > 0) {
-                this.countdownLabel.string = count.toString();
-            } else if (count === 0) {
-                this.countdownLabel.string = "시작!";
-            } else {
-                this.unschedule(countdownCallback);
-                this.countdownLabel.node.active = false;
-                this.startOverlay.active = false;
-                this.beginGame();
-            }
-        };
 
-        this.schedule(countdownCallback, 1, 3);
-    }
 
 
 
     private beginGame() {
+        if (this.isGameActive) return; // 중복 방지
         this.colorSequence = [];
         this.userInput = [];
         this.score = 0;
@@ -160,7 +146,7 @@ export default class GameController extends cc.Component {
             this.setFrogState("neutral");
             this.generateColorSequence();
             this.showColorSequence();
-        } 
+        }
     }
 
     private onColorButtonClick(color: string) {
@@ -200,10 +186,9 @@ export default class GameController extends cc.Component {
 
     private startTimer() {
         this.unschedule(this.tickCallback);
-        this.remainingTime = 100;
+        this.remainingTime = 10;
         this.timerLabel.string = `${this.remainingTime}`;
         this.timerLabel.node.active = true;
-        this.timeoutLabel.node.active = false;
         this.schedule(this.tickCallback, 1);
     }
 
@@ -211,16 +196,19 @@ export default class GameController extends cc.Component {
         this.isGameActive = false;
         this.disableButtons(true);
         this.startButton.interactable = false;
-        this.timeoutLabel.string = "TimeOut!";
-        this.timeoutLabel.node.active = true;
 
         // 게임 상태 저장
         GameState.lastGameScene = cc.director.getScene().name;
         GameState.score = this.score;
         GameState.gameId = "remember-game"; // 기억력 게임 고유 식별자
+        // 게임종료 Prefab 생성
+        const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
+        this.node.addChild(gameOverUI);  // 또는 Canvas에 직접 붙여도 됨
 
-        // 게임 오버 씬으로 이동
-        cc.director.loadScene("GameOver");
+        // 정중앙 배치
+        gameOverUI.setPosition(0, 0);
+
+
     }
 
 
@@ -276,7 +264,7 @@ export default class GameController extends cc.Component {
     }
 
     private showColorSequence() {
-        this.setFrogState("neutral"); 
+        this.setFrogState("neutral");
 
         this.setInitialButtonState();
         let delay = 0;

@@ -25,11 +25,22 @@ export default class GameScene extends cc.Component {
     @property(cc.SpriteFrame) moleHitSprite: cc.SpriteFrame = null;
     @property(cc.SpriteFrame) goodMoleHitSprite: cc.SpriteFrame = null;
 
+    // 게임 종료 오버레이 
+    @property(cc.Prefab)
+    gameOverUIPrefab: cc.Prefab = null;
+
+    // 게임 시작 오버레이
+    @property(cc.Prefab)
+    gameStartOverlayPrefab: cc.Prefab = null;
+
+
+
+
     private hammerNode: cc.Node = null;
     private moleHoles: cc.Node[] = [];
     private holeStates: boolean[] = [];
     private score: number = 0;
-    private timer: number = 60;
+    private timer: number = 30;
     private timerNode: cc.Node = null;
     private timerLabel: cc.Label = null;
     private scoreNode: cc.Node = null;
@@ -38,9 +49,25 @@ export default class GameScene extends cc.Component {
     private moleSpawnCallback: Function = null;
 
     start() {
-        //게임 씬 시작 시 무조건 GameState.lastGameScene 업데이트 해서 나가기 버튼 정상 작동 유지 
         GameState.lastGameScene = cc.director.getScene().name;
 
+        //  Game Start 오버레이 띄우기
+        if (this.gameStartOverlayPrefab) {
+            const startOverlay = cc.instantiate(this.gameStartOverlayPrefab);
+            this.node.addChild(startOverlay);
+            startOverlay.setPosition(0, 0);
+
+            // 오버레이가 자동 제거되도록 설정돼 있으므로 약간 대기 후 게임 로직 실행
+            this.scheduleOnce(() => {
+                this.startGameLogic();
+            }, 1); // 총 애니메이션 길이에 따라 조정 
+        } else {
+            this.startGameLogic(); // 프리팹이 없을 경우 바로 시작
+        }
+    }
+
+
+    startGameLogic() {
         this.moleHoles = [
             this.Hole1, this.Hole2, this.Hole3,
             this.Hole4, this.Hole5, this.Hole6,
@@ -63,6 +90,7 @@ export default class GameScene extends cc.Component {
         this.schedule(this.decreaseTimer, 1);
         this.spawnMoles();
     }
+
 
     createHammer() {
         this.hammerNode = new cc.Node("Hammer");
@@ -195,6 +223,7 @@ export default class GameScene extends cc.Component {
     gameOver() {
         if (this.isGameOver) return;
         this.isGameOver = true;
+
         if (this.moleSpawnCallback) this.unschedule(this.moleSpawnCallback);
         this.unscheduleAllCallbacks();
         this.timer = 0;
@@ -209,10 +238,18 @@ export default class GameScene extends cc.Component {
 
         console.log("게임 종료!");
         GameState.lastGameScene = cc.director.getScene().name;
-        GameState.score = this.score; // 두더지 게임 점수
-        GameState.gameId = "Molegame"; // 백엔드에 저장될 ID
-        cc.director.loadScene("GameOver");
+        GameState.score = this.score;
+        GameState.gameId = "Molegame";
+
+        // 게임종료 Prefab 생성
+        const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
+        this.node.addChild(gameOverUI);  // 또는 Canvas에 직접 붙여도 됨
+
+        // 정중앙 배치
+        gameOverUI.setPosition(0, 0);
     }
+
+
 
     loadList() {
         console.log("싱글 게임 리스트로 돌아가기");

@@ -18,6 +18,10 @@ export default class SingleGameListController extends cc.Component {
     @property(cc.Node)
     rightArrow: cc.Node = null;
 
+    
+    @property(cc.Button)
+    BackButton: cc.Button = null;
+
     private currentIndex: number = 0;
     private cards: cc.Node[] = [];
 
@@ -35,8 +39,8 @@ export default class SingleGameListController extends cc.Component {
     private gameList = [
         { title: '두더지 게임', thumbnail: 'mole_thumb', scene: 'Mole_ExplainScene' },
         { title: '과일 퍼즐', thumbnail: 'three_thumb', scene: '3m_ExplainScene' },
-        { title: '블록개수세기', thumbnail: 'block_thumb', scene: 'BlockCountGameScene' },
-        { title: '기억력게임', thumbnail: 'remember_thumb', scene: 'RememberGameScene' },
+        { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'BlockCountGameScene' },
+        { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'RememberGameScene' },
         // { title: '숫자뒤집기', thumbnail: 'reverse_thumb', scene: 'Reversecorrect_mainscene' },
         // { title: '썩은도토리', thumbnail: 'acorn_thumb', scene: 'Rottenacorn_mainscene' },
     ];
@@ -101,6 +105,11 @@ export default class SingleGameListController extends cc.Component {
         if (this.selectedScene) {
             cc.director.loadScene(this.selectedScene);
         }
+    }
+
+    onClickMain() {
+        cc.log("뒤로가기 버튼 클릭됨. Login 씬으로 이동.");
+        cc.director.loadScene("MainScene");
     }
 
 

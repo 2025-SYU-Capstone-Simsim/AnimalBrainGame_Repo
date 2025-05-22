@@ -36,6 +36,7 @@ export default class GameOverUI extends cc.Component {
         }
     }
 
+
     async submitScoreToServer() {
         const token = localStorage.getItem('jwtToken');
         if (!token) {

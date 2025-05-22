@@ -1,4 +1,5 @@
 
+require('./assets/scripts/Controller/CommonUI/GameStartOverlay');
 require('./assets/scripts/Controller/CommonUI/GameState');
 require('./assets/scripts/Controller/CommonUI/LoginManager');
 require('./assets/scripts/Controller/CommonUI/MainMenuScene');

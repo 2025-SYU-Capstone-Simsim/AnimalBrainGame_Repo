@@ -28,19 +28,22 @@ export default class GameManager extends cc.Component {
   @property(cc.Label)
   scoreLabel: cc.Label = null;
 
-  // 7) TIMEOUT 표시용 레이블
-  @property(cc.Label)
-  timeoutLabel: cc.Label = null;
 
-  // 8) 남은 시간 표시용 레이블
+  // 7) 남은 시간 표시용 레이블
   @property(cc.Label)
   timeLabel: cc.Label = null;
+
+  @property(cc.Prefab)
+  gameStartOverlayPrefab: cc.Prefab = null;
+
+
+  // 게임 오버 오버레이 프리팹
+  @property(cc.Prefab)
+  gameOverUIPrefab: cc.Prefab = null;
 
   // 리스트로 돌아가기 버튼 
   @property(cc.Button) exitButton: cc.Node = null;
 
-  @property(cc.Node) startOverlay: cc.Node = null;
-  @property(cc.Label) countdownLabel: cc.Label = null;
 
   private correctCount: number = 0;
   private score: number = 0;
@@ -61,67 +64,48 @@ export default class GameManager extends cc.Component {
   onLoad() {
     GameState.lastGameScene = cc.director.getScene().name;
     cc.debug.setDisplayStats(false);
-    // Next/Skip 버튼 클릭
+
     if (this.nextButton) {
       this.nextButton.node.on('click', this.nextQuestion, this);
     }
 
-    // Score 초기화
     this.score = 0;
     if (this.scoreLabel) {
       this.scoreLabel.string = `${this.score}`;
     }
 
-    // TIMEOUT 레이블 숨기기
-    if (this.timeoutLabel) {
-      this.timeoutLabel.node.active = false;
-    }
-
-    // 남은 시간 레이블 초기화
     this.timeLeft = 100;
     if (this.timeLabel) {
       this.timeLabel.string = `${this.timeLeft}`;
     }
 
-    // 카운트다운 시작 전 Overlay 보이기
-    this.startOverlay.active = true;
-    this.countdownLabel.node.active = true;
-    this.startCountdown();
+    // Game Start 오버레이 적용
+    if (this.gameStartOverlayPrefab) {
+      const overlay = cc.instantiate(this.gameStartOverlayPrefab);
+      this.node.addChild(overlay);
+      overlay.setPosition(0, 0);
 
-    // // 전체 게임 100초 카운트다운 시작
-    // this.startTimer();
-
-    // // 첫 문제 생성
-    // this.generateQuestion();
+      // 오버레이 애니메이션 시간 (예: 2초) 후 시작
+      this.scheduleOnce(() => {
+        this.startGame();
+      }, 2);
+    } else {
+      this.startGame();
+    }
   }
 
-    private startCountdown() {
-    let count = 3;
-    this.countdownLabel.string = count.toString();
-
-    const countdownCallback = () => {
-      count--;
-      if (count > 0) {
-        this.countdownLabel.string = count.toString();
-      } else if (count === 0) {
-        this.countdownLabel.string = "시작!";
-      } else {
-        this.unschedule(countdownCallback);
-        this.countdownLabel.node.active = false;
-        this.startOverlay.active = false;
-
-        this.startTimer();
-        this.generateQuestion();
-      }
-    };
-
-    this.schedule(countdownCallback, 1, 3);
+  private startGame() {
+    this.startTimer();         // 타이머 시작
+    this.generateQuestion();   // 첫 문제 생성
   }
+
+
+
 
   /** 100초 타이머 시작 */
   private startTimer() {
     this.unschedule(this.updateTimer);
-    this.timeLeft = 100;
+    this.timeLeft = 10;
     if (this.timeLabel) {
       this.timeLabel.string = `${this.timeLeft}`;
     }
@@ -142,12 +126,6 @@ export default class GameManager extends cc.Component {
 
   /** 전체 시간이 다 됐을 때 호출 */
   private onTimeout() {
-    // “TIMEOUT” 표시
-    if (this.timeoutLabel) {
-      this.timeoutLabel.node.active = true;
-      this.timeoutLabel.string = 'TIMEOUT';
-    }
-
     // 모든 버튼 비활성화
     this.optionButtons.forEach(btn => btn.interactable = false);
     if (this.nextButton) {
@@ -158,9 +136,13 @@ export default class GameManager extends cc.Component {
     GameState.lastGameScene = cc.director.getScene().name;
     GameState.score = this.score;
     GameState.gameId = "block-count-game"; // 원하는 식별자
+    // 게임종료 Prefab 생성
+    const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
+    this.node.addChild(gameOverUI);  // 또는 Canvas에 직접 붙여도 됨
 
-    // 게임오버 씬으로 이동
-    cc.director.loadScene("GameOver");
+    // 정중앙 배치
+    gameOverUI.setPosition(0, 0);
+
   }
 
 
@@ -204,29 +186,29 @@ export default class GameManager extends cc.Component {
 
     // 정답인 경우
     if (selected === this.correctCount) {
-        this.answered = true;
-        this.resultLabel.string = '🎉 정답입니다!';
-        this.score += 20;  // 맞았을 때 +10
-        if (this.scoreLabel) {
-          this.scoreLabel.string = `${this.score}`;
-        }
-        if (this.nextButton) {
-          const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
-          lbl.string = '다음으로';
-        }
+      this.answered = true;
+      this.resultLabel.string = '🎉 정답입니다!';
+      this.score += 20;  // 맞았을 때 +10
+      if (this.scoreLabel) {
+        this.scoreLabel.string = `${this.score}`;
       }
+      if (this.nextButton) {
+        const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
+        lbl.string = '다음으로';
+      }
+    }
     // 오답인 경우
     else {
-        this.resultLabel.string = '❌ 틀렸습니다!';
-        this.score -= 10;  // 틀렸을 때 -10
-        if (this.scoreLabel) {
-          this.scoreLabel.string = `${this.score}`;
-        }
-        if (this.nextButton) {
-          const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
-          lbl.string = '건너뛰기';
-        }
+      this.resultLabel.string = '❌ 틀렸습니다!';
+      this.score -= 10;  // 틀렸을 때 -10
+      if (this.scoreLabel) {
+        this.scoreLabel.string = `${this.score}`;
       }
+      if (this.nextButton) {
+        const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
+        lbl.string = '건너뛰기';
+      }
+    }
   }
 
   /** 다음 문제로 넘어가기 */
@@ -320,7 +302,7 @@ export default class GameManager extends cc.Component {
     }
   }
 
-  loadList(){
+  loadList() {
     console.log("싱글 게임 리스트로 돌아가기");
     cc.director.loadScene('SingleGameList');
   }

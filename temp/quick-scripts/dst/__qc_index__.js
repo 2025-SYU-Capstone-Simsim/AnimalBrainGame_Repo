@@ -10,6 +10,7 @@
                     };
                     function __define (exports, require, module) {
                         if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}
+require('./assets/scripts/Controller/CommonUI/GameStartOverlay');
 require('./assets/scripts/Controller/CommonUI/GameState');
 require('./assets/scripts/Controller/CommonUI/LoginManager');
 require('./assets/scripts/Controller/CommonUI/MainMenuScene');
