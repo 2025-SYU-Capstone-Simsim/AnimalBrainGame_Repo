@@ -15,6 +15,9 @@ export default class GameController extends cc.Component {
     @property(cc.Label) timeoutLabel: cc.Label = null;
     @property(cc.Button) exitButton: cc.Button = null;
     @property(cc.Sprite) frogSprite: cc.Sprite = null;
+    @property(cc.Node) startOverlay: cc.Node = null;
+    @property(cc.Label) countdownLabel: cc.Label = null;
+
 
     private colorSequence: string[] = [];
     private userInput: string[] = [];
@@ -44,9 +47,14 @@ export default class GameController extends cc.Component {
         this.blueButton.node.on('click', () => this.onColorButtonClick('blue'), this);
 
         this.setInitialButtonState();
-        this.startButton.node.active = true;
+        this.startButton.node.active = false;
         this.timerLabel.node.active = false;
         this.timeoutLabel.node.active = false;
+
+            // ✅ 카운트다운 준비
+        this.startOverlay.active = true;
+        this.countdownLabel.node.active = true;
+        this.startCountdown();
 
         this.tickCallback = this.updateTimer.bind(this);
         this.setFrogState("neutral");
@@ -67,6 +75,49 @@ export default class GameController extends cc.Component {
             console.log('redButton 눌림');
             });
     }
+    
+    private startCountdown() {
+        let count = 3;
+        this.countdownLabel.string = count.toString();
+        console.log("카운트다운 시작");
+
+        const countdownCallback = () => {
+            console.log("카운트:", count);
+            count--;
+            if (count > 0) {
+                this.countdownLabel.string = count.toString();
+            } else if (count === 0) {
+                this.countdownLabel.string = "시작!";
+            } else {
+                this.unschedule(countdownCallback);
+                this.countdownLabel.node.active = false;
+                this.startOverlay.active = false;
+                this.beginGame();
+            }
+        };
+
+        this.schedule(countdownCallback, 1, 3);
+    }
+
+
+
+    private beginGame() {
+        this.colorSequence = [];
+        this.userInput = [];
+        this.score = 0;
+        this.level = 1;
+        this.updateScore();
+        this.setStatusMessage("게임 시작!");
+        this.hintLabel.string = "";
+        this.isGameActive = true;
+        this.setFrogState("neutral");
+        this.startTimer();
+        this.generateColorSequence();
+        this.showColorSequence();
+    }
+
+
+
 
     private setFrogState(state: "neutral" | "smile" | "cry") {
         const spriteMap = {
@@ -100,7 +151,6 @@ export default class GameController extends cc.Component {
 
     private onStartGame() {
         const btnLabel = this.startButton.node.getComponentInChildren(cc.Label).string;
-
         if (btnLabel === "다시 도전") {
             this.userInput = [];
             this.setStatusMessage("현재 단계 다시 시작!");
@@ -110,21 +160,7 @@ export default class GameController extends cc.Component {
             this.setFrogState("neutral");
             this.generateColorSequence();
             this.showColorSequence();
-        } else {
-            this.colorSequence = [];
-            this.userInput = [];
-            this.score = 0;
-            this.level = 1; 
-            this.updateScore();
-            this.setStatusMessage("게임 시작!");
-            this.hintLabel.string = "";
-            this.isGameActive = true;
-            this.startButton.node.active = false;
-            this.setFrogState("neutral");
-            this.startTimer();
-            this.generateColorSequence();
-            this.showColorSequence();
-        }
+        } 
     }
 
     private onColorButtonClick(color: string) {
@@ -153,8 +189,6 @@ export default class GameController extends cc.Component {
         this.checkUserInput();
     }
 
-
-
     private updateTimer() {
         this.remainingTime--;
         this.timerLabel.string = `${this.remainingTime}`;
@@ -166,7 +200,7 @@ export default class GameController extends cc.Component {
 
     private startTimer() {
         this.unschedule(this.tickCallback);
-        this.remainingTime = 60;
+        this.remainingTime = 100;
         this.timerLabel.string = `${this.remainingTime}`;
         this.timerLabel.node.active = true;
         this.timeoutLabel.node.active = false;
@@ -301,7 +335,5 @@ export default class GameController extends cc.Component {
     loadList() {
         cc.director.loadScene('SingleGameList');
     }
-
-
 
 }

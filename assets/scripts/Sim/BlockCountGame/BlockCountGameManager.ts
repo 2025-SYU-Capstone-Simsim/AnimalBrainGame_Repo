@@ -39,6 +39,9 @@ export default class GameManager extends cc.Component {
   // 리스트로 돌아가기 버튼 
   @property(cc.Button) exitButton: cc.Node = null;
 
+  @property(cc.Node) startOverlay: cc.Node = null;
+  @property(cc.Label) countdownLabel: cc.Label = null;
+
   private correctCount: number = 0;
   private score: number = 0;
   private answered: boolean = false;
@@ -47,12 +50,13 @@ export default class GameManager extends cc.Component {
   private timeLeft: number = 60;
 
   // y축(높이)마다 사용할 색상
-  private layerColors: cc.Color[] = [
-    cc.color(100, 170, 255),  // y=0
-    cc.color(255, 100, 100),  // y=1
-    cc.color(100, 255, 100),  // y=2
-    cc.color(255, 255, 100),  // y=3
+  private blockTextures: string[] = [
+    "Images/Sim/navyBlock",       // y=0
+    "Images/Sim/darkBlueBlock",   // y=1
+    "Images/Sim/blueBlock",       // y=2
+    "Images/Sim/whiteblueBlock"   // y=3
   ];
+
 
   onLoad() {
     GameState.lastGameScene = cc.director.getScene().name;
@@ -79,11 +83,39 @@ export default class GameManager extends cc.Component {
       this.timeLabel.string = `${this.timeLeft}`;
     }
 
-    // 전체 게임 100초 카운트다운 시작
-    this.startTimer();
+    // ✅ 카운트다운 시작 전 Overlay 보이기
+    this.startOverlay.active = true;
+    this.countdownLabel.node.active = true;
+    this.startCountdown();
 
-    // 첫 문제 생성
-    this.generateQuestion();
+    // // 전체 게임 100초 카운트다운 시작
+    // this.startTimer();
+
+    // // 첫 문제 생성
+    // this.generateQuestion();
+  }
+
+    private startCountdown() {
+    let count = 3;
+    this.countdownLabel.string = count.toString();
+
+    const countdownCallback = () => {
+      count--;
+      if (count > 0) {
+        this.countdownLabel.string = count.toString();
+      } else if (count === 0) {
+        this.countdownLabel.string = "시작!";
+      } else {
+        this.unschedule(countdownCallback);
+        this.countdownLabel.node.active = false;
+        this.startOverlay.active = false;
+
+        this.startTimer();
+        this.generateQuestion();
+      }
+    };
+
+    this.schedule(countdownCallback, 1, 3);
   }
 
   /** 100초 타이머 시작 */
@@ -215,7 +247,6 @@ export default class GameManager extends cc.Component {
     const blockW = 100, blockH = 50, blockD = 50;
     const maxSize = 4, maxHeight = 4;
 
-    // 가능한 (x,z) 좌표 셔플
     const xzList: { x: number; z: number }[] = [];
     for (let x = 0; x < maxSize; x++) {
       for (let z = 0; z < maxSize; z++) {
@@ -224,7 +255,6 @@ export default class GameManager extends cc.Component {
     }
     this.shuffleArray(xzList);
 
-    // 컬럼 단위로 y=0→1→… 채우기
     type Pos = { x: number; z: number; y: number };
     const placedCoords: Pos[] = [];
     let placed = 0;
@@ -236,7 +266,6 @@ export default class GameManager extends cc.Component {
       if (placed >= count) break outer;
     }
 
-    // y층별 그룹핑
     const layers: Pos[][] = [];
     let maxY = 0;
     placedCoords.forEach(p => {
@@ -245,13 +274,11 @@ export default class GameManager extends cc.Component {
       layers[p.y].push(p);
     });
 
-    // 애니메이션 파라미터
-    const dropH    = 500;
-    const dropDur  = 0.15;
+    const dropH = 500;
+    const dropDur = 0.15;
     const layerGap = dropDur + 0.08;
-    const itemGap  = 0.05;
+    const itemGap = 0.05;
 
-    // y=0→1→… 순서대로 떨어뜨리기
     for (let y = 0; y <= maxY; y++) {
       const layer = layers[y] || [];
       layer.forEach((p, i) => {
@@ -259,21 +286,23 @@ export default class GameManager extends cc.Component {
         block.parent = this.blockParent;
         block.zIndex = p.x + p.z + p.y * 10;
 
-        // 아이소메트릭 목표 위치
-        const isoX   = (p.x - p.z) * (blockW / 2);
+        const isoX = (p.x - p.z) * (blockW / 2);
         const floorY = -300;
-        const baseY  = floorY + blockH / 2;
-        const targetY = -(p.x + p.z) * (blockH / 2)
-                        + baseY
-                        + p.y * blockD;
+        const baseY = floorY + blockH / 2;
+        const targetY = -(p.x + p.z) * (blockH / 2) + baseY + p.y * blockD;
 
         block.setPosition(isoX, targetY + dropH, 0);
 
-        // 층마다 색상 적용
         const spr = block.getComponent(cc.Sprite)!;
-        spr.node.color = this.layerColors[p.y] ?? cc.color(200, 200, 200);
+        const texPath = this.blockTextures[p.y] ?? this.blockTextures[0];
+        cc.resources.load(texPath, cc.SpriteFrame, (err, spriteFrame) => {
+          if (!err && spriteFrame) {
+            spr.spriteFrame = spriteFrame;
+          } else {
+            console.warn(`블록 텍스처 로드 실패: ${texPath}`, err);
+          }
+        });
 
-        // tween 애니메이션
         const totalDelay = y * layerGap + i * itemGap;
         cc.tween(block)
           .delay(totalDelay)
@@ -296,5 +325,4 @@ export default class GameManager extends cc.Component {
     cc.director.loadScene('SingleGameList');
   }
 
-  
 }
