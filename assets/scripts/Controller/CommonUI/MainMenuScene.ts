@@ -19,12 +19,12 @@ export default class MainMenu extends cc.Component {
     const jwtToken = localStorage.getItem('jwtToken');
     const browserId = localStorage.getItem('browserId');
 
-    // ✅ 초대 링크 감지 + 로그인 상태 확인
+    //  초대 링크 감지 + 로그인 상태 확인
     if (incomingRoomId) {
-      cc.log("🔗 초대 링크 감지! roomId:", incomingRoomId);
+      cc.log("초대 링크 감지 roomId:", incomingRoomId);
 
       if (!jwtToken || !browserId) {
-        cc.warn("❌ 로그인 안됨 → 로그인 후 복귀를 위해 roomId 저장");
+        cc.warn("로그인 안됨 → 로그인 후 복귀를 위해 roomId 저장");
         localStorage.setItem("pendingRoomId", incomingRoomId);
         cc.director.loadScene("LoginScene");
         return;
@@ -38,7 +38,7 @@ export default class MainMenu extends cc.Component {
 
     // ✅ 로그인 상태 확인
     if (!jwtToken || !browserId) {
-      cc.warn('❌ 토큰 또는 브라우저 ID 없음 → 로그인으로 이동');
+      cc.warn('토큰 또는 브라우저 ID 없음 → 로그인으로 이동');
       cc.director.loadScene('LoginScene');
       return;
     }
@@ -57,7 +57,7 @@ export default class MainMenu extends cc.Component {
         return;
       }
 
-      cc.log("✅ 토큰 검증 완료");
+      cc.log("토큰 검증 완료");
 
       this.registerButtonEvents(this.singleButton.node, this.onClickSingle.bind(this));
       this.registerButtonEvents(this.multiButton.node, this.onClickMulti.bind(this));
@@ -71,7 +71,7 @@ export default class MainMenu extends cc.Component {
 
 
   registerButtonEvents(node: cc.Node, callback: () => void) {
-    cc.log("📎 버튼 이벤트 등록:", node.name);
+    cc.log("버튼 이벤트 등록:", node.name);
     node.on(cc.Node.EventType.TOUCH_END, callback);
     node.on(cc.Node.EventType.MOUSE_DOWN, callback);
   }
@@ -82,9 +82,9 @@ export default class MainMenu extends cc.Component {
   }
 
   onClickMulti() {
-    cc.log("🚀 onClickMulti 호출됨");
+    cc.log("onClickMulti 호출됨");
     GameState.isHost = true;
-    cc.log("🧾 isHost 설정됨:", GameState.isHost);
+    cc.log("isHost 설정됨:", GameState.isHost);
     cc.director.loadScene("MultiWatingPage");
   }
 

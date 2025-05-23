@@ -33,17 +33,17 @@ export default class MultiPlayConnect extends cc.Component {
     }
 
     start() {
-        cc.log("🔥 MultiPlayConnect start() 진입");
-        cc.log("📦 GameState.isHost:", GameState.isHost);
+        cc.log("MultiPlayConnect start() 진입");
+        cc.log("GameState.isHost:", GameState.isHost);
 
-        // ✅ StartButton은 Host에게만 보이도록 처리
+        // StartButton은 Host에게만 보이도록 처리
         if (this.StartButton) {
             this.StartButton.active = GameState.isHost;
             if (GameState.isHost) {
-                cc.log("✅ StartButton 활성화 (Host)");
+                cc.log("StartButton 활성화 (Host)");
                 this.registerButtonEvents(this.StartButton, this.createRoomAndShowInviteLink.bind(this));
             } else {
-                cc.log("🚫 Guest는 StartButton 비활성화");
+                cc.log("Guest는 StartButton 비활성화");
             }
         }
 
@@ -51,11 +51,11 @@ export default class MultiPlayConnect extends cc.Component {
         const character = GameState.character || 'dog';
 
         if (GameState.isHost) {
-            cc.log("🧑‍🚀 Host로서 UI 세팅");
+            cc.log("Host UI 세팅");
             if (this.player1Label) this.player1Label.string = `닉네임 : ${nickname}`;
             this.setCharacterSprite(this.player1CharacterNode, character);
         } else {
-            cc.log("🙍 Guest로서 UI 세팅");
+            cc.log("Guest UI 세팅");
             if (this.player2Label) this.player2Label.string = `닉네임 : ${nickname}`;
             this.setCharacterSprite(this.player2CharacterNode, character);
         }
@@ -63,7 +63,7 @@ export default class MultiPlayConnect extends cc.Component {
         const incomingRoomId = GameState.incomingRoomId;
         if (incomingRoomId) {
             this.roomId = incomingRoomId;
-            cc.log("📥 Guest로서 방 입장 요청:", this.roomId);
+            cc.log("Guest 방 입장 요청:", this.roomId);
             this.joinRoomAsGuest();
         }
     }
@@ -75,14 +75,14 @@ export default class MultiPlayConnect extends cc.Component {
 
     async createRoomAndShowInviteLink() {
         if (!GameState.isHost) {
-            cc.warn("🚫 Guest는 방을 생성할 수 없습니다.");
+            cc.warn("Guest는 방을 생성할 수 없습니다.");
             return;
         }
         cc.log("📡 createRoomAndShowInviteLink 실행됨");
 
         const token = localStorage.getItem('jwtToken');
         if (!token) {
-            cc.warn("❌ JWT 토큰 없음");
+            cc.warn("JWT 토큰 없음");
             return;
         }
 
@@ -96,14 +96,14 @@ export default class MultiPlayConnect extends cc.Component {
             });
 
             const result = await response.json();
-            cc.log("🌐 서버 응답:", result);
+            cc.log("서버 응답:", result);
 
             if (result.success) {
                 this.roomId = result.roomId;
                 if (this.ConnectLinkLabel) this.ConnectLinkLabel.string = result.inviteUrl;
 
-                cc.log(`🆔 생성된 방 코드: ${this.roomId}`);
-                cc.log(`🔗 초대 링크: ${result.inviteUrl}`);
+                cc.log(`생성된 방 코드: ${this.roomId}`);
+                cc.log(`초대 링크: ${result.inviteUrl}`);
 
                 this.listenForGuestUpdate();
             }
