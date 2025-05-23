@@ -11,13 +11,19 @@ export default class GameOverUI extends cc.Component {
 
     onLoad() {
         if (this.exitButton) {
-            this.exitButton.node.on('click', this.onExitClick, this);
+            this.registerButtonEvents(this.exitButton.node, this.onExitClick.bind(this));
         }
         if (this.retryButton) {
-            this.retryButton.node.on('click', this.onRetryClick, this);
+            this.registerButtonEvents(this.retryButton.node, this.onRetryClick.bind(this));
         }
 
         this.submitScoreToServer();
+    }
+
+    /** 버튼에 터치 & 클릭 이벤트 등록 */
+    registerButtonEvents(node: cc.Node, callback: () => void) {
+        node.on(cc.Node.EventType.TOUCH_END, callback);
+        node.on(cc.Node.EventType.MOUSE_DOWN, callback);
     }
 
     onExitClick() {
@@ -35,7 +41,6 @@ export default class GameOverUI extends cc.Component {
             cc.director.loadScene("MainScene");
         }
     }
-
 
     async submitScoreToServer() {
         const token = localStorage.getItem('jwtToken');

@@ -12,42 +12,62 @@ export default class MainMenu extends cc.Component {
     @property(cc.Button)
     myPageButton: cc.Button = null;
 
-    onLoad() {
-        const jwtToken = localStorage.getItem('jwtToken');
+async onLoad() {
+  const jwtToken = localStorage.getItem('jwtToken');
+  const browserId = localStorage.getItem('browserId');
 
-        if (!jwtToken) {
-            console.warn('로그인이 필요합니다.');
-            cc.director.loadScene('LoginScene');
-            return;
-        }
+  if (!jwtToken || !browserId) {
+    cc.warn('❌ 토큰 또는 브라우저 ID 없음 → 로그인으로 이동');
+    cc.director.loadScene('LoginScene');
+    return;
+  }
 
-        console.log('인증 토큰 확인 완료. 메인 메뉴에 접근 허용');
+  try {
+    const res = await fetch('http://localhost:3000/auth/verify-token', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${jwtToken}` }
+    });
 
-        // 버튼 클릭 이벤트 등록
-        this.singleButton.node.on('click', this.onClickSingle, this);
-        this.multiButton.node.on('click', this.onClickMulti, this);
-        this.myPageButton.node.on('click', this.onClickMyPage, this);
-
-        // 버튼 hover 효과 (scale only)
-        [this.singleButton, this.multiButton, this.myPageButton].forEach(btn => {
-            const node = btn.node;
-
-            node.on(cc.Node.EventType.MOUSE_ENTER, () => {
-                node.scale = 1.1;
-                // 웹 빌드에서만 적용됨
-                cc.game.canvas.style.cursor = "pointer";
-                (node as any)._domID && (document.getElementById((node as any)._domID).style.cursor = "pointer");
-            });
-
-            node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
-                node.scale = 1.0;
-                cc.game.canvas.style.cursor = "default";
-                (node as any)._domID && (document.getElementById((node as any)._domID).style.cursor = "default");
-            });
-        });
+    const result = await res.json();
+    if (!res.ok || !result.success) {
+      cc.warn("유효하지 않은 토큰. 로그인으로 리다이렉트");
+      localStorage.removeItem("jwtToken");
+      cc.director.loadScene("LoginScene");
+      return;
     }
 
+    cc.log("토큰 검증 완료 → MainMenu 계속 진행");
 
+    // 버튼 이벤트 등록
+    this.registerButtonEvents(this.singleButton.node, this.onClickSingle.bind(this));
+    this.registerButtonEvents(this.multiButton.node, this.onClickMulti.bind(this));
+    this.registerButtonEvents(this.myPageButton.node, this.onClickMyPage.bind(this));
+
+    if (!cc.sys.isMobile) {
+      [this.singleButton, this.multiButton, this.myPageButton].forEach(btn => {
+        const node = btn.node;
+        node.on(cc.Node.EventType.MOUSE_ENTER, () => {
+          node.scale = 1.1;
+          cc.game.canvas.style.cursor = "pointer";
+        });
+        node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
+          node.scale = 1.0;
+          cc.game.canvas.style.cursor = "default";
+        });
+      });
+    }
+
+  } catch (err) {
+    cc.error("서버 통신 오류 → 로그인으로 이동", err);
+    cc.director.loadScene("LoginScene");
+  }
+}
+
+
+    registerButtonEvents(node: cc.Node, callback: () => void) {
+        node.on(cc.Node.EventType.TOUCH_END, callback);
+        node.on(cc.Node.EventType.MOUSE_DOWN, callback);
+    }
 
     onClickSingle() {
         cc.log("싱글 게임 버튼 클릭됨. SingleGameList 씬으로 이동.");
@@ -55,7 +75,7 @@ export default class MainMenu extends cc.Component {
     }
 
     onClickMulti() {
-        cc.log("멀티 게임 버튼 클릭됨.  MultiWaiting씬으로 이동.");
+        cc.log("멀티 게임 버튼 클릭됨. MultiWating씬으로 이동.");
         cc.director.loadScene("MultiWatingPage");
     }
 

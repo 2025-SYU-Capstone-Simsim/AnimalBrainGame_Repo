@@ -26,7 +26,7 @@ export default class MultiPlayConnect extends cc.Component {
     player2CharacterNode: cc.Node = null;
 
     roomId: string = '';
-    pollingTimer: number = null; // ✅ 명확한 변수명으로 변경
+    pollingTimer: number = null;
 
     onLoad() {
         cc.debug.setDisplayStats(false);
@@ -34,31 +34,39 @@ export default class MultiPlayConnect extends cc.Component {
 
     start() {
         if (this.StartButton) {
-            this.StartButton.on('click', async () => {
-                await this.createRoomAndShowInviteLink();
-            }, this);
+            this.registerButtonEvents(this.StartButton, this.createRoomAndShowInviteLink.bind(this));
         }
 
         if (this.backButton) {
-            this.backButton.on(cc.Node.EventType.TOUCH_END, () => {
+            this.registerButtonEvents(this.backButton, () => {
                 cc.director.loadScene('MultiWatingPage');
-            }, this);
+            });
         }
 
-        // GameState 사용
         const nickname = GameState.nickname || '플레이어1';
         if (this.player1Label) this.player1Label.string = nickname;
 
-        const character = GameState.character || 'dog'; // 없을시 기본 캐릭터 dog
+        const character = GameState.character || 'dog';
         this.setCharacterSprite(this.player1CharacterNode, character);
+
+        const params = new URLSearchParams(window.location.search);
+        const incomingRoomId = params.get("roomId");
+
+        if (incomingRoomId) {
+            this.roomId = incomingRoomId;
+            cc.log("📥 초대 링크로 입장한 roomId:", this.roomId);
+            this.joinRoomAsGuest();
+        }
+    }
+
+    registerButtonEvents(node: cc.Node, callback: () => void) {
+        node.on(cc.Node.EventType.TOUCH_END, callback);
+        node.on(cc.Node.EventType.MOUSE_DOWN, callback);
     }
 
     async createRoomAndShowInviteLink() {
         const token = localStorage.getItem('jwtToken');
-        if (!token) {
-            cc.log('JWT 토큰이 없습니다. 로그인 먼저 필요');
-            return;
-        }
+        if (!token) return;
 
         try {
             const response = await fetch('http://localhost:3000/api/create-room', {
@@ -72,15 +80,8 @@ export default class MultiPlayConnect extends cc.Component {
             const result = await response.json();
             if (result.success) {
                 this.roomId = result.roomId;
-                if (this.ConnectLinkLabel) {
-                    this.ConnectLinkLabel.string = result.inviteUrl;
-                }
-                cc.log(`초대 링크: ${result.inviteUrl}`);
-                console.log(`초대 링크 (복사용): ${result.inviteUrl}`);
-
+                if (this.ConnectLinkLabel) this.ConnectLinkLabel.string = result.inviteUrl;
                 this.listenForGuestUpdate();
-            } else {
-                cc.log('초대 링크 생성 실패:', result.message);
             }
         } catch (err) {
             cc.log('서버 요청 실패:', err.message);
@@ -88,10 +89,8 @@ export default class MultiPlayConnect extends cc.Component {
     }
 
     listenForGuestUpdate() {
-        this.checkGuestUpdate(); // 최초 1회
-        this.pollingTimer = setInterval(() => {
-            this.checkGuestUpdate();
-        }, 5000);
+        this.checkGuestUpdate();
+        this.pollingTimer = setInterval(() => this.checkGuestUpdate(), 5000);
     }
 
     async checkGuestUpdate() {
@@ -102,13 +101,8 @@ export default class MultiPlayConnect extends cc.Component {
             if (result.success && result.data) {
                 const data = result.data;
                 if (data.guestNickname && data.guestCharacter) {
-                    if (this.player2Label) {
-                        this.player2Label.string = data.guestNickname;
-                    }
-
-                    if (this.player2CharacterNode) {
-                        this.setCharacterSprite(this.player2CharacterNode, data.guestCharacter);
-                    }
+                    if (this.player2Label) this.player2Label.string = data.guestNickname;
+                    this.setCharacterSprite(this.player2CharacterNode, data.guestCharacter);
                 }
             }
         } catch (err) {
@@ -118,24 +112,37 @@ export default class MultiPlayConnect extends cc.Component {
 
     setCharacterSprite(node: cc.Node, characterKey: string) {
         const sprite = node.getComponent(cc.Sprite);
-        if (!sprite) {
-            cc.warn("스프라이트 컴포넌트가 없습니다:", node.name);
-            return;
-        }
+        if (!sprite) return;
 
         if (!['dog', 'rabbit', 'tiger'].includes(characterKey)) {
             characterKey = 'dog';
         }
 
         const path = `Images/Common/characters/${characterKey}`;
-
         cc.resources.load(path, cc.SpriteFrame, (err, spriteFrame) => {
-            if (err) {
-                cc.error("스프라이트 로딩 실패:", path, err);
-                return;
+            if (!err && spriteFrame) {
+                sprite.spriteFrame = spriteFrame;
             }
-            sprite.spriteFrame = spriteFrame;
         });
+    }
+
+    async joinRoomAsGuest() {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) return;
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/join-room/${this.roomId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                this.listenForGuestUpdate();
+            }
+        } catch (err) {
+            cc.error("게스트 입장 실패:", err.message);
+        }
     }
 
     onDestroy() {

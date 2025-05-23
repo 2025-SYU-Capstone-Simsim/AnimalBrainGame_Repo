@@ -27,29 +27,38 @@ export default class LoginManager extends cc.Component {
   @property(cc.Node)
   tigerSlot: cc.Node = null;
 
-  private currentSelectedContainer: cc.Node = null; // DogCharacter 같은 부모 노드를 추적
-
+  private currentSelectedContainer: cc.Node = null;
   private selectedCharacter: string = '';
 
   onLoad() {
     this.startButton.interactable = false;
 
-    // 초기화 시 모든 슬롯 초기화
+    this.tryAutoLogin();
+
     this.clearSlots();
     this.instantiateCharacter('dog');
     this.instantiateCharacter('rabbit');
     this.instantiateCharacter('tiger');
 
-    // 커서 변경 이벤트 등록
-    this.startButton.node.on(cc.Node.EventType.MOUSE_ENTER, () => {
-      cc.game.canvas.style.cursor = "pointer";
-    });
-    this.startButton.node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
-      cc.game.canvas.style.cursor = "default";
-    });
+    // 모바일 & 데스크탑 모두 버튼 작동하도록 이벤트 등록
+    this.registerButtonEvents(this.startButton.node, this.onClickStart.bind(this));
+
+    // 마우스 커서 변경은 데스크탑에서만
+    if (!cc.sys.isMobile) {
+      this.startButton.node.on(cc.Node.EventType.MOUSE_ENTER, () => {
+        cc.game.canvas.style.cursor = "pointer";
+      });
+      this.startButton.node.on(cc.Node.EventType.MOUSE_LEAVE, () => {
+        cc.game.canvas.style.cursor = "default";
+      });
+    }
   }
 
-  // 슬롯 초기화 (모든 자식 제거) 
+  registerButtonEvents(node: cc.Node, callback: () => void) {
+    node.on(cc.Node.EventType.TOUCH_END, callback);
+    node.on(cc.Node.EventType.MOUSE_DOWN, callback);
+  }
+
   clearSlots() {
     this.dogSlot.removeAllChildren();
     this.rabbitSlot.removeAllChildren();
@@ -72,16 +81,22 @@ export default class LoginManager extends cc.Component {
       slot.removeAllChildren();
       slot.addChild(instance);
 
+      // 모바일 터치와 데스크탑 마우스 모두 대응
       container.on(cc.Node.EventType.MOUSE_DOWN, () => {
         this.selectCharacter(type, container);
       });
+      container.on(cc.Node.EventType.TOUCH_START, () => {
+        this.selectCharacter(type, container);
+      });
 
-      container.on(cc.Node.EventType.MOUSE_ENTER, () => {
-        cc.game.canvas.style.cursor = "pointer";
-      });
-      container.on(cc.Node.EventType.MOUSE_LEAVE, () => {
-        cc.game.canvas.style.cursor = "default";
-      });
+      if (!cc.sys.isMobile) {
+        container.on(cc.Node.EventType.MOUSE_ENTER, () => {
+          cc.game.canvas.style.cursor = "pointer";
+        });
+        container.on(cc.Node.EventType.MOUSE_LEAVE, () => {
+          cc.game.canvas.style.cursor = "default";
+        });
+      }
     }
   }
 
@@ -99,18 +114,10 @@ export default class LoginManager extends cc.Component {
   }
 
   setCharacterEffect(node: cc.Node, selected: boolean) {
-    if (selected) {
-      node.setScale(1.2);
-      node.opacity = 255;
-    } else {
-      node.setScale(1);
-      node.opacity = 200;
-    }
+    node.setScale(selected ? 1.2 : 1);
+    node.opacity = selected ? 255 : 200;
   }
 
-
-
-  /** 캐릭터 선택 처리 */
   onSelectCharacter(_: cc.Event, character: string) {
     if (typeof character === 'string') {
       this.selectedCharacter = character;
@@ -130,6 +137,7 @@ export default class LoginManager extends cc.Component {
   checkFormValid() {
     const isFilled = this.nicknameInput.string.trim() !== '' && this.selectedCharacter !== '';
     this.startButton.interactable = isFilled;
+    cc.log("폼 유효성:", isFilled);
   }
 
   async onClickStart() {
@@ -170,12 +178,10 @@ export default class LoginManager extends cc.Component {
 
       if (!profileRes.ok) return;
 
-      // GameState에 정보 저장
       GameState.nickname = nickname;
       GameState.character = character;
 
       cc.log("GameState 저장됨:", GameState.nickname, GameState.character);
-
       cc.director.loadScene("MainScene");
 
     } catch (error) {
@@ -188,4 +194,32 @@ export default class LoginManager extends cc.Component {
     window.crypto.getRandomValues(array);
     return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
   }
+
+  async tryAutoLogin() {
+    const jwtToken = localStorage.getItem('jwtToken');
+    const browserId = localStorage.getItem('browserId');
+    if (!jwtToken || !browserId) return;
+
+    const verify = await fetch('http://localhost:3000/auth/verify-token', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${jwtToken}` }
+    });
+    const verifyResult = await verify.json();
+    if (!verify.ok || !verifyResult.success) return;
+
+    const res = await fetch('http://localhost:3000/auth/user-info', {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${jwtToken}` }
+    });
+
+    const result = await res.json();
+    if (result.success) {
+      GameState.nickname = result.nickname;
+      GameState.character = result.character;
+      GameState.recentSingleScores = result.recentSingleScores;
+      cc.log("자동 로그인 GameState 채움:", GameState);
+      cc.director.loadScene("MainScene");
+    }
+  }
+
 }

@@ -19,7 +19,7 @@
             "children": [
               {
                 "width": 204,
-                "height": 226,
+                "height": 377,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -28,7 +28,7 @@
               },
               {
                 "width": 204,
-                "height": 377,
+                "height": 226,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -106,6 +106,13 @@
     },
     " common-asset-worker-worker": {}
   },
-  "panels": {},
+  "panels": {
+    "builder": {
+      "x": 462,
+      "y": 47,
+      "width": 514,
+      "height": 736
+    }
+  },
   "panelLabelWidth": {}
 }
