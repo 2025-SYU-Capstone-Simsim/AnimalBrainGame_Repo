@@ -182,7 +182,16 @@ export default class LoginManager extends cc.Component {
       GameState.character = character;
 
       cc.log("GameState 저장됨:", GameState.nickname, GameState.character);
-      cc.director.loadScene("MainScene");
+      const pendingRoomId = localStorage.getItem("pendingRoomId");
+      if (pendingRoomId) {
+        cc.log("🔁 로그인 후 초대 방으로 이동:", pendingRoomId);
+        GameState.incomingRoomId = pendingRoomId;
+        GameState.isHost = false;
+        localStorage.removeItem("pendingRoomId");
+        cc.director.loadScene("PlayerConnect");
+      } else {
+        cc.director.loadScene("MainScene");
+      }
 
     } catch (error) {
       cc.error("에러 발생:", error);

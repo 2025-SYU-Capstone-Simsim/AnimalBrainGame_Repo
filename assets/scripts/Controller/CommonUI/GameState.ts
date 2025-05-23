@@ -4,6 +4,8 @@ export default class GameState {
   static character: string = '';
   static score: number = 0;
   static gameId: string = '';
+  static incomingRoomId: string = '';
+  static isHost: boolean = false; // 역할 구분 추가
 
   static recentSingleScores: {
     gameId: string;
@@ -20,5 +22,7 @@ export default class GameState {
     this.nickname = '';
     this.character = '';
     this.recentSingleScores = [];
+    this.incomingRoomId = '';
+    // this.isHost = false;
   }
 }

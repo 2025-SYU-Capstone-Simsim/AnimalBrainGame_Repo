@@ -93,16 +93,16 @@
         "__id__": 44
       },
       {
-        "__id__": 51
+        "__id__": 52
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 53
+        "__id__": 54
       },
       {
-        "__id__": 54
+        "__id__": 55
       }
     ],
     "_prefab": null,
@@ -2033,7 +2033,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "player2Character",
+    "_name": "GuestCharacter",
     "_objFlags": 0,
     "_parent": {
       "__id__": 32
@@ -2049,15 +2049,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 17,
-      "g": 153,
-      "b": 128,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 109.2,
-      "height": 378
+      "width": 40,
+      "height": 36
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2069,7 +2069,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -103.786,
+        -88,
         0,
         0,
         0,
@@ -2091,10 +2091,10 @@
     "_is3DNode": false,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "_id": "e95vrJgVVIKI8snNUyy1Tp"
+    "_id": "2fnsmovthE/Lp2N+zG/Eid"
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.Sprite",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -2108,25 +2108,20 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "?",
-    "_N$string": "?",
-    "_fontSize": 200,
-    "_lineHeight": 300,
-    "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "8884d469-918e-4222-bdae-e58200d18a58"
+    "_spriteFrame": null,
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
     },
-    "_isSystemFontUsed": false,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_styleFlags": 0,
-    "_underlineHeight": 0,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
-    "_N$cacheMode": 0,
-    "_id": "090nk0aUREYa8Xv8BMSZFU"
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": "38t3b7S7tJ3a0Iv6uvVvIC"
   },
   {
     "__type__": "cc.Sprite",
@@ -2162,7 +2157,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "StartButton",
+    "_name": "InviteButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -2372,8 +2367,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "두뇌 대결 시작 !",
-    "_N$string": "두뇌 대결 시작 !",
+    "_string": "초대 링크 만들기",
+    "_N$string": "초대 링크 만들기",
     "_fontSize": 55,
     "_lineHeight": 150,
     "_enableWrapText": false,
@@ -2463,7 +2458,11 @@
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 51
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 2,
@@ -2534,6 +2533,16 @@
     "_id": "76coBZrUxKXY2mW54uUFXo"
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 52
+    },
+    "component": "",
+    "_componentId": "7ba0c7WdwpEhIrHWvibQHBb",
+    "handler": "createRoomAndShowInviteLink",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.Node",
     "_name": "PlayerConnectController",
     "_objFlags": 0,
@@ -2544,7 +2553,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 52
+        "__id__": 53
       }
     ],
     "_prefab": null,
@@ -2600,7 +2609,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 51
+      "__id__": 52
     },
     "_enabled": true,
     "StartButton": {

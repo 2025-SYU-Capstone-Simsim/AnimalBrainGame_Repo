@@ -33,28 +33,37 @@ export default class MultiPlayConnect extends cc.Component {
     }
 
     start() {
+        cc.log("🔥 MultiPlayConnect start() 진입");
+        cc.log("📦 GameState.isHost:", GameState.isHost);
+
+        // ✅ StartButton은 Host에게만 보이도록 처리
         if (this.StartButton) {
-            this.registerButtonEvents(this.StartButton, this.createRoomAndShowInviteLink.bind(this));
+            this.StartButton.active = GameState.isHost;
+            if (GameState.isHost) {
+                cc.log("✅ StartButton 활성화 (Host)");
+                this.registerButtonEvents(this.StartButton, this.createRoomAndShowInviteLink.bind(this));
+            } else {
+                cc.log("🚫 Guest는 StartButton 비활성화");
+            }
         }
 
-        if (this.backButton) {
-            this.registerButtonEvents(this.backButton, () => {
-                cc.director.loadScene('MultiWatingPage');
-            });
-        }
-
-        const nickname = GameState.nickname || '플레이어1';
-        if (this.player1Label) this.player1Label.string = nickname;
-
+        const nickname = GameState.nickname || '플레이어';
         const character = GameState.character || 'dog';
-        this.setCharacterSprite(this.player1CharacterNode, character);
 
-        const params = new URLSearchParams(window.location.search);
-        const incomingRoomId = params.get("roomId");
+        if (GameState.isHost) {
+            cc.log("🧑‍🚀 Host로서 UI 세팅");
+            if (this.player1Label) this.player1Label.string = `닉네임 : ${nickname}`;
+            this.setCharacterSprite(this.player1CharacterNode, character);
+        } else {
+            cc.log("🙍 Guest로서 UI 세팅");
+            if (this.player2Label) this.player2Label.string = `닉네임 : ${nickname}`;
+            this.setCharacterSprite(this.player2CharacterNode, character);
+        }
 
+        const incomingRoomId = GameState.incomingRoomId;
         if (incomingRoomId) {
             this.roomId = incomingRoomId;
-            cc.log("📥 초대 링크로 입장한 roomId:", this.roomId);
+            cc.log("📥 Guest로서 방 입장 요청:", this.roomId);
             this.joinRoomAsGuest();
         }
     }
@@ -65,8 +74,17 @@ export default class MultiPlayConnect extends cc.Component {
     }
 
     async createRoomAndShowInviteLink() {
+        if (!GameState.isHost) {
+            cc.warn("🚫 Guest는 방을 생성할 수 없습니다.");
+            return;
+        }
+        cc.log("📡 createRoomAndShowInviteLink 실행됨");
+
         const token = localStorage.getItem('jwtToken');
-        if (!token) return;
+        if (!token) {
+            cc.warn("❌ JWT 토큰 없음");
+            return;
+        }
 
         try {
             const response = await fetch('http://localhost:3000/api/create-room', {
@@ -78,9 +96,15 @@ export default class MultiPlayConnect extends cc.Component {
             });
 
             const result = await response.json();
+            cc.log("🌐 서버 응답:", result);
+
             if (result.success) {
                 this.roomId = result.roomId;
                 if (this.ConnectLinkLabel) this.ConnectLinkLabel.string = result.inviteUrl;
+
+                cc.log(`🆔 생성된 방 코드: ${this.roomId}`);
+                cc.log(`🔗 초대 링크: ${result.inviteUrl}`);
+
                 this.listenForGuestUpdate();
             }
         } catch (err) {
@@ -88,21 +112,34 @@ export default class MultiPlayConnect extends cc.Component {
         }
     }
 
+
     listenForGuestUpdate() {
         this.checkGuestUpdate();
         this.pollingTimer = setInterval(() => this.checkGuestUpdate(), 5000);
     }
 
     async checkGuestUpdate() {
+        if (!this.roomId) return;
+
         try {
             const response = await fetch(`http://localhost:3000/api/room-status/${this.roomId}`);
             const result = await response.json();
 
             if (result.success && result.data) {
                 const data = result.data;
-                if (data.guestNickname && data.guestCharacter) {
-                    if (this.player2Label) this.player2Label.string = data.guestNickname;
-                    this.setCharacterSprite(this.player2CharacterNode, data.guestCharacter);
+
+                if (GameState.isHost) {
+                    // Host 입장일 때: Guest 정보 표시 (Player2)
+                    if (data.guestNickname && data.guestCharacter) {
+                        if (this.player2Label) this.player2Label.string = `닉네임 : ${data.guestNickname}`;
+                        this.setCharacterSprite(this.player2CharacterNode, data.guestCharacter);
+                    }
+                } else {
+                    // Guest 입장일 때: Host 정보 표시 (Player1)
+                    if (data.hostNickname && data.hostCharacter) {
+                        if (this.player1Label) this.player1Label.string = `닉네임 : ${data.hostNickname}`;
+                        this.setCharacterSprite(this.player1CharacterNode, data.hostCharacter);
+                    }
                 }
             }
         } catch (err) {
@@ -111,6 +148,7 @@ export default class MultiPlayConnect extends cc.Component {
     }
 
     setCharacterSprite(node: cc.Node, characterKey: string) {
+        
         const sprite = node.getComponent(cc.Sprite);
         if (!sprite) return;
 
