@@ -15,7 +15,7 @@ require('./assets/scripts/Controller/CommonUI/GameState');
 require('./assets/scripts/Controller/CommonUI/LoginManager');
 require('./assets/scripts/Controller/CommonUI/MainMenuScene');
 require('./assets/scripts/Controller/Multi/MultiGameWait');
-require('./assets/scripts/Controller/Multi/MultiPlayerConnect');
+require('./assets/scripts/Controller/Multi/MultiPlayConnect');
 require('./assets/scripts/Controller/MyPage/MyInfoController');
 require('./assets/scripts/Controller/MyPage/MyRecordController');
 require('./assets/scripts/Controller/Single/SingleGameList');

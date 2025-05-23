@@ -1,3 +1,4 @@
+import GameState from "./GameState";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -168,6 +169,12 @@ export default class LoginManager extends cc.Component {
       });
 
       if (!profileRes.ok) return;
+
+      // GameState에 정보 저장
+      GameState.nickname = nickname;
+      GameState.character = character;
+
+      cc.log("GameState 저장됨:", GameState.nickname, GameState.character);
 
       cc.director.loadScene("MainScene");
 

@@ -883,7 +883,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 567.74,
+      "width": 0,
       "height": 113.4
     },
     "_anchorPoint": {
@@ -935,9 +935,9 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "https://aaaa.aaa.?/??",
-    "_N$string": "https://aaaa.aaa.?/??",
-    "_fontSize": 48,
+    "_string": "",
+    "_N$string": "",
+    "_fontSize": 36,
     "_lineHeight": 90,
     "_enableWrapText": true,
     "_N$file": {
@@ -1258,7 +1258,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "playerName",
+    "_name": "player1Name",
     "_objFlags": 0,
     "_parent": {
       "__id__": 20
@@ -1524,9 +1524,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "c607ae50-3cf9-407e-8a0a-a86319ada33b"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -1841,7 +1839,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "playerName",
+    "_name": "playe2Name",
     "_objFlags": 0,
     "_parent": {
       "__id__": 32
@@ -2035,7 +2033,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "NoPlayer2",
+    "_name": "player2Character",
     "_objFlags": 0,
     "_parent": {
       "__id__": 32
@@ -2231,7 +2229,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Background",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 44
     },
@@ -2300,7 +2298,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Label",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 45
     },
@@ -2598,7 +2596,7 @@
     "_id": "3eFLQRvoxIU7D4FPutN6mi"
   },
   {
-    "__type__": "8a919HXrIxJFKUK53Y3gCSz",
+    "__type__": "7ba0c7WdwpEhIrHWvibQHBb",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -2611,7 +2609,22 @@
     "backButton": {
       "__id__": 10
     },
-    "_id": "38UKARmtZOtpkEkFq9ZgAP"
+    "ConnectLinkLabel": {
+      "__id__": 18
+    },
+    "player1Label": {
+      "__id__": 26
+    },
+    "player1CharacterNode": {
+      "__id__": 29
+    },
+    "player2Label": {
+      "__id__": 38
+    },
+    "player2CharacterNode": {
+      "__id__": 41
+    },
+    "_id": "c0Mj7WbxlIJ5r1sTvVRQ0+"
   },
   {
     "__type__": "cc.Canvas",

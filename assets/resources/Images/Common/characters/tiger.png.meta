@@ -12,7 +12,7 @@
   "height": 485,
   "platformSettings": {},
   "subMetas": {
-    "MainSceneTiger": {
+    "tiger": {
       "ver": "1.0.6",
       "uuid": "27afc748-9c23-4051-a944-687c94cbc1ea",
       "importer": "sprite-frame",
