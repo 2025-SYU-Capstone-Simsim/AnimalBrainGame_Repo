@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "2eca1e6a-093b-4825-aeef-6aeec84414a4",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 16,
+  "height": 20,
+  "platformSettings": {},
+  "subMetas": {
+    "화살표머리": {
+      "ver": "1.0.6",
+      "uuid": "e5a4b011-f2d7-48c4-92d0-c995bc3ab5ee",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "2eca1e6a-093b-4825-aeef-6aeec84414a4",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 16,
+      "height": 20,
+      "rawWidth": 16,
+      "rawHeight": 20,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "fba5db3a-3b3c-48a6-a026-694b6bfd82df",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 1080,
+  "height": 1920,
+  "platformSettings": {},
+  "subMetas": {
+    "FruitPuzzleBack": {
+      "ver": "1.0.6",
+      "uuid": "004391ce-488e-4e29-9cd9-c12052d7bd85",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "fba5db3a-3b3c-48a6-a026-694b6bfd82df",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1080,
+      "height": 1920,
+      "rawWidth": 1080,
+      "rawHeight": 1920,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
