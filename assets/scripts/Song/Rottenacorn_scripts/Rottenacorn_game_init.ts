@@ -24,18 +24,29 @@ export default class GameInit extends cc.Component {
     private timerLabel: cc.Label = null;
     private scoreLabel: cc.Label = null;
     start() {
+        const sceneName = cc.director.getScene().name;
         // 타이머 프리팹 인스턴스화
         this.timerNode = cc.instantiate(this.timerDisplayPrefab);
         this.node.addChild(this.timerNode);
         this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
         this.updateTimer();
-
+        if(sceneName === 'Rottenacorn_Mainscene'){
+            this.timerNode.setPosition(cc.v2(180, 1700)); 
+        }
+        else if (sceneName ==='Rottenacorn_Multiscene'){
+            this.timerNode.setPosition(cc.v2(900, 1825)); 
+        }
         // 점수 프리팹 인스턴스화
         this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
         this.node.addChild(this.scoreNode);
         this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScore(0);
-        this.schedule(this.updateTimer, 1);
+        if(sceneName === 'Rottenacorn_Mainscene'){
+            this.scoreNode.setPosition(cc.v2(850, 1700));  
+        }
+        else if (sceneName ==='Rottenacorn_Multiscene'){
+            this.scoreNode.setPosition(cc.v2(750, 125));  
+        }
     }
     public updateScore(amount: number) {
         this.score+=amount;

@@ -13,22 +13,25 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "TimerNode",
+    "_name": "ScoreNode",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
       {
         "__id__": 2
+      },
+      {
+        "__id__": 6
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 6
+        "__id__": 10
       }
     ],
     "_prefab": {
-      "__id__": 7
+      "__id__": 11
     },
     "_opacity": 255,
     "_color": {
@@ -40,8 +43,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 270,
-      "height": 141
+      "width": 378,
+      "height": 126
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -52,8 +55,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -370,
-        670,
+        300,
+        660,
         0,
         0,
         0,
@@ -79,7 +82,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "TimerLabel",
+    "_name": "LabelText",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -107,7 +110,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 300,
+      "width": 150,
       "height": 80
     },
     "_anchorPoint": {
@@ -119,8 +122,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        50,
-        -5,
+        -80,
+        3,
         0,
         0,
         0,
@@ -159,8 +162,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "60",
-    "_N$string": "60",
+    "_string": "점수",
+    "_N$string": "점수",
     "_fontSize": 58,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -205,7 +208,138 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "cbVQqQIChD7o6nnJZIyqWP",
+    "fileId": "49Ncn8eSlF7ppi1GyAbPFT",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "ScoreLabel",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 7
+      },
+      {
+        "__id__": 8
+      }
+    ],
+    "_prefab": {
+      "__id__": 9
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 217,
+      "b": 84,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 270,
+      "height": 100
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        65,
+        3,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 6
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_string": "",
+    "_N$string": "",
+    "_fontSize": 58,
+    "_lineHeight": 40,
+    "_enableWrapText": true,
+    "_N$file": {
+      "__uuid__": "288b58d1-60b1-405b-b1df-520c93fc99ab"
+    },
+    "_isSystemFontUsed": false,
+    "_spacingX": 0,
+    "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 2,
+    "_N$cacheMode": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.LabelOutline",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 6
+    },
+    "_enabled": true,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 118,
+      "g": 5,
+      "b": 0,
+      "a": 255
+    },
+    "_width": 4,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__id__": 0
+    },
+    "fileId": "3aARr1EwpBrJM5wr+nSsuz",
     "sync": false
   },
   {
@@ -223,9 +357,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "31d5ff2b-9a18-409b-9717-a6c7feaae347"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,

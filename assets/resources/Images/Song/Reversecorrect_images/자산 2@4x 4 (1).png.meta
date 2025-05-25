@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "12d1815b-e3ee-4dd9-afd9-48cda2553c93",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 1080,
+  "height": 1920,
+  "platformSettings": {},
+  "subMetas": {
+    "자산 2@4x 4 (1)": {
+      "ver": "1.0.6",
+      "uuid": "4c9106cb-0cd4-4eed-8cd1-7e50b914972a",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "12d1815b-e3ee-4dd9-afd9-48cda2553c93",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 1080,
+      "height": 1920,
+      "rawWidth": 1080,
+      "rawHeight": 1920,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -23,17 +23,28 @@ export default class Game_init extends cc.Component {
     private scoreLabel: cc.Label = null;
     static instance: Game_init = null;
     start () {
+        const sceneName = cc.director.getScene().name;
         this.timerNode = cc.instantiate(this.timerDisplayPrefab);
         this.node.addChild(this.timerNode);
         this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
         this.updateTimer();
-        this.timerNode.setPosition(cc.v2(-350, 780));  // 화면 좌측 상단
+        if(sceneName === 'Reversecorrect_mainscene'){
+            this.timerNode.setPosition(cc.v2(-300, 800)); 
+        }
+        else if (sceneName ==='Reversecorrect_Multiscene'){
+            this.timerNode.setPosition(cc.v2(380, 900)); 
+        }
         // 점수 프리팹 인스턴스화
         this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
         this.node.addChild(this.scoreNode);
         this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScore(0);
-        this.scoreNode.setPosition(cc.v2(350,780));   //화면 우측 상단
+        if(sceneName === 'Reversecorrect_mainscene'){
+            this.scoreNode.setPosition(cc.v2(300, 800));  
+        }
+        else if (sceneName ==='Reversecorrect_Multiscene'){
+            this.scoreNode.setPosition(cc.v2(200, -830));  
+        }
         this.schedule(this.updateTimer, 1);
     }
     updateTimer() {
