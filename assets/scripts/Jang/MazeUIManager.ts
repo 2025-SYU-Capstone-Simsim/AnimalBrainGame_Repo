@@ -1,32 +1,32 @@
-// /assets/Scripts/ui/UIManager.ts
-import GameData from "./MazeGameData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class UIManager extends cc.Component {
-  @property(cc.Label) levelLabel!: cc.Label;
-  @property(cc.Label) timerLabel!: cc.Label;
-  @property(cc.Node)  backBtn!: cc.Node;
-  @property(cc.Label) scoreLabel!: cc.Label;
+export default class MazeUIManager extends cc.Component {
+  @property(cc.Node) timerNode!: cc.Node;    // 프리팹(Label) 노드로 할당
+  @property(cc.Node) scoreNode!: cc.Node;    // 프리팹(Label) 노드로 할당
+  @property(cc.Node) backBtn!: cc.Node;
+  // 시간 표시 갱신
+  public setTimer(time: number) {
+    if (this.timerNode) {
+      const timerLabel = this.timerNode.getComponent(cc.Label);
+      if (timerLabel) timerLabel.string = `${Math.ceil(time)}`;
+      // "Time: " 부분 제거!
+    }
+  }
 
-public setScore(score: number) {
-  this.scoreLabel.string = `Score: ${score}`;
-}
-  private timeRem = 60;
-
+  // 점수 표시 갱신
+  public setScore(score: number) {
+    if (this.scoreNode) {
+      const scoreLabel = this.scoreNode.getComponent(cc.Label);
+      if (scoreLabel) scoreLabel.string = `${score}`;
+      // "Score: " 부분 제거!
+    }
+  }
   onLoad() {
-   this.backBtn.on("click", () => {
-  GameData.currentLevel = 1;
-  GameData.resetScore();
-  this.setScore(0);
-  cc.director.loadScene("Maze_InformScene");
-});
+  if (this.backBtn) {
+    this.backBtn.on("click", () => {
+      cc.director.loadScene("SingleGameList");
+    });
   }
-
-  public setLevel(lv: number) {
-    this.levelLabel.string = `Level: ${lv}`;
-  }
-  public setTime(t: number) {
-    this.timerLabel.string = `Time: ${Math.ceil(t)}s`;
-  }
+}
 }

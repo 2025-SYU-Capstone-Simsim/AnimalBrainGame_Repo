@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "fea13e0b-a61c-434f-bd08-1d0da2680b94",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 896,
+  "height": 649,
+  "platformSettings": {},
+  "subMetas": {
+    "우는개굴": {
+      "ver": "1.0.6",
+      "uuid": "8ff14b83-ffb8-4c5f-b0c7-9c7c2a776111",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "fea13e0b-a61c-434f-bd08-1d0da2680b94",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 896,
+      "height": 649,
+      "rawWidth": 896,
+      "rawHeight": 649,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

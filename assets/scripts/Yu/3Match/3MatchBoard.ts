@@ -7,17 +7,22 @@ export default class ThreeMatchBoard extends cc.Component {
     @property(cc.Prefab) tilePrefab: cc.Prefab = null;
     @property(ThreeMatchManager) gameManager: ThreeMatchManager = null;
 
-    private boardSize: number = 8;  // 항상 8x8 고정
+    public boardSize: number = 7;  // 항상 8x8 고정
     private tileSize: number = 100;
-    private gap: number = 5;
+    private gap: number = 10;
 
-    private board: Tile[][] = [];
+    public board: Tile[][] = [];
     private isSwapping: boolean = false;
 
-    start() {
-        this.node.color = cc.Color.GRAY;
-        this.createBoard();
-    }
+start() {
+    this.node.color = cc.Color.GRAY;
+    this.createBoard();
+
+    this.scheduleOnce(() => {
+        this.checkAndExplodeMatches();  // 게임 시작 후 첫 매칭 탐지
+    }, 0.1);
+}
+
 
     createBoard() {
         this.board = [];
@@ -39,23 +44,26 @@ export default class ThreeMatchBoard extends cc.Component {
                 tile.row = row;
                 tile.col = col;
 
-                let bannedColors: cc.Color[] = [];
+                // 1. bannedColors를 bannedIndices로
+                let bannedIndices: number[] = [];
+
                 if (col >= 2) {
                     let left1 = this.board[row][col - 1];
                     let left2 = this.board[row][col - 2];
-                    if (left1 && left2 && left1.node.color.equals(left2.node.color)) {
-                        bannedColors.push(left1.node.color);
+                    if (left1 && left2 && left1['fruitIndex'] === left2['fruitIndex']) {
+                        bannedIndices.push(left1['fruitIndex']);
                     }
                 }
                 if (row >= 2) {
                     let top1 = this.board[row - 1][col];
                     let top2 = this.board[row - 2][col];
-                    if (top1 && top2 && top1.node.color.equals(top2.node.color)) {
-                        bannedColors.push(top1.node.color);
+                    if (top1 && top2 && top1['fruitIndex'] === top2['fruitIndex']) {
+                        bannedIndices.push(top1['fruitIndex']);
                     }
                 }
 
-                tile.setRandomColorExcluding(bannedColors);
+                // 2. 랜덤 과일 설정
+                tile.setRandomFruitExcluding(bannedIndices);
                 tile.addOutline();
 
                 this.board[row][col] = tile;
@@ -69,40 +77,41 @@ export default class ThreeMatchBoard extends cc.Component {
 
     checkAndExplodeMatches() {
         let matchedTiles: Tile[] = [];
-
+    
         for (let row = 0; row < this.boardSize; row++) {
             for (let col = 0; col < this.boardSize; col++) {
                 let tile = this.board[row][col];
                 if (!tile) continue;
-
+    
                 // 가로 검사
                 if (col <= this.boardSize - 3) {
                     let t1 = this.board[row][col + 1];
                     let t2 = this.board[row][col + 2];
-
-                    if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
-                        console.log(`가로 매칭 발견! (${row}, ${col})`);
+    
+                    // 색상 비교 → 과일 인덱스 비교
+                    if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                         matchedTiles.push(tile, t1, t2);
                     }
-                }
 
+                }
+    
                 // 세로 검사
                 if (row <= this.boardSize - 3) {
                     let t1 = this.board[row + 1][col];
                     let t2 = this.board[row + 2][col];
-
-                    if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
-                        console.log(`세로 매칭 발견! (${row}, ${col})`);
+    
+                    // 색상 비교 → 과일 인덱스 비교
+                    if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                         matchedTiles.push(tile, t1, t2);
                     }
+
                 }
             }
         }
-
+    
         matchedTiles = Array.from(new Set(matchedTiles));
-
+    
         if (matchedTiles.length > 0) {
-            console.log(`${matchedTiles.length}개 타일 폭발!`);
             if (this.gameManager) {
                 this.gameManager.addMatchScore(matchedTiles.length);
             }
@@ -110,57 +119,114 @@ export default class ThreeMatchBoard extends cc.Component {
                 tile.explode();
                 this.board[tile.row][tile.col] = null;
             }
-
+    
             this.scheduleOnce(() => {
                 this.fillEmptySpaces();
                 this.scheduleOnce(() => {
                     this.spawnNewTiles();
                     this.scheduleOnce(() => {
+                        // **다시 매칭이 일어날 수 있으므로 재귀 호출**
                         this.checkAndExplodeMatches();
                     }, 0.3);
                 }, 0.3);
             }, 0.3);
+        } else {
+            // 폭발된 타일이 없으면 다음 행동 없음
+            this.isSwapping = false;
         }
     }
+    
 
     swapTiles(tileA: Tile, tileB: Tile) {
         if (this.isSwapping) return;
-
+    
         let rowDiff = Math.abs(tileA.row - tileB.row);
         let colDiff = Math.abs(tileA.col - tileB.col);
-
+    
         if (!((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1))) {
-            console.log(" 인접한 타일이 아닙니다! 교환 불가");
+            console.log("인접한 타일이 아닙니다! 교환 불가");
             return;
         }
+    
         this.isSwapping = true;
-
-        let tempRow = tileA.row;
-        let tempCol = tileA.col;
-
+    
+        // 보드에서 교환
+        const tempRow = tileA.row;
+        const tempCol = tileA.col;
+    
         this.board[tileA.row][tileA.col] = tileB;
         this.board[tileB.row][tileB.col] = tileA;
-
+    
         tileA.row = tileB.row;
         tileA.col = tileB.col;
         tileB.row = tempRow;
         tileB.col = tempCol;
-
-        let moveA = cc.moveTo(0.2, tileB.node.getPosition());
-        let moveB = cc.moveTo(0.2, tileA.node.getPosition());
-
-        cc.tween(tileA.node)
-            .then(moveA)
-            .start();
-
-        cc.tween(tileB.node)
-            .then(moveB)
-            .call(() => {
-                this.checkAndExplodeMatches();
-                this.isSwapping = false;
-            })
-            .start();
+    
+        const posA = this.getTilePosition(tileA.row, tileA.col);
+        const posB = this.getTilePosition(tileB.row, tileB.col);
+    
+        cc.tween(tileA.node).to(0.2, { position: posA }).start();
+        cc.tween(tileB.node).to(0.2, { position: posB }).call(() => {
+            // 임시로 매칭 탐지
+            const matchedTiles: Tile[] = [];
+    
+            const detectTempMatch = () => {
+                for (let row = 0; row < this.boardSize; row++) {
+                    for (let col = 0; col < this.boardSize; col++) {
+                        const tile = this.board[row][col];
+                        if (!tile) continue;
+    
+                        // 가로
+                        if (col <= this.boardSize - 3) {
+                            const t1 = this.board[row][col + 1];
+                            const t2 = this.board[row][col + 2];
+                            if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
+                                return true;
+                            }
+                            
+                        }
+    
+                        // 세로
+                        if (row <= this.boardSize - 3) {
+                            const t1 = this.board[row + 1][col];
+                            const t2 = this.board[row + 2][col];
+                            if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
+                                return true;
+                            }
+                            
+                        }
+                    }
+                }
+                return false;
+            };
+    
+            if (detectTempMatch()) {
+                this.checkAndExplodeMatches();  // 매칭이 있으면 계속 진행
+            } else {
+                // 없으면 되돌리기
+                // 위치, 보드 정보 다시 교환
+                this.board[tileA.row][tileA.col] = tileB;
+                this.board[tileB.row][tileB.col] = tileA;
+    
+                const tempRow2 = tileA.row;
+                const tempCol2 = tileA.col;
+    
+                tileA.row = tileB.row;
+                tileA.col = tileB.col;
+                tileB.row = tempRow2;
+                tileB.col = tempCol2;
+    
+                const resetPosA = this.getTilePosition(tileA.row, tileA.col);
+                const resetPosB = this.getTilePosition(tileB.row, tileB.col);
+    
+                cc.tween(tileA.node).to(0.2, { position: resetPosA }).start();
+                cc.tween(tileB.node).to(0.2, { position: resetPosB }).call(() => {
+                    this.isSwapping = false;
+                }).start();
+            }
+        }).start();
     }
+    
 
     fillEmptySpaces() {
         for (let col = 0; col < this.boardSize; col++) {
@@ -201,7 +267,7 @@ export default class ThreeMatchBoard extends cc.Component {
                     tile.row = row;
                     tile.col = col;
 
-                    tile.setRandomColor();
+                    tile.setRandomFruit();  // 이전의 setRandomColor()에서 교체
                     tile.addOutline();
 
                     this.board[row][col] = tile;

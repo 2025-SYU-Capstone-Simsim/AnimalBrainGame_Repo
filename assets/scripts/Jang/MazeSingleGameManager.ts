@@ -12,10 +12,12 @@ export default class GameManager extends cc.Component {
   @property(PlayerController) playerCtrl!: PlayerController;
   @property(UIManager)        uiMgr!: UIManager;
   @property(cc.Node)          goalNode!: cc.Node;
-  @property(cc.SpriteFrame)   goalFrame!: cc.SpriteFrame;
   @property(cc.Prefab)        tilePrefab!: cc.Prefab;
   @property(cc.SpriteFrame)   pathFrame!: cc.SpriteFrame;
   @property(cc.SpriteFrame)   grassFrame!: cc.SpriteFrame;
+  @property(cc.SpriteFrame) goalSongpyeon!: cc.SpriteFrame; // 호랑이의 목표(송편)
+  @property(cc.SpriteFrame) goalBone!: cc.SpriteFrame;      // 강아지의 목표(뼈)
+  @property(cc.SpriteFrame) goalCarrot!: cc.SpriteFrame;    // 토끼의 목표(당근)
 
   private logic!: MazeLogic;
   private timeRem = 60;
@@ -29,7 +31,7 @@ export default class GameManager extends cc.Component {
 // 남은 시간을 수동으로 조정
 public debugSetTime(t: number) {
   this.timeRem = t;
-  if (this.uiMgr) this.uiMgr.setTime(this.timeRem);
+  if (this.uiMgr) this.uiMgr.setTimer(this.timeRem);
 }
 
 
@@ -65,7 +67,6 @@ public debugSetTime(t: number) {
 
   private _startLevel(lv: number) {
     GameData.currentLevel = lv;
-    this.uiMgr.setLevel(lv);
     this.timeRem = 60;
     this.gameOver = false;
 
@@ -97,15 +98,31 @@ public debugSetTime(t: number) {
       )
     );
 
-    // 목표(바나나) 배치
+    let goalSprite: cc.SpriteFrame;
+switch (GameData.playerType) {
+  case "tiger":
+    goalSprite = this.goalSongpyeon;
+    break;
+  case "dog":
+    goalSprite = this.goalBone;
+    break;
+  case "rabbit":
+    goalSprite = this.goalCarrot;
+    break;
+  default:
+    goalSprite = this.goalSongpyeon; // 기본값(예: 호랑이용)
+}
+
+
     let sp = this.goalNode.getComponent(cc.Sprite);
     if (!sp) sp = this.goalNode.addComponent(cc.Sprite);
-    sp.spriteFrame = this.goalFrame;
     sp.type        = cc.Sprite.Type.SIMPLE;
     sp.sizeMode    = cc.Sprite.SizeMode.CUSTOM;
     this.goalNode.setContentSize(cs, cs);
     this.goalNode.zIndex = 500;
 
+    sp.spriteFrame = goalSprite;
+    
     const go = this.logic.getGoalPosition();
     this.goalNode.setPosition(
       cc.v2(
@@ -114,7 +131,7 @@ public debugSetTime(t: number) {
       )
     );
 
-    this.uiMgr.setTime(this.timeRem);
+    this.uiMgr.setTimer(this.timeRem);
   }
 
   update(dt: number) {
@@ -123,10 +140,10 @@ public debugSetTime(t: number) {
     this.timeRem -= dt;
     if (this.timeRem <= 0) {
       this.gameOver = true;
-      cc.director.loadScene("MazeGameOverScene");
+      cc.director.loadScene("GameOver");
       return;
     }
-    this.uiMgr.setTime(this.timeRem);
+    this.uiMgr.setTimer(this.timeRem);
 
     const cs   = this.logic.cellSize;
     const cols = this.logic.maze[0].length;

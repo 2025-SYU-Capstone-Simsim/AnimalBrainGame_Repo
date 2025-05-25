@@ -91,9 +91,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "46813916-528f-4ee1-b411-44552a89449b"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -119,9 +117,40 @@
     "sprite": {
       "__id__": 2
     },
-    "explosionPrefab": {
-      "__uuid__": "5e8aa9ed-e9c9-4037-a1c9-404a58136cc6"
-    },
+    "explosionPrefabs": [
+      {
+        "__uuid__": "d82ad2fb-eb0e-439c-a03c-74c7f033a0e5"
+      },
+      {
+        "__uuid__": "5af8cb9f-9224-403e-b0fe-42b2c1a62164"
+      },
+      {
+        "__uuid__": "e7b9a644-70ab-49a2-8fe9-1adac8739155"
+      },
+      {
+        "__uuid__": "147c9d76-038c-42cd-aa4e-fc6f276c1bb7"
+      },
+      {
+        "__uuid__": "787f21d4-7444-4766-86e3-dcdff5c5f646"
+      }
+    ],
+    "fruitSprites": [
+      {
+        "__uuid__": "94947183-7d9d-4076-a81b-52d7dfed85b5"
+      },
+      {
+        "__uuid__": "66f01dd0-198a-4904-bd6e-02ee54562207"
+      },
+      {
+        "__uuid__": "73d4751b-ad20-4561-b64d-836629b1b612"
+      },
+      {
+        "__uuid__": "2da5bdf4-60e1-4047-92ff-667d934984a0"
+      },
+      {
+        "__uuid__": "3c6ac1bf-5d93-45c1-be1c-3a6000d01634"
+      }
+    ],
     "_id": ""
   },
   {
