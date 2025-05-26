@@ -28,14 +28,14 @@ export default class GameManager extends cc.Component {
   @property(cc.Button)
   exitButton: cc.Node = null;
 
-  // ✅ 추가된 프리팹 속성
+  // 추가된 프리팹 속성
   @property(cc.Prefab)
   scoreUIPrefab: cc.Prefab = null;
 
   @property(cc.Prefab)
   timeUIPrefab: cc.Prefab = null;
 
-  // ✅ 내부에서 연결될 Label 컴포넌트
+  // 내부에서 연결될 Label 컴포넌트
   private scoreLabel: cc.Label = null;
   private timeLabel: cc.Label = null;
 
@@ -55,7 +55,7 @@ export default class GameManager extends cc.Component {
     GameState.lastGameScene = cc.director.getScene().name;
     cc.debug.setDisplayStats(false);
 
-    // ✅ Score UI 프리팹 인스턴스화
+    // Score UI 프리팹 인스턴스화
     if (this.scoreUIPrefab) {
       const scoreUI = cc.instantiate(this.scoreUIPrefab);
       this.node.addChild(scoreUI);
@@ -71,7 +71,7 @@ export default class GameManager extends cc.Component {
       }
     }
 
-    // ✅ Time UI 프리팹 인스턴스화
+    // Time UI 프리팹 인스턴스화
     if (this.timeUIPrefab) {
       const timeUI = cc.instantiate(this.timeUIPrefab);
       this.node.addChild(timeUI);

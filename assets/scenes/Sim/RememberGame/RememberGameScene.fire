@@ -2290,8 +2290,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 27,
-      "height": 54
+      "width": 59,
+      "height": 84
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2365,7 +2365,7 @@
       "__id__": 33
     },
     "component": "",
-    "_componentId": "e1b90/rohdEk4SdmmEZANaD",
+    "_componentId": "45b47OOq/pH4qjX1/B+5QI+",
     "handler": "loadList",
     "customEventData": ""
   },
