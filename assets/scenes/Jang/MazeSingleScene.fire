@@ -442,6 +442,12 @@
     "goalCarrot": {
       "__uuid__": "4bfb3e57-8b79-4548-abfd-c96541b3d5b3"
     },
+    "gameStartOverlayPrefab": {
+      "__uuid__": "a699ad5e-ef78-4575-804f-0fa58359e54a"
+    },
+    "gameOverUIPrefab": {
+      "__uuid__": "a9e78f2c-312c-407c-b030-8c699c259ccb"
+    },
     "_id": "d0UFRupsFG375bKMxVyTVS"
   },
   {

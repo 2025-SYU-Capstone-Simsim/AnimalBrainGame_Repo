@@ -3,6 +3,8 @@ import GameData from "./MazeGameData";
 import MazeLogic from "./MazeLogic";
 import PlayerController from "./MazePlayerController";
 import UIManager from "./MazeUIManager";
+import GameState from "../Controller/CommonUI/GameState";
+
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,8 +21,12 @@ export default class GameManager extends cc.Component {
   @property(cc.SpriteFrame) goalBone!: cc.SpriteFrame;      // 강아지의 목표(뼈)
   @property(cc.SpriteFrame) goalCarrot!: cc.SpriteFrame;    // 토끼의 목표(당근)
 
+  @property(cc.Prefab) gameStartOverlayPrefab!: cc.Prefab;
+  @property(cc.Prefab) gameOverUIPrefab!: cc.Prefab;
+
+
   private logic!: MazeLogic;
-  private timeRem = 30;
+  private timeRem = 5;
   private gameOver = false;
 
   // 디버그전용
@@ -42,18 +48,34 @@ export default class GameManager extends cc.Component {
   }
 
   start() {
-    this.uiMgr.setScore(0);
-    this.logic = new MazeLogic(
-      this.mazeContainer,
-      this.tilePrefab, this.pathFrame, this.grassFrame,
-      50 // cellSize 45px (21*45=945 < 1080)
-    );
-    this.playerCtrl.mazeLogic = this.logic;
-    this._startLevel(GameData.currentLevel);
-    //여기까지는 디버깅아님 
+    GameState.lastGameScene = cc.director.getScene().name;
+    if (this.gameStartOverlayPrefab) {
+      const startOverlay = cc.instantiate(this.gameStartOverlayPrefab);
+      this.node.addChild(startOverlay);
+      startOverlay.setPosition(0, 0);
 
+      const anim = startOverlay.getComponent(cc.Animation);
+      if (anim) {
+        anim.play("GameStartFade");
+        anim.once(cc.Animation.EventType.FINISHED, () => {
+          startOverlay.destroy();
+          this.startGameLogic();
+        }, this);
+      } else {
+        this.scheduleOnce(() => {
+          startOverlay.destroy();
+          this.startGameLogic();
+        }, 1.5);
+      }
+    } else {
+      this.startGameLogic();
+    }
 
-    // 디버그 전용
+    // 디버깅용 인스턴스 노출
+    (window as any).GM = this;
+  }
+
+  private startGameLogic() {
     this.uiMgr.setScore(0);
     this.logic = new MazeLogic(
       this.mazeContainer,
@@ -62,12 +84,12 @@ export default class GameManager extends cc.Component {
     );
     this.playerCtrl.mazeLogic = this.logic;
     this._startLevel(GameData.currentLevel);
-    (window as any).GM = this;// 여기까지 디버깅깅
   }
+
 
   private _startLevel(lv: number) {
     GameData.currentLevel = lv;
-    this.timeRem = 30; // 30초로 임시 수정 
+    this.timeRem = 5; // 30초로 임시 수정 
     this.gameOver = false;
 
     // 21x21 고정
@@ -135,14 +157,29 @@ export default class GameManager extends cc.Component {
   }
 
   update(dt: number) {
-    if (this.gameOver) return;
+    if (this.gameOver || !this.logic || !this.logic.maze) return;
 
     this.timeRem -= dt;
     if (this.timeRem <= 0) {
       this.gameOver = true;
-      cc.director.loadScene("GameOver");
+
+      GameState.lastGameScene = cc.director.getScene().name;
+      GameState.score = GameData.score;
+      GameState.gameId = "MazeGame";
+
+      if (this.gameOverUIPrefab) {
+        const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
+        cc.find("Canvas/UI").addChild(gameOverUI);
+        gameOverUI.setPosition(0, 0);
+
+      } 
+      // else {
+      //   cc.director.loadScene("GameOver");
+      // }
+
       return;
     }
+
     this.uiMgr.setTimer(this.timeRem);
 
     const cs = this.logic.cellSize;

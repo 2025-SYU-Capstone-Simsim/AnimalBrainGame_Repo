@@ -1,4 +1,6 @@
 import show_QnA from "./Reversecorrect_Show_QnA"
+import GameState from "../../Controller/CommonUI/GameState";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -68,6 +70,7 @@ export default class Game_init extends cc.Component {
 
 
     startGameLogic() {
+        GameState.lastGameScene = cc.director.getScene().name;
         const sceneName = cc.director.getScene().name;
 
         // 타이머 생성
@@ -110,6 +113,10 @@ export default class Game_init extends cc.Component {
 
     onGameOver() {
         cc.log("게임 종료!");
+        // GameState 저장
+        GameState.lastGameScene = cc.director.getScene().name;
+        GameState.score = this.score;
+        GameState.gameId = "ReverseCorrect-Game"; // 원하는 고유 ID로 설정
         const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
         this.node.addChild(gameOverUI);
         gameOverUI.setPosition(0, 0);
