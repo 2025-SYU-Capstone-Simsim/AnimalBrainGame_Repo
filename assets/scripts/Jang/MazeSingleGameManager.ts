@@ -20,7 +20,7 @@ export default class GameManager extends cc.Component {
   @property(cc.SpriteFrame) goalCarrot!: cc.SpriteFrame;    // 토끼의 목표(당근)
 
   private logic!: MazeLogic;
-  private timeRem = 60;
+  private timeRem = 30;
   private gameOver = false;
 
   // 디버그전용
@@ -67,7 +67,7 @@ export default class GameManager extends cc.Component {
 
   private _startLevel(lv: number) {
     GameData.currentLevel = lv;
-    this.timeRem = 60;
+    this.timeRem = 30; // 30초로 임시 수정 
     this.gameOver = false;
 
     // 21x21 고정

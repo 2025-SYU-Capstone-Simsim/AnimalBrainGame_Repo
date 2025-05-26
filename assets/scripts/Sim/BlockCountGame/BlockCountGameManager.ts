@@ -113,7 +113,7 @@ export default class GameManager extends cc.Component {
 
   private startTimer() {
     this.unschedule(this.updateTimer);
-    this.timeLeft = 10;
+    this.timeLeft = 30;
     if (this.timeLabel) this.timeLabel.string = `${this.timeLeft}`;
     this.schedule(this.updateTimer, 1);
   }
@@ -169,24 +169,34 @@ export default class GameManager extends cc.Component {
       btn.node.on('click', () => this.checkAnswer(list[i]));
     });
   }
-
+  /** 답안 확인 */
   checkAnswer(selected: number) {
     if (this.answered) return;
 
+    // 정답인 경우
     if (selected === this.correctCount) {
       this.answered = true;
       this.resultLabel.string = '🎉 정답입니다!';
-      this.score += 20;
-    } else {
-      this.resultLabel.string = '❌ 틀렸습니다!';
-      this.score -= 10;
+      this.score += 20;  // 맞았을 때 +10
+      if (this.scoreLabel) {
+        this.scoreLabel.string = `${this.score}`;
+      }
+      if (this.nextButton) {
+        const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
+        lbl.string = '다음으로';
+      }
     }
-
-    if (this.scoreLabel) this.scoreLabel.string = `${this.score}`;
-
-    if (this.nextButton) {
-      const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
-      lbl.string = this.answered ? '다음으로' : '건너뛰기';
+    // 오답인 경우
+    else {
+      this.resultLabel.string = '❌ 틀렸습니다!';
+      this.score -= 10;  // 틀렸을 때 -10
+      if (this.scoreLabel) {
+        this.scoreLabel.string = `${this.score}`;
+      }
+      if (this.nextButton) {
+        const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
+        lbl.string = '건너뛰기';
+      }
     }
   }
 
