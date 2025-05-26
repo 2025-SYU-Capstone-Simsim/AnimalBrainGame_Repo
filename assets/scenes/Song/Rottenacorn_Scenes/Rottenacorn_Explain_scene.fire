@@ -866,15 +866,17 @@
       "__id__": 13
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
-    "_N$transition": 1,
-    "transition": 1,
+    "_N$enableAutoGrayEffect": true,
+    "_N$transition": 0,
+    "transition": 0,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -929,7 +931,7 @@
     "_id": "0f8Edc1t9K8LP4PWD6bCt2"
   },
   {
-    "__type__": "c7b93ajJA1AFJpRaO4K/0k/",
+    "__type__": "b721eHUF69GJ5l+EVPPoFUJ",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -939,7 +941,7 @@
     "BackButton": {
       "__id__": 19
     },
-    "_id": "539GR4zB5DMKWqMGmDKr9u"
+    "_id": "0enPjjb+dGnaNGiD2zZMg1"
   },
   {
     "__type__": "cc.Button",
@@ -1130,7 +1132,7 @@
       "__id__": 13
     },
     "component": "",
-    "_componentId": "c7b93ajJA1AFJpRaO4K/0k/",
+    "_componentId": "b721eHUF69GJ5l+EVPPoFUJ",
     "handler": "onClickList",
     "customEventData": ""
   },

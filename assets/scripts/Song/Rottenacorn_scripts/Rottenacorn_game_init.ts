@@ -26,7 +26,7 @@ export default class GameInit extends cc.Component {
     @property(cc.Prefab)
     gameOverUIPrefab: cc.Prefab = null;
 
-    private totalTime: number = 10;
+    private totalTime: number = 30;
     private currentTime: number = 10;
     private score: number = 0;
 

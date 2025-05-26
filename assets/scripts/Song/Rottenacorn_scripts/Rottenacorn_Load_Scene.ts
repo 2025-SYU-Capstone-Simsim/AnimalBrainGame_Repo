@@ -6,7 +6,7 @@ export default class NewClass extends cc.Component {
     BackButton: cc.Button = null;
     start () {
         this.node.on("touchend", function(){
-            cc.director.loadScene("Rottenacorn_Mainscene");
+            cc.director.loadScene("Rottenacorn_mainscene");
         });
     }
 
