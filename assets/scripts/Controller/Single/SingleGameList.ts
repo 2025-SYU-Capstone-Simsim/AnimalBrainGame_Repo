@@ -37,8 +37,11 @@ export default class SingleGameListController extends cc.Component {
     private gameList = [
         { title: '두더지 게임', thumbnail: 'mole_thumb', scene: 'Mole_ExplainScene' },
         { title: '과일 퍼즐', thumbnail: 'three_thumb', scene: '3m_ExplainScene' },
-        { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'BlockCountGameScene' },
-        { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'RememberGameScene' },
+        { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'BlockCount_ExplainScene' },
+        { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'RememberGame_ExplainScene' },
+        { title: '숫자 뒤집어 맞추기', thumbnail: 'reverse_thumb', scene: 'Reversecorrect_ExplainScene' },
+        { title: '집중력 게임', thumbnail: 'concetration_thumb', scene: 'Rottenacorn_Explain_scene' },
+        { title: '미로 게임', thumbnail: 'maze_thumb', scene: 'Maze_ExplainScene' },
     ];
 
     onLoad() {
