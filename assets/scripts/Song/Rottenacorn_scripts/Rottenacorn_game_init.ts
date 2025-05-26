@@ -27,7 +27,7 @@ export default class GameInit extends cc.Component {
     gameOverUIPrefab: cc.Prefab = null;
 
     private totalTime: number = 30;
-    private currentTime: number = 10;
+    private currentTime: number = 30;
     private score: number = 0;
 
     private timerNode: cc.Node = null;
@@ -84,11 +84,11 @@ export default class GameInit extends cc.Component {
         this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScore(0);
 
-        if (sceneName === 'Rottenacorn_Mainscene') {
-            this.scoreNode.setPosition(cc.v2(850, 1700));
-        } else if (sceneName === 'Rottenacorn_Multiscene') {
-            this.scoreNode.setPosition(cc.v2(750, 125));
-        }
+        // if (sceneName === 'Rottenacorn_Mainscene') {
+        //     this.scoreNode.setPosition(cc.v2(850, 1700));
+        // } else if (sceneName === 'Rottenacorn_Multiscene') {
+        //     this.scoreNode.setPosition(cc.v2(750, 125));
+        // }
     }
 
     updateTimer() {
@@ -112,7 +112,7 @@ export default class GameInit extends cc.Component {
         // GameState 저장
         GameState.lastGameScene = cc.director.getScene().name;
         GameState.score = this.score;
-        GameState.gameId = "RottenAcorn-Game"; // 원하는 고유 ID로 설정
+        GameState.gameId = "RottenAcorn"; // 원하는 고유 ID로 설정
 
         const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
         this.node.addChild(gameOverUI);

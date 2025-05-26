@@ -26,7 +26,7 @@ export default class GameManager extends cc.Component {
 
 
   private logic!: MazeLogic;
-  private timeRem = 5;
+  private timeRem = 30;
   private gameOver = false;
 
   // 디버그전용
@@ -89,7 +89,7 @@ export default class GameManager extends cc.Component {
 
   private _startLevel(lv: number) {
     GameData.currentLevel = lv;
-    this.timeRem = 5; // 30초로 임시 수정 
+    this.timeRem = 30; // 30초로 임시 수정 
     this.gameOver = false;
 
     // 21x21 고정
