@@ -222,9 +222,11 @@ async checkGuestUpdate() {
     }
 
     onClickMain() {
-        cc.log("뒤로가기 버튼 클릭됨. MainScene으로 이동.");
-        cc.director.loadScene("MainScene");
+    cc.log("뒤로가기 버튼 클릭됨. MainScene으로 이동.");
+    GameState.resetMultiplay();  // 멀티플레이 상태 초기화
+    cc.director.loadScene("MainScene");
     }
+
 
     async startGame() {
         cc.log("🎮 Host 게임 시작 버튼 클릭됨");

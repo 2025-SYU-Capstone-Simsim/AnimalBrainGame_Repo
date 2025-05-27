@@ -31,5 +31,19 @@ export default class GameState {
     this.isHost = false; 
   }
 
+  // GameState.ts
+  static resetMultiplay() {
+  this.createdRoomId = '';
+  this.incomingRoomId = '';
+  this.isHost = false;
+}
+
+// 멀티플레이 선택한 게임 목록
+static selectedGameSequence: string[] = [];
+// 현재 멀티플레이중인 게임 인덱스 번호
+static currentGameIndex: number = 0;
+
+
+
 
 }

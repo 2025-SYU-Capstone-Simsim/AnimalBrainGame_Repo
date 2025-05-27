@@ -1,4 +1,5 @@
 const { ccclass, property } = cc._decorator;
+import GameState from "../CommonUI/GameState";
 
 @ccclass
 export default class MultiGameListController extends cc.Component {
@@ -22,7 +23,7 @@ export default class MultiGameListController extends cc.Component {
     BackButton: cc.Button = null;
 
     @property(cc.Node)
-    choiceContainer: cc.Node = null; 
+    choiceContainer: cc.Node = null;
 
     private currentIndex: number = 0;
     private cards: cc.Node[] = [];
@@ -56,10 +57,17 @@ export default class MultiGameListController extends cc.Component {
 
         this.registerArrowEvents(this.leftArrow, this.showPrevCard.bind(this));
         this.registerArrowEvents(this.rightArrow, this.showNextCard.bind(this));
-
         this.registerButtonEvents(this.selectButton.node, this.onSelectButtonClick.bind(this));
         this.registerButtonEvents(this.BackButton.node, this.onClickMain.bind(this));
+
+        // 호스트만 게임 선택 가능
+        if (!GameState.isHost) {
+            this.selectButton.node.active = false; // 버튼 숨김
+            this.leftArrow.active = false;
+            this.rightArrow.active = false;
+        }
     }
+
 
     registerButtonEvents(node: cc.Node, callback: () => void) {
         node.off(cc.Node.EventType.TOUCH_END); // 중복 방지
@@ -117,32 +125,67 @@ export default class MultiGameListController extends cc.Component {
 
     public onSelectButtonClick() {
         if (!this.selectedScene || this.selectedGames.length >= 3) return;
-
-        // 중복 선택 방지
         if (this.selectedGames.includes(this.selectedScene)) return;
 
         this.selectedGames.push(this.selectedScene);
 
-        const choiceIndex = this.selectedGames.length; // 1, 2, 3
+        const choiceIndex = this.selectedGames.length;
         const choiceNode = this.choiceContainer.getChildByName(`EmptyChoice${choiceIndex}`);
 
         if (choiceNode && choiceNode.getComponent(cc.Sprite)) {
-            const imagePath = `Images/Common/Multi/choice${choiceIndex}`; // 이미지 경로
-
+            const imagePath = `Images/Common/Multi/choice${choiceIndex}`;
             cc.resources.load(imagePath, cc.SpriteFrame, (err, spriteFrame) => {
                 if (!err && spriteFrame) {
                     choiceNode.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                } else {
-                    cc.error(`이미지 로딩 실패: ${imagePath}`, err);
                 }
             });
         }
 
         cc.log(`선택된 게임 씬: ${this.selectedScene}`);
+
+        // ✅ 3개 선택 시 → 버튼 텍스트 변경
+        if (this.selectedGames.length === 3) {
+            const label = this.selectButton.getComponentInChildren(cc.Label);
+            if (label) label.string = "게임 시작";
+
+            // ✅ 버튼 이벤트 교체
+            this.selectButton.node.off(cc.Node.EventType.TOUCH_END);
+            this.registerButtonEvents(this.selectButton.node, this.startGameSequence.bind(this));
+        }
     }
+
+    private gameIndex: number = 0;
+
+    private startGameSequence() {
+        if (this.selectedGames.length === 0) return;
+
+        this.gameIndex = 0;
+        this.loadNextGameScene();
+    }
+
+    private loadNextGameScene() {
+        if (this.gameIndex >= this.selectedGames.length) {
+            cc.log("🎉 모든 게임 완료!");
+            cc.director.loadScene("MainScene"); // 또는 결과 씬
+            return;
+        }
+
+        const sceneToLoad = this.selectedGames[this.gameIndex];
+        cc.log(`씬 로딩: ${sceneToLoad}`);
+        this.gameIndex++;
+
+        cc.director.loadScene(sceneToLoad);
+    }
+
+
 
     onClickMain() {
         cc.log("뒤로가기 버튼 클릭됨. Main 씬으로 이동.");
         cc.director.loadScene("MainScene");
     }
 }
+
+// 각 게임 최종 종료 시 추가하기 
+// GameState.resetMultiplay();  
+// cc.director.loadScene("MainScene"); 
+
