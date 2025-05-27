@@ -132,8 +132,6 @@ async checkGuestUpdate() {
         return;
     }
 
-    // cc.log(`polling... roomId = ${this.roomId}, isHost = ${GameState.isHost}`);
-
     try {
         const response = await fetch(`http://localhost:3000/api/room-status/${this.roomId}`);
         const result = await response.json();
@@ -144,15 +142,22 @@ async checkGuestUpdate() {
             const data = result.data;
             cc.log("현재 status:", data.status);
 
-            // 캐릭터/닉네임 표시
             if (GameState.isHost) {
                 if (data.guestNickname && data.guestCharacter) {
-                    if (this.player2Label) this.player2Label.string = `닉네임 : ${data.guestNickname}`;
+                    GameState.guestNickname = data.guestNickname;
+                    GameState.guestCharacter = data.guestCharacter;
+
+                    if (this.player2Label)
+                        this.player2Label.string = `닉네임 : ${data.guestNickname}`;
                     this.setCharacterSprite(this.player2CharacterNode, data.guestCharacter);
                 }
             } else {
                 if (data.hostNickname && data.hostCharacter) {
-                    if (this.player1Label) this.player1Label.string = `닉네임 : ${data.hostNickname}`;
+                    GameState.hostNickname = data.hostNickname;
+                    GameState.hostCharacter = data.hostCharacter;
+
+                    if (this.player1Label)
+                        this.player1Label.string = `닉네임 : ${data.hostNickname}`;
                     this.setCharacterSprite(this.player1CharacterNode, data.hostCharacter);
                 }
             }
@@ -177,6 +182,7 @@ async checkGuestUpdate() {
         cc.error(" [checkGuestUpdate] 방 상태 확인 실패:", err.message);
     }
 }
+
 
 
     setCharacterSprite(node: cc.Node, characterKey: string) {

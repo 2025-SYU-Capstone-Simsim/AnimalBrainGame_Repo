@@ -40,7 +40,7 @@ export default class MultiGameListController extends cc.Component {
     }
 
     private gameList = [
-        { title: '두더지 게임', thumbnail: 'mole_thumb', scene: 'Mole_ExplainScene' },
+        { title: '두더지 게임', thumbnail: 'mole_thumb', scene: 'MultiMoleGameScene' },
         { title: '과일 퍼즐', thumbnail: 'three_thumb', scene: '3m_ExplainScene' },
         { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'BlockCount_ExplainScene' },
         { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'RememberGame_ExplainScene' },

@@ -12,7 +12,7 @@
   "height": 132,
   "platformSettings": {},
   "subMetas": {
-    "TigerHead": {
+    "tigerHead": {
       "ver": "1.0.6",
       "uuid": "c3f81aec-3b49-4e4c-b72f-249a2b70fa06",
       "importer": "sprite-frame",

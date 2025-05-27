@@ -12,7 +12,7 @@
   "height": 130,
   "platformSettings": {},
   "subMetas": {
-    "DogHead": {
+    "dogHead": {
       "ver": "1.0.6",
       "uuid": "72fd1cb3-de89-4ed7-b51c-de24f5822440",
       "importer": "sprite-frame",

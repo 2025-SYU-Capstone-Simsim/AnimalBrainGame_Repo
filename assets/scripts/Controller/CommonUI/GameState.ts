@@ -5,12 +5,16 @@ export default class GameState {
   static score: number = 0;
   static gameId: string = '';
   static incomingRoomId: string = '';
-  static createdRoomId: string = ''; // 스트용 방 ID 저장
+  static createdRoomId: string = '';
   static isHost: boolean = false;
 
-  //   incomingRoomId : 초대받은 방 ID (게스트용) ->	http://...?roomId=XYZ123
-//   createdRoomId : 생성한 방 ID (호스트용) 생성 -> API 응답 후 저장
+  //  상대방 정보 저장용
+  static hostNickname: string = '';
+  static hostCharacter: string = '';
+  static guestNickname: string = '';
+  static guestCharacter: string = '';
 
+  // 싱글 게임 기록
   static recentSingleScores: {
     gameId: string;
     score: number;
@@ -27,23 +31,29 @@ export default class GameState {
     this.character = '';
     this.recentSingleScores = [];
     this.incomingRoomId = '';
-    this.createdRoomId = ''; // 초기화 시 함께 리셋
-    this.isHost = false; 
+    this.createdRoomId = '';
+    this.isHost = false;
+
+    // ✅ 상대방 정보 초기화
+    this.hostNickname = '';
+    this.hostCharacter = '';
+    this.guestNickname = '';
+    this.guestCharacter = '';
   }
 
-  // GameState.ts
   static resetMultiplay() {
-  this.createdRoomId = '';
-  this.incomingRoomId = '';
-  this.isHost = false;
-}
+    this.createdRoomId = '';
+    this.incomingRoomId = '';
+    this.isHost = false;
 
-// 멀티플레이 선택한 게임 목록
-static selectedGameSequence: string[] = [];
-// 현재 멀티플레이중인 게임 인덱스 번호
-static currentGameIndex: number = 0;
+    // ✅ 상대방 정보도 함께 초기화
+    this.hostNickname = '';
+    this.hostCharacter = '';
+    this.guestNickname = '';
+    this.guestCharacter = '';
+  }
 
-
-
-
+  // 멀티플레이 선택 게임 목록과 인덱스
+  static selectedGameSequence: string[] = [];
+  static currentGameIndex: number = 0;
 }
