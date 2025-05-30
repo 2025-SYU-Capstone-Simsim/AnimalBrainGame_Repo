@@ -153,8 +153,8 @@ export default class LoginManager extends cc.Component {
       if (!browserId) {
         browserId = this.generateBrowserId();
         localStorage.setItem('browserId', browserId);
-        cc.log("새 브라우저 ID 생성됨:", browserId);
       }
+      // GameState.browserId = browserId; 
 
       const loginRes = await fetch('http://localhost:3000/auth/login', {
         method: 'POST',

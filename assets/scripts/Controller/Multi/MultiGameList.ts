@@ -1,43 +1,19 @@
-const { ccclass, property } = cc._decorator;
 import GameState from "../CommonUI/GameState";
+
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MultiGameListController extends cc.Component {
-
-    @property(cc.Node)
-    gameCardContainer: cc.Node = null;
-
-    @property(cc.Prefab)
-    gameCardPrefab: cc.Prefab = null;
-
-    @property(cc.Button)
-    selectButton: cc.Button = null;
-
-    @property(cc.Node)
-    leftArrow: cc.Node = null;
-
-    @property(cc.Node)
-    rightArrow: cc.Node = null;
-
-    @property(cc.Button)
-    BackButton: cc.Button = null;
-
-    @property(cc.Node)
-    choiceContainer: cc.Node = null;
+    @property(cc.Node) gameCardContainer: cc.Node = null;
+    @property(cc.Prefab) gameCardPrefab: cc.Prefab = null;
+    @property(cc.Button) selectButton: cc.Button = null;
+    @property(cc.Node) leftArrow: cc.Node = null;
+    @property(cc.Node) rightArrow: cc.Node = null;
+    @property(cc.Button) BackButton: cc.Button = null;
 
     private currentIndex: number = 0;
     private cards: cc.Node[] = [];
     private selectedScene: string = null;
-    private selectedGames: string[] = []; //선택된 게임 추적
-
-    private selectScene(sceneName: string, selectedCard: cc.Node) {
-        this.selectedScene = sceneName;
-        this.gameCardContainer.children.forEach(card => {
-            card.scale = card === selectedCard ? 1.1 : 1;
-            card.opacity = card === selectedCard ? 255 : 180;
-        });
-        this.selectButton.interactable = true;
-    }
 
     private gameList = [
         { title: '두더지 게임', thumbnail: 'mole_thumb', scene: 'MultiMoleGameScene' },
@@ -50,8 +26,11 @@ export default class MultiGameListController extends cc.Component {
     ];
 
     onLoad() {
-        this.selectButton.interactable = false;
         cc.debug.setDisplayStats(false);
+        this.selectButton.interactable = false;
+
+        cc.log("MultiGameListController onLoad 실행됨");
+        cc.log("GameState.isHost =", GameState.isHost);
 
         this.loadGameCards();
 
@@ -60,22 +39,78 @@ export default class MultiGameListController extends cc.Component {
         this.registerButtonEvents(this.selectButton.node, this.onSelectButtonClick.bind(this));
         this.registerButtonEvents(this.BackButton.node, this.onClickMain.bind(this));
 
-        // 호스트만 게임 선택 가능
+        // 게스트는 UI 제어 비활성화
         if (!GameState.isHost) {
-            this.selectButton.node.active = false; // 버튼 숨김
+            this.selectButton.node.active = false;
             this.leftArrow.active = false;
             this.rightArrow.active = false;
+        }
+
+        // 소켓 존재 및 연결 상태 확인
+        if (!cc.sys.isNative && window.socket) {
+            const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+
+            if (!window.socket.connected) {
+                console.warn("⚠️ 소켓이 끊겨 있음. 재연결 시도 중...");
+                window.socket.connect();
+            }
+
+            // 방 재입장 처리
+            if (roomId) {
+                cc.log("📥 join-room 재요청:", roomId);
+                window.socket.emit("join-room", roomId);
+            }
+
+            // 기존 리스너 제거 후 재등록
+            window.socket.off("game-event");
+            cc.log("🔁 기존 socket 리스너 제거 완료");
+
+            cc.log("🎧 game-event 리스너 등록 (move-scene / host-left)");
+            window.socket.on("game-event", (message: any) => {
+                cc.log("📨 game-event 수신:", message);
+
+                switch (message?.type) {
+                    case "move-scene":
+                        const sceneName = message.payload?.sceneName;
+                        if (sceneName) {
+                            cc.log("▶️ 씬 이동 시도:", sceneName);
+                            cc.director.loadScene(sceneName);
+                        } else {
+                            cc.warn("⚠️ sceneName 누락됨:", message);
+                        }
+                        break;
+
+                    case "host-left":
+                        cc.warn("❗ 호스트가 방을 나갔습니다. 메인 화면으로 이동합니다.");
+                        GameState.resetMultiplay();
+                        cc.director.loadScene("MainScene");
+                        break;
+
+                    default:
+                        cc.warn("❓ 알 수 없는 game-event 타입 또는 잘못된 구조:", message);
+                }
+            });
+
+            // 연결 복구 후 join-room 재전송
+            window.socket.on("connect", () => {
+                cc.log("✅ 소켓 재연결됨. join-room 재전송");
+                if (roomId) {
+                    window.socket.emit("join-room", roomId);
+                }
+            });
         }
     }
 
 
+
+
     registerButtonEvents(node: cc.Node, callback: () => void) {
-        node.off(cc.Node.EventType.TOUCH_END); // 중복 방지
+        node.off(cc.Node.EventType.TOUCH_END);
         node.on(cc.Node.EventType.TOUCH_END, callback);
     }
 
     registerArrowEvents(node: cc.Node, callback: () => void) {
-        node.off(cc.Node.EventType.TOUCH_END); // 중복 방지
+        node.off(cc.Node.EventType.TOUCH_END);
         node.on(cc.Node.EventType.TOUCH_END, callback);
     }
 
@@ -123,69 +158,35 @@ export default class MultiGameListController extends cc.Component {
         this.showCardAtIndex(prevIndex);
     }
 
-    public onSelectButtonClick() {
-        if (!this.selectedScene || this.selectedGames.length >= 3) return;
-        if (this.selectedGames.includes(this.selectedScene)) return;
+    private selectScene(sceneName: string, selectedCard: cc.Node) {
+        this.selectedScene = sceneName;
+        this.gameCardContainer.children.forEach(card => {
+            card.scale = card === selectedCard ? 1.1 : 1;
+            card.opacity = card === selectedCard ? 255 : 180;
+        });
+        this.selectButton.interactable = true;
+    }
 
-        this.selectedGames.push(this.selectedScene);
+    // MultiGameListController.ts
+    onSelectButtonClick() {
+        if (!this.selectedScene) return;
 
-        const choiceIndex = this.selectedGames.length;
-        const choiceNode = this.choiceContainer.getChildByName(`EmptyChoice${choiceIndex}`);
+        const roomId = GameState.createdRoomId;
+        console.log("🎯 [onSelectButtonClick] move-scene emit 시도:", this.selectedScene, GameState.isHost, roomId);
 
-        if (choiceNode && choiceNode.getComponent(cc.Sprite)) {
-            const imagePath = `Images/Common/Multi/choice${choiceIndex}`;
-            cc.resources.load(imagePath, cc.SpriteFrame, (err, spriteFrame) => {
-                if (!err && spriteFrame) {
-                    choiceNode.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                }
+        if (GameState.isHost && roomId && window.socket) {
+            window.socket.emit("game-event", {
+                type: "move-scene",
+                payload: { sceneName: this.selectedScene },
+                roomId,
             });
         }
 
-        cc.log(`선택된 게임 씬: ${this.selectedScene}`);
-
-        // ✅ 3개 선택 시 → 버튼 텍스트 변경
-        if (this.selectedGames.length === 3) {
-            const label = this.selectButton.getComponentInChildren(cc.Label);
-            if (label) label.string = "게임 시작";
-
-            // ✅ 버튼 이벤트 교체
-            this.selectButton.node.off(cc.Node.EventType.TOUCH_END);
-            this.registerButtonEvents(this.selectButton.node, this.startGameSequence.bind(this));
-        }
+        console.log("🧪 window.socket 상태:", window.socket && window.socket.connected);
     }
-
-    private gameIndex: number = 0;
-
-    private startGameSequence() {
-        if (this.selectedGames.length === 0) return;
-
-        this.gameIndex = 0;
-        this.loadNextGameScene();
-    }
-
-    private loadNextGameScene() {
-        if (this.gameIndex >= this.selectedGames.length) {
-            cc.log("🎉 모든 게임 완료!");
-            cc.director.loadScene("MainScene"); // 또는 결과 씬
-            return;
-        }
-
-        const sceneToLoad = this.selectedGames[this.gameIndex];
-        cc.log(`씬 로딩: ${sceneToLoad}`);
-        this.gameIndex++;
-
-        cc.director.loadScene(sceneToLoad);
-    }
-
-
 
     onClickMain() {
         cc.log("뒤로가기 버튼 클릭됨. Main 씬으로 이동.");
         cc.director.loadScene("MainScene");
     }
 }
-
-// 각 게임 최종 종료 시 추가하기 
-// GameState.resetMultiplay();  
-// cc.director.loadScene("MainScene"); 
-

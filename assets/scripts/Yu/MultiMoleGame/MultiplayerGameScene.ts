@@ -1,10 +1,11 @@
 // MultiplayerMoleController.ts
-
+import GameState from "../../Controller/CommonUI/GameState";
+import MultiGameFlowController from "../../Controller/Multi/MultiFlowController";
 // import socket from "../../Socket"; // 실제 소켓 연결 시 사용
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MultiplayerMoleController extends cc.Component {
+export default class MultiplayerGameScene extends cc.Component {
     @property(cc.Node) Hole1: cc.Node = null;
     @property(cc.Node) Hole2: cc.Node = null;
     @property(cc.Node) Hole3: cc.Node = null;
@@ -37,11 +38,13 @@ export default class MultiplayerMoleController extends cc.Component {
     private isGameOver: boolean = false;
     private moleSpawnCallback: Function = null;
 
-    start() {
-        this.initGame();
+    startGame() {
+        cc.log("startGame() 호출됨");
+        this.initGame(); // 기존 start() 또는 initGame() 분리했으면 이걸 호출
     }
 
     initGame() {
+        cc.log("initGame() 시작");
         this.moleHoles = [
             this.Hole1, this.Hole2, this.Hole3,
             this.Hole4, this.Hole5, this.Hole6,
@@ -49,7 +52,7 @@ export default class MultiplayerMoleController extends cc.Component {
         ];
         this.holeStates = new Array(9).fill(false);
         this.score = 0;
-        this.timer = 30;
+        this.timer = 10;
         this.isGameOver = false;
 
         this.createHammer();
@@ -105,6 +108,7 @@ export default class MultiplayerMoleController extends cc.Component {
     }
 
     spawnMoles() {
+        cc.log("spawnMoles() 실행");
         if (this.moleSpawnCallback) this.unschedule(this.moleSpawnCallback);
 
         this.moleSpawnCallback = () => {
@@ -126,12 +130,23 @@ export default class MultiplayerMoleController extends cc.Component {
             mole.active = true;
             this.holeStates[idx] = true;
 
-            // 🔥 socket으로 상대에게도 전송 예정
-            // socket.emit("spawn-mole", {
-            //     index: idx,
-            //     type: isGoodMole ? "good" : "bad",
-            //     spawnTime: Date.now()
-            // });
+            const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+            if (!cc.sys.isNative && window.socket && roomId) {
+                console.log(" [emit] spawn-mole →", { index: idx, type: isGoodMole ? "good" : "bad", roomId });
+
+                window.socket.emit("game-event", {
+                    type: "spawn-mole",
+                    roomId,
+                    payload: {
+                        index: idx,
+                        type: isGoodMole ? "good" : "bad",
+                        spawnTime: Date.now()
+                    }
+                });
+
+            } else {
+                console.warn("spawn-mole emit 실패: 소켓 연결 또는 roomId 없음");
+            }
 
             const onHit = (e: cc.Event.EventTouch) => {
                 e.stopPropagation();
@@ -148,6 +163,31 @@ export default class MultiplayerMoleController extends cc.Component {
 
                 this.score += isGoodMole ? -10 : 10;
                 this.updateScoreLabel();
+
+                if (!cc.sys.isNative && window.socket && roomId) {
+                    console.log(" [emit] hit-mole →", { index: idx, moleType: isGoodMole ? "good" : "bad", roomId });
+
+                    window.socket.emit("game-event", {
+                        type: "hit-mole",
+                        roomId,
+                        payload: {
+                            index: idx,
+                            moleType: isGoodMole ? "good" : "bad"
+                        }
+                    });
+
+                    // score-update emit 추가
+                    window.socket.emit("game-event", {
+                        type: "score-update",
+                        roomId,
+                        payload: {
+                            player: GameState.isHost ? "host" : "guest",
+                            score: this.score
+                        }
+                    });
+                } else {
+                    console.warn("hit-mole emit 실패: 소켓 연결 또는 roomId 없음");
+                }
 
                 mole.off(cc.Node.EventType.TOUCH_END, onHit, this);
 
@@ -168,6 +208,7 @@ export default class MultiplayerMoleController extends cc.Component {
                     .start();
             };
 
+
             mole.on(cc.Node.EventType.TOUCH_END, onHit, this);
 
             cc.tween(mole)
@@ -185,6 +226,7 @@ export default class MultiplayerMoleController extends cc.Component {
 
         this.schedule(this.moleSpawnCallback, 0.5, cc.macro.REPEAT_FOREVER);
     }
+
 
     showHammerEffect(pos: cc.Vec2) {
         this.hammerNode.setPosition(pos);
@@ -205,13 +247,35 @@ export default class MultiplayerMoleController extends cc.Component {
             })
             .start();
     }
-
+    // MultiplayerMoleController.ts
     endGame() {
+        if (this.isGameOver) return;
         this.isGameOver = true;
         this.unscheduleAllCallbacks();
 
-        // 상대방도 게임 끝났는지 확인 후 → 다음 게임으로 넘어가는 로직은
-        // MultiplayerMoleGameScene.ts에서 통제할 것
-        console.log("⏱️ Multiplayer Mole Game 종료됨 (점수:", this.score, ")");
+        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+        const finalScore = this.score;
+
+        if (window.socket && roomId) {
+            const eventPayload = {
+                type: "game-end",
+                roomId,
+                payload: {
+                    score: finalScore,
+                    nickname: GameState.nickname,
+                    character: GameState.character,
+                    isHost: GameState.isHost === true,
+                    // gameId: GameState.selectedGameSequence?.[(GameState.currentGameIndex || 1) - 1] || null,
+                },
+            };
+
+            cc.log("📤 [emit] game-end →", eventPayload);
+            window.socket.emit("game-event", eventPayload);
+        }
+
+        cc.log("게임 종료됨. 점수:", finalScore);
     }
+
+
+
 }

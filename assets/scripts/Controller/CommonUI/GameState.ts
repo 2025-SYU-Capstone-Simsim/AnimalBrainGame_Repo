@@ -21,6 +21,9 @@ export default class GameState {
     playedAt: string;
   }[] = [];
 
+  // Firebase 인증에 사용되는 브라우저 고유 식별자 (JWT payload에 포함됨)
+  static browserId: string = '';
+
   static resetGame() {
     this.lastGameScene = '';
     this.score = 0;
@@ -34,7 +37,7 @@ export default class GameState {
     this.createdRoomId = '';
     this.isHost = false;
 
-    // ✅ 상대방 정보 초기화
+    //  상대방 정보 초기화
     this.hostNickname = '';
     this.hostCharacter = '';
     this.guestNickname = '';
@@ -46,7 +49,7 @@ export default class GameState {
     this.incomingRoomId = '';
     this.isHost = false;
 
-    // ✅ 상대방 정보도 함께 초기화
+    //  상대방 정보도 함께 초기화
     this.hostNickname = '';
     this.hostCharacter = '';
     this.guestNickname = '';
