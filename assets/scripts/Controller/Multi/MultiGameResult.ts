@@ -37,7 +37,7 @@ export default class MultiGameResult extends cc.Component {
                     // 캐릭터 이미지 로딩
                     this.setCharacterSprite(winner.character);
                 } else {
-                    cc.warn("⚠️ 승자 없음 또는 무승부");
+                    cc.warn("승자 없음 또는 무승부");
                     this.NameLabel.string = "무승부";
                     this.ScoreLabel.string = "";
                 }

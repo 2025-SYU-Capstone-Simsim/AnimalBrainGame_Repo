@@ -34,16 +34,16 @@ export default class MultiplayerMoleGameController extends cc.Component {
             return;
         }
         this._alreadyStarted = true;
-        // ✅ selectedGameSequence 복구
+        // selectedGameSequence 복구
         const savedSequence = cc.sys.localStorage.getItem("selectedGameSequence");
         const savedIndex = cc.sys.localStorage.getItem("currentGameIndex");
         if (savedSequence) {
             try {
                 GameState.selectedGameSequence = JSON.parse(savedSequence);
                 GameState.currentGameIndex = Number(savedIndex) || 0;
-                cc.log("✅ GameState 복구 완료:", GameState.selectedGameSequence, GameState.currentGameIndex);
+                cc.log("GameState 복구 완료:", GameState.selectedGameSequence, GameState.currentGameIndex);
             } catch (e) {
-                cc.warn("❌ selectedGameSequence 복구 실패:", e);
+                cc.warn("selectedGameSequence 복구 실패:", e);
             }
         }
 
@@ -144,7 +144,7 @@ export default class MultiplayerMoleGameController extends cc.Component {
                         break;
 
                     case "host-left":
-                        cc.warn("❌ 호스트가 중간에 나갔습니다. 메인 화면으로 이동합니다.");
+                        cc.warn("호스트가 중간에 나갔습니다. 메인 화면으로 이동합니다.");
                         GameState.resetMultiplay();
                         cc.director.loadScene("MainScene");
                         break;
@@ -216,21 +216,21 @@ export default class MultiplayerMoleGameController extends cc.Component {
     loadMain() {
         console.log("메인메뉴로 돌아가기");
 
-        // ✅ 1. leave-room emit 먼저 (초기화 전에)
+        // 1. leave-room emit 먼저 (초기화 전에)
         if (!cc.sys.isNative && window.socket) {
             const roomId = GameState.incomingRoomId || GameState.createdRoomId;
             const playerId = GameState.browserId;
 
-            console.log("📤 leave-room emit:", { roomId, playerId });
+            console.log("leave-room emit:", { roomId, playerId });
 
             if (roomId && playerId) {
                 window.socket.emit("leave-room", { roomId, playerId });
             } else {
-                console.warn("❌ leave-room emit 차단됨 (누락):", { roomId, playerId });
+                console.warn("leave-room emit 차단됨 (누락):", { roomId, playerId });
             }
         }
 
-        // ✅ 2. GameState 초기화는 그 다음
+        // 2. GameState 초기화는 그 다음
         GameState.resetMultiplay();
         cc.sys.localStorage.removeItem("isHost");
 

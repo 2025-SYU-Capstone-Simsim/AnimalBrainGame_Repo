@@ -51,29 +51,29 @@ export default class MultiGameListController extends cc.Component {
             const roomId = GameState.createdRoomId || GameState.incomingRoomId;
 
             if (!window.socket.connected) {
-                console.warn("⚠️ 소켓이 끊겨 있음. 재연결 시도 중...");
+                console.warn("소켓이 끊겨 있음. 재연결 시도 중...");
                 window.socket.connect();
             }
 
             // 방 재입장 처리
             if (roomId) {
-                cc.log("📥 join-room 재요청:", roomId);
+                cc.log("join-room 재요청:", roomId);
                 window.socket.emit("join-room", roomId);
             }
 
             // 기존 리스너 제거 후 재등록
             window.socket.off("game-event");
-            cc.log("🔁 기존 socket 리스너 제거 완료");
+            cc.log("기존 socket 리스너 제거 완료");
 
-            cc.log("🎧 game-event 리스너 등록 (move-scene / host-left)");
+            cc.log("game-event 리스너 등록 (move-scene / host-left)");
             window.socket.on("game-event", (message: any) => {
-                cc.log("📨 game-event 수신:", message);
+                cc.log("game-event 수신:", message);
 
                 switch (message?.type) {
                     case "move-scene":
                         const sceneName = message.payload?.sceneName;
                         if (sceneName) {
-                            cc.log("▶️ 씬 이동 시도:", sceneName);
+                            cc.log("씬 이동 시도:", sceneName);
                             cc.director.loadScene(sceneName);
                         } else {
                             cc.warn("⚠️ sceneName 누락됨:", message);
@@ -81,19 +81,19 @@ export default class MultiGameListController extends cc.Component {
                         break;
 
                     case "host-left":
-                        cc.warn("❗ 호스트가 방을 나갔습니다. 메인 화면으로 이동합니다.");
+                        cc.warn("호스트가 방을 나갔습니다. 메인 화면으로 이동합니다.");
                         GameState.resetMultiplay();
                         cc.director.loadScene("MainScene");
                         break;
 
                     default:
-                        cc.warn("❓ 알 수 없는 game-event 타입 또는 잘못된 구조:", message);
+                        cc.warn("알 수 없는 game-event 타입 또는 잘못된 구조:", message);
                 }
             });
 
             // 연결 복구 후 join-room 재전송
             window.socket.on("connect", () => {
-                cc.log("✅ 소켓 재연결됨. join-room 재전송");
+                cc.log("소켓 재연결됨. join-room 재전송");
                 if (roomId) {
                     window.socket.emit("join-room", roomId);
                 }
@@ -172,7 +172,7 @@ export default class MultiGameListController extends cc.Component {
         if (!this.selectedScene) return;
 
         const roomId = GameState.createdRoomId;
-        console.log("🎯 [onSelectButtonClick] move-scene emit 시도:", this.selectedScene, GameState.isHost, roomId);
+        console.log("[onSelectButtonClick] move-scene emit 시도:", this.selectedScene, GameState.isHost, roomId);
 
         if (GameState.isHost && roomId && window.socket) {
             window.socket.emit("game-event", {
@@ -182,7 +182,7 @@ export default class MultiGameListController extends cc.Component {
             });
         }
 
-        console.log("🧪 window.socket 상태:", window.socket && window.socket.connected);
+        console.log("window.socket 상태:", window.socket && window.socket.connected);
     }
 
     onClickMain() {

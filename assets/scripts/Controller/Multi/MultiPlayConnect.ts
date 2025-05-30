@@ -132,7 +132,7 @@ export default class MultiPlayConnect extends cc.Component {
 
     listenForGuestUpdate() {
         this.checkGuestUpdate();
-        this.pollingTimer = setInterval(() => this.checkGuestUpdate(), 3000); // ✅ 반응성 개선
+        this.pollingTimer = setInterval(() => this.checkGuestUpdate(), 3000); // 반응성 개선
     }
 
     async checkGuestUpdate() {
@@ -262,7 +262,7 @@ export default class MultiPlayConnect extends cc.Component {
 
 
     async startGameList() {
-        cc.log("🎮 Host 게임 시작 버튼 클릭됨");
+        cc.log("Host 게임 시작 버튼 클릭됨");
 
         // 호스트 설정 및 로컬 저장
         GameState.isHost = true;
