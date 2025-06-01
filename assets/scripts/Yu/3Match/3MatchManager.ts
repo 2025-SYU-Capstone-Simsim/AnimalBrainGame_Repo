@@ -1,13 +1,14 @@
 const { ccclass, property } = cc._decorator;
 import ThreeMatchBoard from "./3MatchBoard";
+import GameState from "../../Controller/CommonUI/GameState";
 
 @ccclass
 export default class ThreeMatchManager extends cc.Component {
-    @property(cc.Label)
-    timerLabel: cc.Label = null;
+    @property(cc.Prefab)
+    timerDisplayPrefab: cc.Prefab = null;
 
-    @property(cc.Label)
-    scoreLabel: cc.Label = null;
+    @property(cc.Prefab)
+    scoreDisplayPrefab: cc.Prefab = null;
 
     @property(cc.Node)
     boardNode: cc.Node = null;
@@ -16,102 +17,137 @@ export default class ThreeMatchManager extends cc.Component {
     comboGauge: cc.ProgressBar = null;
 
     @property(cc.Node)
-    feverLabel: cc.Node = null;
+    feverSprite: cc.Node = null;
 
+    @property(cc.Button)
+    exitButton: cc.Button = null;
 
-    private totalTime: number = 120;
-    private currentTime: number = 120;
+    @property(cc.Prefab)
+    gameOverUIPrefab: cc.Prefab = null;
+
+    @property(cc.Prefab)
+    gameStartOverlayPrefab: cc.Prefab = null;
+
+    private totalTime: number = 30;
+    private currentTime: number = 30;
     private score: number = 0;
+
+    private timerNode: cc.Node = null;
+    private scoreNode: cc.Node = null;
+
+    private timerLabel: cc.Label = null;
+    private scoreLabel: cc.Label = null;
 
     private comboValue: number = 0;
     private comboMax: number = 300;
     private isFeverTime: boolean = false;
 
+    start() {
+        GameState.lastGameScene = cc.director.getScene().name;
+        if (this.feverSprite && this.feverSprite.isValid) {
+            this.feverSprite.active = false;
+        }
 
-    onLoad() {
-        this.schedule(this.updateTimer, 1);
+
+        if (this.gameStartOverlayPrefab) {
+            const startOverlay = cc.instantiate(this.gameStartOverlayPrefab);
+            this.node.addChild(startOverlay);
+            startOverlay.setPosition(0, 0);
+
+            // 애니메이션 시간 후에 시작 (2초 권장)
+            this.scheduleOnce(() => {
+                this.startGameLogic();
+            }, 2);
+        } else {
+            this.startGameLogic();
+        }
+    }
+
+    startGameLogic() {
+        // 타이머 UI
+        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
+        this.node.addChild(this.timerNode);
+        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
+        this.updateTimer();
+
+        // 점수 UI
+        this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
+        this.node.addChild(this.scoreNode);
+        this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
         this.updateScore(0);
-            // 콤보 게이지 관련 초기화
+
+        // 피버 관련 초기화
         this.comboValue = 0;
-        this.comboMax = 200; // 혹은 필요에 따라 값 설정
+        this.comboMax = 300;
         this.comboGauge.progress = 0;
-
-
-        // 피버타임 UI 초기화
         this.isFeverTime = false;
-        this.feverLabel.active = false;
+        if (this.feverSprite) this.feverSprite.active = false;
 
-        // const label = this.feverLabel.getComponent(cc.Label);
-        // label.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        // label.verticalAlign = cc.Label.VerticalAlign.CENTER;
-        // label.overflow = cc.Label.Overflow.SHRINK;  // 너무 길면 축소
-
+        // 타이머 시작
+        this.schedule(this.updateTimer, 1);
     }
 
     updateTimer() {
         this.currentTime--;
-
         if (this.currentTime <= 0) {
             this.currentTime = 0;
             this.unschedule(this.updateTimer);
             this.onGameOver();
         }
-
-        this.timerLabel.string = `시간: ${this.currentTime}`;
+        this.timerLabel.string = `${this.currentTime}`;
     }
 
     updateScore(amount: number) {
         this.score += amount;
         this.scoreLabel.string = `${this.score}`;
-        // 점수 획득시 콤보게이지 추가 메서드 실행    
-        this.increaseComboGauge(amount);  
+        this.increaseComboGauge(amount);
     }
-    
-    public addMatchScore(matchCount: number) {
-
-        const scoreToAdd = matchCount * 10; // 피버 아닐 때 점수 추가
-    
-        // 피버타임이면 점수 2배로 설정
-        const finalScore = this.isFeverTime ? scoreToAdd * 2 : scoreToAdd;
-    
-        this.updateScore(finalScore);
-    }
-    
 
     increaseComboGauge(amount: number) {
-        if (this.isFeverTime) return; // 피버타임중엔 게이지 안올라감감
-    
+        if (this.isFeverTime) return;
         this.comboValue += amount;
-        if (this.comboValue >= this.comboMax) { 
+        if (this.comboValue >= this.comboMax) {
             this.comboValue = this.comboMax;
-            this.startFeverTime(); // 현재 게이지 값이 맥스값보다 크거나 같아지면 피버타임 메서드 실행
+            this.startFeverTime();
         }
-        this.comboGauge.progress = this.comboValue / this.comboMax; // ui실행
+        this.comboGauge.progress = this.comboValue / this.comboMax;
     }
 
     startFeverTime() {
         this.isFeverTime = true;
-        this.feverLabel.active = true; // 피버 UI 보여주기
-    
-    
-        // 10초 후 종료
+        this.feverSprite.active = true;
+
         this.scheduleOnce(() => {
             this.endFeverTime();
         }, 10);
     }
-    
-    endFeverTime() {
-        this.isFeverTime = false; // 피버타임 상태 false로
-        this.comboValue = 0; // 현재 콤보 밸류, ui 초기화
-        this.comboGauge.progress = 0;
-        this.feverLabel.active = false; // 피버 UI 숨기기
 
+    endFeverTime() {
+        this.isFeverTime = false;
+        this.comboValue = 0;
+        this.comboGauge.progress = 0;
+        this.feverSprite.active = false;
     }
-    
-    
+
+    public addMatchScore(matchCount: number) {
+        const scoreToAdd = matchCount * 10;
+        const finalScore = this.isFeverTime ? scoreToAdd * 2 : scoreToAdd;
+        this.updateScore(finalScore);
+    }
 
     onGameOver() {
         cc.log("게임 종료!");
-        // 이후 게임 종료 처리 추가 가능
+        GameState.lastGameScene = cc.director.getScene().name;
+        GameState.score = this.score;
+        GameState.gameId = "FruitPuzzle";
+
+        const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
+        this.node.addChild(gameOverUI);
+        gameOverUI.setPosition(0, 0);
+    }
+
+    loadList() {
+        console.log("싱글 게임 리스트로 돌아가기");
+        cc.director.loadScene("SingleGameList");
     }
 }

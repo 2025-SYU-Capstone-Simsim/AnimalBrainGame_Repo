@@ -1,5 +1,5 @@
 "use strict";
-cc._RF.push(module, '76cf13tGPlGmqE1XkPp95og', '3MatchBoard');
+cc._RF.push(module, '04540WzUCdIWobTbZf++EPF', '3MatchBoard');
 // scripts/Yu/3Match/3MatchBoard.ts
 
 "use strict";
@@ -32,16 +32,20 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.tilePrefab = null;
         _this.gameManager = null;
-        _this.boardSize = 8; // 항상 8x8 고정
+        _this.boardSize = 7; // 항상 8x8 고정
         _this.tileSize = 100;
-        _this.gap = 5;
+        _this.gap = 10;
         _this.board = [];
         _this.isSwapping = false;
         return _this;
     }
     ThreeMatchBoard.prototype.start = function () {
+        var _this = this;
         this.node.color = cc.Color.GRAY;
         this.createBoard();
+        this.scheduleOnce(function () {
+            _this.checkAndExplodeMatches(); // 게임 시작 후 첫 매칭 탐지
+        }, 0.1);
     };
     ThreeMatchBoard.prototype.createBoard = function () {
         this.board = [];
@@ -59,22 +63,24 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
                 var tile = tileNode.getComponent(Tile_1.default);
                 tile.row = row;
                 tile.col = col;
-                var bannedColors = [];
+                // 1. bannedColors를 bannedIndices로
+                var bannedIndices = [];
                 if (col >= 2) {
                     var left1 = this.board[row][col - 1];
                     var left2 = this.board[row][col - 2];
-                    if (left1 && left2 && left1.node.color.equals(left2.node.color)) {
-                        bannedColors.push(left1.node.color);
+                    if (left1 && left2 && left1['fruitIndex'] === left2['fruitIndex']) {
+                        bannedIndices.push(left1['fruitIndex']);
                     }
                 }
                 if (row >= 2) {
                     var top1 = this.board[row - 1][col];
                     var top2 = this.board[row - 2][col];
-                    if (top1 && top2 && top1.node.color.equals(top2.node.color)) {
-                        bannedColors.push(top1.node.color);
+                    if (top1 && top2 && top1['fruitIndex'] === top2['fruitIndex']) {
+                        bannedIndices.push(top1['fruitIndex']);
                     }
                 }
-                tile.setRandomColorExcluding(bannedColors);
+                // 2. 랜덤 과일 설정
+                tile.setRandomFruitExcluding(bannedIndices);
                 tile.addOutline();
                 this.board[row][col] = tile;
             }
@@ -95,8 +101,8 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
                 if (col <= this.boardSize - 3) {
                     var t1 = this.board[row][col + 1];
                     var t2 = this.board[row][col + 2];
-                    if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
-                        console.log("\uAC00\uB85C \uB9E4\uCE6D \uBC1C\uACAC! (" + row + ", " + col + ")");
+                    // 색상 비교 → 과일 인덱스 비교
+                    if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                         matchedTiles.push(tile, t1, t2);
                     }
                 }
@@ -104,8 +110,8 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
                 if (row <= this.boardSize - 3) {
                     var t1 = this.board[row + 1][col];
                     var t2 = this.board[row + 2][col];
-                    if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
-                        console.log("\uC138\uB85C \uB9E4\uCE6D \uBC1C\uACAC! (" + row + ", " + col + ")");
+                    // 색상 비교 → 과일 인덱스 비교
+                    if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                         matchedTiles.push(tile, t1, t2);
                     }
                 }
@@ -113,7 +119,6 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
         }
         matchedTiles = Array.from(new Set(matchedTiles));
         if (matchedTiles.length > 0) {
-            console.log(matchedTiles.length + "\uAC1C \uD0C0\uC77C \uD3ED\uBC1C!");
             if (this.gameManager) {
                 this.gameManager.addMatchScore(matchedTiles.length);
             }
@@ -127,10 +132,15 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
                 _this.scheduleOnce(function () {
                     _this.spawnNewTiles();
                     _this.scheduleOnce(function () {
+                        // **다시 매칭이 일어날 수 있으므로 재귀 호출**
                         _this.checkAndExplodeMatches();
                     }, 0.3);
                 }, 0.3);
             }, 0.3);
+        }
+        else {
+            // 폭발된 타일이 없으면 다음 행동 없음
+            this.isSwapping = false;
         }
     };
     ThreeMatchBoard.prototype.swapTiles = function (tileA, tileB) {
@@ -140,10 +150,11 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
         var rowDiff = Math.abs(tileA.row - tileB.row);
         var colDiff = Math.abs(tileA.col - tileB.col);
         if (!((rowDiff === 1 && colDiff === 0) || (rowDiff === 0 && colDiff === 1))) {
-            console.log(" 인접한 타일이 아닙니다! 교환 불가");
+            console.log("인접한 타일이 아닙니다! 교환 불가");
             return;
         }
         this.isSwapping = true;
+        // 보드에서 교환
         var tempRow = tileA.row;
         var tempCol = tileA.col;
         this.board[tileA.row][tileA.col] = tileB;
@@ -152,18 +163,60 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
         tileA.col = tileB.col;
         tileB.row = tempRow;
         tileB.col = tempCol;
-        var moveA = cc.moveTo(0.2, tileB.node.getPosition());
-        var moveB = cc.moveTo(0.2, tileA.node.getPosition());
-        cc.tween(tileA.node)
-            .then(moveA)
-            .start();
-        cc.tween(tileB.node)
-            .then(moveB)
-            .call(function () {
-            _this.checkAndExplodeMatches();
-            _this.isSwapping = false;
-        })
-            .start();
+        var posA = this.getTilePosition(tileA.row, tileA.col);
+        var posB = this.getTilePosition(tileB.row, tileB.col);
+        cc.tween(tileA.node).to(0.2, { position: posA }).start();
+        cc.tween(tileB.node).to(0.2, { position: posB }).call(function () {
+            // 임시로 매칭 탐지
+            var matchedTiles = [];
+            var detectTempMatch = function () {
+                for (var row = 0; row < _this.boardSize; row++) {
+                    for (var col = 0; col < _this.boardSize; col++) {
+                        var tile = _this.board[row][col];
+                        if (!tile)
+                            continue;
+                        // 가로
+                        if (col <= _this.boardSize - 3) {
+                            var t1 = _this.board[row][col + 1];
+                            var t2 = _this.board[row][col + 2];
+                            if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
+                                return true;
+                            }
+                        }
+                        // 세로
+                        if (row <= _this.boardSize - 3) {
+                            var t1 = _this.board[row + 1][col];
+                            var t2 = _this.board[row + 2][col];
+                            if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            };
+            if (detectTempMatch()) {
+                _this.checkAndExplodeMatches(); // 매칭이 있으면 계속 진행
+            }
+            else {
+                // 없으면 되돌리기
+                // 위치, 보드 정보 다시 교환
+                _this.board[tileA.row][tileA.col] = tileB;
+                _this.board[tileB.row][tileB.col] = tileA;
+                var tempRow2 = tileA.row;
+                var tempCol2 = tileA.col;
+                tileA.row = tileB.row;
+                tileA.col = tileB.col;
+                tileB.row = tempRow2;
+                tileB.col = tempCol2;
+                var resetPosA = _this.getTilePosition(tileA.row, tileA.col);
+                var resetPosB = _this.getTilePosition(tileB.row, tileB.col);
+                cc.tween(tileA.node).to(0.2, { position: resetPosA }).start();
+                cc.tween(tileB.node).to(0.2, { position: resetPosB }).call(function () {
+                    _this.isSwapping = false;
+                }).start();
+            }
+        }).start();
     };
     ThreeMatchBoard.prototype.fillEmptySpaces = function () {
         for (var col = 0; col < this.boardSize; col++) {
@@ -198,7 +251,7 @@ var ThreeMatchBoard = /** @class */ (function (_super) {
                     var tile = tileNode.getComponent(Tile_1.default);
                     tile.row = row;
                     tile.col = col;
-                    tile.setRandomColor();
+                    tile.setRandomFruit(); // 이전의 setRandomColor()에서 교체
                     tile.addOutline();
                     this.board[row][col] = tile;
                 }

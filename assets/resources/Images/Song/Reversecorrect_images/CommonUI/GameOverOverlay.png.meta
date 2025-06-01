@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "e69a56d8-a1e8-4ebe-9071-46b400bb441d",
+  "uuid": "97e9964c-6c3a-4b46-a7a6-d52da4ae44d4",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -14,9 +14,9 @@
   "subMetas": {
     "GameOverOverlay": {
       "ver": "1.0.6",
-      "uuid": "46925785-c8ed-4916-9272-e30eb33c302b",
+      "uuid": "05e9ee4b-81f2-4d96-ae27-8dbab10c9789",
       "importer": "sprite-frame",
-      "rawTextureUuid": "e69a56d8-a1e8-4ebe-9071-46b400bb441d",
+      "rawTextureUuid": "97e9964c-6c3a-4b46-a7a6-d52da4ae44d4",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

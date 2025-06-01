@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "57f7ac06-4873-474c-b0c1-4bb55f567d3e",
+  "uuid": "53106283-dc52-4cc1-976c-941d09c5ed7a",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -14,9 +14,9 @@
   "subMetas": {
     "GameSelectRightftArrow": {
       "ver": "1.0.6",
-      "uuid": "e2d07ea3-76ca-4a06-8587-c3ea12c48c2b",
+      "uuid": "de287131-4462-4766-a796-2ee907c4e6f4",
       "importer": "sprite-frame",
-      "rawTextureUuid": "57f7ac06-4873-474c-b0c1-4bb55f567d3e",
+      "rawTextureUuid": "53106283-dc52-4cc1-976c-941d09c5ed7a",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

@@ -8,7 +8,7 @@ import GameInit from "./Rottenacorn_game_init";
 export default class RottenacornGameLogic extends cc.Component {
     @property(GameInit)
     game_init: GameInit = null;
-
+    
     @property(AcornManager)
     acornManager: AcornManager = null;
 
@@ -112,9 +112,7 @@ export default class RottenacornGameLogic extends cc.Component {
               if (selected_pic) {
             // 현재 선택된 인덱스면 보이고, 아니면 숨기기
             selected_pic.active = (i === this.selectedIndex);
-        }
-
-            
+            }
         }
     }
 
@@ -197,7 +195,7 @@ export default class RottenacornGameLogic extends cc.Component {
                 this.choicebutton.resumeSystemEvents(true);
                 this.handleCorrectAnswer(); // 다음 문제로 진행
             }, 1); // 1초 후 실행
-    return;
+            return;
         }
     }
 
@@ -212,7 +210,6 @@ export default class RottenacornGameLogic extends cc.Component {
                 this.rottenCount++;
             }
         }
-
         this.startRound();
     }
 

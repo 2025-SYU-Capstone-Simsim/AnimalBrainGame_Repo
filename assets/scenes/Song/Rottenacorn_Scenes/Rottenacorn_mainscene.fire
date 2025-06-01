@@ -23,7 +23,7 @@
         "__id__": 58
       },
       {
-        "__id__": 66
+        "__id__": 67
       },
       {
         "__id__": 63
@@ -32,7 +32,7 @@
         "__id__": 61
       },
       {
-        "__id__": 67
+        "__id__": 68
       }
     ],
     "_active": false,
@@ -720,7 +720,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Background",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 13
     },
@@ -986,7 +986,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Background",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 18
     },
@@ -1252,7 +1252,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Background",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 23
     },
@@ -2730,7 +2730,7 @@
       "__id__": 60
     },
     "acornManager": {
-      "__id__": 65
+      "__id__": 66
     },
     "frontbutton": {
       "__id__": 23
@@ -2768,13 +2768,16 @@
       "__id__": 62
     },
     "timerDisplayPrefab": {
-      "__uuid__": "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0"
+      "__uuid__": "6950aa2f-9b6c-4171-927f-e04027c78b81"
     },
     "scoreDisplayPrefab": {
       "__uuid__": "f4df5436-59c5-4589-8143-9dde963b3d5f"
     },
-    "pretty_squirrel": {
-      "__id__": 6
+    "gameStartOverlayPrefab": {
+      "__uuid__": "5ac79cc0-ace3-4d6c-b463-1398979aaf6c"
+    },
+    "gameOverUIPrefab": {
+      "__uuid__": "29222014-815f-472e-aa6a-036f28d5bf02"
     },
     "_id": "87d7dHI2tL2L74NQUj5ihC"
   },
@@ -2852,7 +2855,11 @@
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 65
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 0,
@@ -2905,12 +2912,14 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": null,
+    "_N$target": {
+      "__id__": 61
+    },
     "_id": "2by6QiGftO8orV3v3ovMjJ"
   },
   {
     "__type__": "cc.Node",
-    "_name": "Vector",
+    "_name": "ExitButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -2948,8 +2957,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        93.623,
-        1809.282,
+        90,
+        1850,
         0,
         0,
         0,
@@ -3006,11 +3015,21 @@
     "_id": "f4RqCIBZhLELzTnVBwmgdr"
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 61
+    },
+    "component": "",
+    "_componentId": "51d5eam6QRMlYtW5l10P8xH",
+    "handler": "loadList",
+    "customEventData": ""
+  },
+  {
     "__type__": "f5a9eAEZjtNuIymEkL0217h",
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 66
+      "__id__": 67
     },
     "_enabled": true,
     "acornPrefab": {
@@ -3032,7 +3051,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 65
+        "__id__": 66
       }
     ],
     "_prefab": null,
@@ -3094,7 +3113,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 68
+        "__id__": 69
       }
     ],
     "_prefab": null,
@@ -3150,7 +3169,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 67
+      "__id__": 68
     },
     "_enabled": true,
     "_materials": [

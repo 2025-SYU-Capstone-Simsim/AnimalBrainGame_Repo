@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "b2a09f2f-ab84-4e9c-8e91-5aba5a9a2158",
+  "uuid": "ef702a99-88fa-4beb-a006-a8fac1f0aba6",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -14,9 +14,9 @@
   "subMetas": {
     "BackButton1": {
       "ver": "1.0.6",
-      "uuid": "183d16a9-d49b-4824-9749-7b347483f617",
+      "uuid": "89e2d239-6f2e-494b-8461-6937962178cd",
       "importer": "sprite-frame",
-      "rawTextureUuid": "b2a09f2f-ab84-4e9c-8e91-5aba5a9a2158",
+      "rawTextureUuid": "ef702a99-88fa-4beb-a006-a8fac1f0aba6",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

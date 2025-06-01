@@ -44,23 +44,26 @@ start() {
                 tile.row = row;
                 tile.col = col;
 
-                let bannedColors: cc.Color[] = [];
+                // 1. bannedColors를 bannedIndices로
+                let bannedIndices: number[] = [];
+
                 if (col >= 2) {
                     let left1 = this.board[row][col - 1];
                     let left2 = this.board[row][col - 2];
-                    if (left1 && left2 && left1.node.color.equals(left2.node.color)) {
-                        bannedColors.push(left1.node.color);
+                    if (left1 && left2 && left1['fruitIndex'] === left2['fruitIndex']) {
+                        bannedIndices.push(left1['fruitIndex']);
                     }
                 }
                 if (row >= 2) {
                     let top1 = this.board[row - 1][col];
                     let top2 = this.board[row - 2][col];
-                    if (top1 && top2 && top1.node.color.equals(top2.node.color)) {
-                        bannedColors.push(top1.node.color);
+                    if (top1 && top2 && top1['fruitIndex'] === top2['fruitIndex']) {
+                        bannedIndices.push(top1['fruitIndex']);
                     }
                 }
 
-                tile.setRandomColorExcluding(bannedColors);
+                // 2. 랜덤 과일 설정
+                tile.setRandomFruitExcluding(bannedIndices);
                 tile.addOutline();
 
                 this.board[row][col] = tile;
@@ -85,9 +88,11 @@ start() {
                     let t1 = this.board[row][col + 1];
                     let t2 = this.board[row][col + 2];
     
-                    if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
+                    // 색상 비교 → 과일 인덱스 비교
+                    if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                         matchedTiles.push(tile, t1, t2);
                     }
+
                 }
     
                 // 세로 검사
@@ -95,9 +100,11 @@ start() {
                     let t1 = this.board[row + 1][col];
                     let t2 = this.board[row + 2][col];
     
-                    if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
+                    // 색상 비교 → 과일 인덱스 비교
+                    if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                         matchedTiles.push(tile, t1, t2);
                     }
+
                 }
             }
         }
@@ -173,18 +180,20 @@ start() {
                         if (col <= this.boardSize - 3) {
                             const t1 = this.board[row][col + 1];
                             const t2 = this.board[row][col + 2];
-                            if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
+                            if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                                 return true;
                             }
+                            
                         }
     
                         // 세로
                         if (row <= this.boardSize - 3) {
                             const t1 = this.board[row + 1][col];
                             const t2 = this.board[row + 2][col];
-                            if (t1 && t2 && this.colorsAreEqual(tile.node.color, t1.node.color) && this.colorsAreEqual(tile.node.color, t2.node.color)) {
+                            if (t1 && t2 && tile['fruitIndex'] === t1['fruitIndex'] && tile['fruitIndex'] === t2['fruitIndex']) {
                                 return true;
                             }
+                            
                         }
                     }
                 }
@@ -258,7 +267,7 @@ start() {
                     tile.row = row;
                     tile.col = col;
 
-                    tile.setRandomColor();
+                    tile.setRandomFruit();  // 이전의 setRandomColor()에서 교체
                     tile.addOutline();
 
                     this.board[row][col] = tile;

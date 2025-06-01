@@ -75,7 +75,7 @@
         "__id__": 47
       },
       {
-        "__id__": 81
+        "__id__": 77
       },
       {
         "__id__": 65
@@ -84,9 +84,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 83
-      },
-      {
         "__id__": 84
       },
       {
@@ -94,6 +91,9 @@
       },
       {
         "__id__": 86
+      },
+      {
+        "__id__": 87
       }
     ],
     "_prefab": null,
@@ -159,7 +159,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 80
+        "__id__": 83
       }
     ],
     "_prefab": null,
@@ -225,7 +225,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 79
+        "__id__": 82
       }
     ],
     "_prefab": null,
@@ -303,11 +303,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 77
+        "__id__": 80
       }
     ],
     "_prefab": {
-      "__id__": 78
+      "__id__": 81
     },
     "_opacity": 255,
     "_color": {
@@ -2743,7 +2743,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 50.4
+      "height": 100.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3187,7 +3187,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Vector",
+    "_name": "ExitButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -3203,7 +3203,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 76
+      "__id__": 79
     },
     "_opacity": 255,
     "_color": {
@@ -3227,8 +3227,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -445.326,
-        1030.604,
+        -470,
+        900,
         0,
         0,
         0,
@@ -3296,7 +3296,11 @@
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 76
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$transition": 0,
@@ -3349,8 +3353,116 @@
     "_N$hoverSprite": null,
     "hoverSprite": null,
     "_N$disabledSprite": null,
-    "_N$target": null,
+    "_N$target": {
+      "__id__": 77
+    },
     "_id": "bdZFMO8TNIvolN9ko/H+s5"
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 77
+    },
+    "component": "",
+    "_componentId": "c4754JUFndJMpLQkeWjjUsc",
+    "handler": "loadList",
+    "customEventData": ""
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "Game_init",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 78
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        0,
+        -55,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "a63DGuu+VArLYb0cT3l7am"
+  },
+  {
+    "__type__": "c4754JUFndJMpLQkeWjjUsc",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 77
+    },
+    "_enabled": true,
+    "qna": {
+      "__id__": 64
+    },
+    "exitButton": {
+      "__id__": 75
+    },
+    "correct_sign": {
+      "__id__": 70
+    },
+    "wrong_sign": {
+      "__id__": 67
+    },
+    "timerDisplayPrefab": {
+      "__uuid__": "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0"
+    },
+    "scoreDisplayPrefab": {
+      "__uuid__": "c3c2b61d-8f95-425b-b548-5057de0511f1"
+    },
+    "gameStartOverlayPrefab": {
+      "__uuid__": "a699ad5e-ef78-4575-804f-0fa58359e54a"
+    },
+    "gameOverUIPrefab": {
+      "__uuid__": "00f0c755-0393-4852-a5d7-6f63c49d597c"
+    },
+    "_id": "a08Ra/o0VCkYOiG1to+CQ2"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -3473,96 +3585,6 @@
     "_renderStages": 1,
     "_alignWithScreen": true,
     "_id": "81GN3uXINKVLeW4+iKSlim"
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "Game_init",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 2
-    },
-    "_children": [],
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 82
-      }
-    ],
-    "_prefab": null,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_trs": {
-      "__type__": "TypedArray",
-      "ctor": "Float64Array",
-      "array": [
-        0,
-        -55,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1
-      ]
-    },
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
-    "_id": "a63DGuu+VArLYb0cT3l7am"
-  },
-  {
-    "__type__": "c4754JUFndJMpLQkeWjjUsc",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 81
-    },
-    "_enabled": true,
-    "qna": {
-      "__id__": 64
-    },
-    "exitButton": {
-      "__id__": 75
-    },
-    "correct_sign": {
-      "__id__": 70
-    },
-    "wrong_sign": {
-      "__id__": 67
-    },
-    "timerDisplayPrefab": {
-      "__uuid__": "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0"
-    },
-    "scoreDisplayPrefab": {
-      "__uuid__": "c3c2b61d-8f95-425b-b548-5057de0511f1"
-    },
-    "_id": "a08Ra/o0VCkYOiG1to+CQ2"
   },
   {
     "__type__": "cc.Canvas",
