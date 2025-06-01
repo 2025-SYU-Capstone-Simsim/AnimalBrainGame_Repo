@@ -117,7 +117,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 1080,
-      "height": 640
+      "height": 1920
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -129,7 +129,7 @@
       "ctor": "Float64Array",
       "array": [
         540,
-        320,
+        960,
         0,
         0,
         0,
@@ -408,7 +408,7 @@
     "_id": "fc/ANCHQVIcojiZaquLfIh"
   },
   {
-    "__type__": "76cf13tGPlGmqE1XkPp95og",
+    "__type__": "04540WzUCdIWobTbZf++EPF",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -416,15 +416,15 @@
     },
     "_enabled": true,
     "tilePrefab": {
-      "__uuid__": "f620e8a3-53f6-4c9b-a0c3-f5377961e416"
+      "__uuid__": "6e38e92c-9c34-4514-8fea-18bc47c87609"
     },
     "gameManager": {
       "__id__": 9
     },
-    "_id": "e3iQf8miFGiqU/FT6O24u3"
+    "_id": "5cMkIuz45J24t0T9yN2V8J"
   },
   {
-    "__type__": "c77b4qzzIZMtIiyJOm/OGM6",
+    "__type__": "b50cdZeRIBML5xf5ovOKREW",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -432,10 +432,10 @@
     },
     "_enabled": true,
     "timerDisplayPrefab": {
-      "__uuid__": "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0"
+      "__uuid__": "523fb881-3af0-4d0a-aa00-3ec99eab8382"
     },
     "scoreDisplayPrefab": {
-      "__uuid__": "c3c2b61d-8f95-425b-b548-5057de0511f1"
+      "__uuid__": "56a4c5a0-e865-4f18-b5ed-26553efba1d3"
     },
     "boardNode": {
       "__id__": 7
@@ -450,12 +450,12 @@
       "__id__": 21
     },
     "gameOverUIPrefab": {
-      "__uuid__": "6670236f-55e2-49f3-86a8-4c6f023b2389"
+      "__uuid__": "00f0c755-0393-4852-a5d7-6f63c49d597c"
     },
     "gameStartOverlayPrefab": {
-      "__uuid__": "04d8a722-8331-4643-ab77-94390c6cabaf"
+      "__uuid__": "a699ad5e-ef78-4575-804f-0fa58359e54a"
     },
-    "_id": "219MKD5jhHtp8SYinj1IMU"
+    "_id": "56m0KIHYRNbJWZwd3fLbIA"
   },
   {
     "__type__": "cc.Node",
@@ -1150,7 +1150,7 @@
       "__id__": 10
     },
     "component": "",
-    "_componentId": "c77b4qzzIZMtIiyJOm/OGM6",
+    "_componentId": "b50cdZeRIBML5xf5ovOKREW",
     "handler": "loadList",
     "customEventData": ""
   },
@@ -1355,7 +1355,7 @@
     "_designResolution": {
       "__type__": "cc.Size",
       "width": 1080,
-      "height": 640
+      "height": 1920
     },
     "_fitWidth": true,
     "_fitHeight": true,

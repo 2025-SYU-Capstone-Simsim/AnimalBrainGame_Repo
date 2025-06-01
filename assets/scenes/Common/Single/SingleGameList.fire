@@ -782,7 +782,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "d26b1kYbyNKyKnGcPX9gaYS",
+    "_componentId": "c1b30N2FO9KdJh7XP5Dt8Z+",
     "handler": "onSelectButtonClick",
     "customEventData": ""
   },
@@ -1188,8 +1188,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -454,
-        835,
+        -420,
+        820,
         0,
         0,
         0,
@@ -1325,7 +1325,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "d26b1kYbyNKyKnGcPX9gaYS",
+    "_componentId": "c1b30N2FO9KdJh7XP5Dt8Z+",
     "handler": "onClickMain",
     "customEventData": ""
   },
@@ -1374,7 +1374,7 @@
     "_id": "29zXboiXFBKoIV4PQ2liTe"
   },
   {
-    "__type__": "d26b1kYbyNKyKnGcPX9gaYS",
+    "__type__": "c1b30N2FO9KdJh7XP5Dt8Z+",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1385,7 +1385,7 @@
       "__id__": 9
     },
     "gameCardPrefab": {
-      "__uuid__": "a94a95a6-89b6-4495-88fe-f83705e33b52"
+      "__uuid__": "f7515b07-eebe-4fc0-947a-4b047a4867a1"
     },
     "selectButton": {
       "__id__": 14
@@ -1399,6 +1399,6 @@
     "BackButton": {
       "__id__": 25
     },
-    "_id": "cdJ1zvX+FKYZkg43mbg49y"
+    "_id": "94xpanolhCoJBF6XCnpxY3"
   }
 ]

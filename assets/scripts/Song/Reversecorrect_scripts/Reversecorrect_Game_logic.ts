@@ -13,7 +13,6 @@ export default class Game_logic extends cc.Component {
     @property(cc.Label)
     sequence_label : cc.Label = null;
 
-
     public static player_label_arr: number[] = [];
     public static count: number = 0;
     //사용자가 입력하는 label 업데이트
@@ -46,7 +45,7 @@ export default class Game_logic extends cc.Component {
         }
 
         if (input.length === correct.length) {
-            Game_init.instance.addScore(10);
+            Game_init.instance.updateScore(10);
             Game_init.instance.correct_sign.active = true;
             this.qna.setButtonsInteractable(false);
             cc.director.pause();
@@ -78,5 +77,4 @@ export default class Game_logic extends cc.Component {
             this.qna.showNewQuestion();
         }
     }
-
 }

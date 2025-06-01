@@ -765,7 +765,7 @@
       "__id__": 9
     },
     "component": "",
-    "_componentId": "455feRVQPpGsLonevqW1Ijj",
+    "_componentId": "37c9d71cJ1Cco0xoDnC87r3",
     "handler": "onExitClick",
     "customEventData": ""
   },
@@ -1047,7 +1047,7 @@
       "__id__": 9
     },
     "component": "",
-    "_componentId": "455feRVQPpGsLonevqW1Ijj",
+    "_componentId": "37c9d71cJ1Cco0xoDnC87r3",
     "handler": "onRetryClick",
     "customEventData": ""
   },
@@ -1084,7 +1084,7 @@
     "_id": "5dmfNMCX9AMJ5mbSbc/Qzx"
   },
   {
-    "__type__": "455feRVQPpGsLonevqW1Ijj",
+    "__type__": "37c9d71cJ1Cco0xoDnC87r3",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1097,7 +1097,7 @@
     "retryButton": {
       "__id__": 19
     },
-    "_id": "10IsxYJIFMS5Fx/+uOgM/B"
+    "_id": "d48HC+Y11EXY0SZv5L9aa1"
   },
   {
     "__type__": "cc.Canvas",

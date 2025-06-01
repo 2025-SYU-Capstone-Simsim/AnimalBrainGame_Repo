@@ -2225,7 +2225,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "c60ceABgEdFG7Git8NFhaSz",
+    "_componentId": "91bdevLJ/ZGZJl7sY0rhKiI",
     "handler": "loadList",
     "customEventData": ""
   },
@@ -2274,7 +2274,7 @@
     "_id": "29zXboiXFBKoIV4PQ2liTe"
   },
   {
-    "__type__": "c60ceABgEdFG7Git8NFhaSz",
+    "__type__": "91bdevLJ/ZGZJl7sY0rhKiI",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -2288,43 +2288,43 @@
       "__id__": 8
     },
     "Hole2": {
-      "__id__": 20
+      "__id__": 12
     },
     "Hole3": {
-      "__id__": 32
+      "__id__": 16
     },
     "Hole4": {
-      "__id__": 12
+      "__id__": 20
     },
     "Hole5": {
       "__id__": 24
     },
     "Hole6": {
-      "__id__": 36
+      "__id__": 28
     },
     "Hole7": {
-      "__id__": 16
+      "__id__": 32
     },
     "Hole8": {
-      "__id__": 28
+      "__id__": 36
     },
     "Hole9": {
       "__id__": 40
     },
     "molePrefab": {
-      "__uuid__": "ca890f69-2c82-43c3-9c4d-ca3cef224692"
+      "__uuid__": "fd517316-2fdc-4886-85b1-a8784254ceb9"
     },
     "molePrefabGood": {
-      "__uuid__": "f09311ef-7f2a-4b5d-9c5a-1813f5a03f6c"
+      "__uuid__": "ec7dfe62-8ad1-4c07-9d5c-d1d405593b9d"
     },
     "hammerSprite": {
       "__uuid__": "9ed32889-31c6-424f-8101-25f3d6320168"
     },
     "timerDisplayPrefab": {
-      "__uuid__": "29d6e474-7a2e-4f0c-80af-f7e63ab9f2d0"
+      "__uuid__": "523fb881-3af0-4d0a-aa00-3ec99eab8382"
     },
     "scoreDisplayPrefab": {
-      "__uuid__": "c3c2b61d-8f95-425b-b548-5057de0511f1"
+      "__uuid__": "56a4c5a0-e865-4f18-b5ed-26553efba1d3"
     },
     "moleHitSprite": {
       "__uuid__": "c06d6cee-5ac1-43ab-aebb-96bd9e22d2d0"
@@ -2333,11 +2333,11 @@
       "__uuid__": "4542c5e8-7cb8-405e-afc5-a9dd46d28d50"
     },
     "gameOverUIPrefab": {
-      "__uuid__": "6670236f-55e2-49f3-86a8-4c6f023b2389"
+      "__uuid__": "00f0c755-0393-4852-a5d7-6f63c49d597c"
     },
     "gameStartOverlayPrefab": {
-      "__uuid__": "04d8a722-8331-4643-ab77-94390c6cabaf"
+      "__uuid__": "a699ad5e-ef78-4575-804f-0fa58359e54a"
     },
-    "_id": "6bN++yavtN+4pLYJVbyS91"
+    "_id": "c2uyBxjzNPeJ2DApU+lIlM"
   }
 ]

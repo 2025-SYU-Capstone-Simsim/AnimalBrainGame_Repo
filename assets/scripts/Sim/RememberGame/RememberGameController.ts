@@ -8,16 +8,18 @@ export default class GameController extends cc.Component {
     @property(cc.Button) yellowButton: cc.Button = null;
     @property(cc.Button) greenButton: cc.Button = null;
     @property(cc.Button) blueButton: cc.Button = null;
-    @property(cc.Label) scoreLabel: cc.Label = null;
     @property(cc.Label) statusLabel: cc.Label = null;
     @property(cc.Label) hintLabel: cc.Label = null;
-    @property(cc.Label) timerLabel: cc.Label = null;
     @property(cc.Button) exitButton: cc.Button = null;
     @property(cc.Sprite) frogSprite: cc.Sprite = null;
     @property(cc.Prefab) gameStartOverlayPrefab: cc.Prefab = null;
     @property(cc.Prefab) gameOverUIPrefab: cc.Prefab = null;
 
+    @property(cc.Prefab) scoreUIPrefab: cc.Prefab = null;
+    @property(cc.Prefab) timerUIPrefab: cc.Prefab = null;
 
+    private scoreLabel: cc.Label = null;
+    private timerLabel: cc.Label = null;
     private colorSequence: string[] = [];
     private userInput: string[] = [];
     private score: number = 0;
@@ -30,21 +32,53 @@ export default class GameController extends cc.Component {
 
     onLoad() {
         GameState.lastGameScene = cc.director.getScene().name;
+
+        // ✅ Score UI 프리팹 인스턴스화 및 Label 연결
+        if (this.scoreUIPrefab) {
+            const scoreUI = cc.instantiate(this.scoreUIPrefab);
+            this.node.addChild(scoreUI);
+
+            const scoreLabelNode = scoreUI.getChildByName("ScoreLabel");
+            if (scoreLabelNode) {
+                this.scoreLabel = scoreLabelNode.getComponent(cc.Label);
+            }
+
+            if (!this.scoreLabel) {
+                console.warn("⚠️ ScoreLabel 연결 실패: 프리팹 구조를 확인하세요.");
+            }
+        }
+
+        // ✅ Timer UI 프리팹 인스턴스화 및 Label 연결
+        if (this.timerUIPrefab) {
+            const timerUI = cc.instantiate(this.timerUIPrefab);
+            this.node.addChild(timerUI);
+
+            const timerLabelNode = timerUI.getChildByName("TimerLabel");
+            if (timerLabelNode) {
+                this.timerLabel = timerLabelNode.getComponent(cc.Label);
+            }
+
+            if (!this.timerLabel) {
+                console.warn("⚠️ TimerLabel 연결 실패: 프리팹 구조를 확인하세요.");
+            }
+        }
+
+        // ✅ 게임 시작 오버레이
         if (this.gameStartOverlayPrefab) {
             const overlay = cc.instantiate(this.gameStartOverlayPrefab);
             this.node.addChild(overlay);
             overlay.setPosition(0, 0);
 
-            // 오버레이 애니메이션 완료 후 게임 시작
             this.scheduleOnce(() => {
-                this.beginGame(); // ← 기존 게임 시작 함수
-            }, 2); // 오버레이 애니메이션 길이에 맞게 조정
+                this.beginGame();
+            }, 2);
         } else {
-            this.beginGame(); // 프리팹이 없으면 바로 시작
+            this.beginGame();
         }
+
         cc.debug.setDisplayStats(false);
 
-
+        // 버튼 매핑 및 클릭 이벤트 설정
         this.buttonMap = {
             red: this.redButton,
             yellow: this.yellowButton,
@@ -60,27 +94,19 @@ export default class GameController extends cc.Component {
 
         this.setInitialButtonState();
         this.startButton.node.active = false;
-        this.timerLabel.node.active = false;
+
+        // ✅ 더 이상 timerLabel.node.active = false 제거 (프리팹에서 직접 조절)
 
         this.tickCallback = this.updateTimer.bind(this);
         this.setFrogState("neutral");
 
-        cc.find('Canvas/yellowButton').on('click', () => {
-            console.log('yellowButton 눌림');
-        });
-
-        cc.find('Canvas/greenButton').on('click', () => {
-            console.log('greenButton 눌림');
-        });
-
-        cc.find('Canvas/blueButton').on('click', () => {
-            console.log('blueButton 눌림');
-        });
-
-        cc.find('Canvas/redButton').on('click', () => {
-            console.log('redButton 눌림');
-        });
+        // 테스트용 콘솔 로그
+        cc.find('Canvas/yellowButton').on('click', () => console.log('yellowButton 눌림'));
+        cc.find('Canvas/greenButton').on('click', () => console.log('greenButton 눌림'));
+        cc.find('Canvas/blueButton').on('click', () => console.log('blueButton 눌림'));
+        cc.find('Canvas/redButton').on('click', () => console.log('redButton 눌림'));
     }
+
 
 
 
@@ -186,7 +212,7 @@ export default class GameController extends cc.Component {
 
     private startTimer() {
         this.unschedule(this.tickCallback);
-        this.remainingTime = 10;
+        this.remainingTime = 30;
         this.timerLabel.string = `${this.remainingTime}`;
         this.timerLabel.node.active = true;
         this.schedule(this.tickCallback, 1);

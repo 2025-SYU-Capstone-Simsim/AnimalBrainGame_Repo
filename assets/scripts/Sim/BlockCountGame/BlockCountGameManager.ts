@@ -4,173 +4,163 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameManager extends cc.Component {
-  // 1) 옵션 버튼들
   @property([cc.Button])
   optionButtons: cc.Button[] = [];
 
-  // 2) 결과 레이블
   @property(cc.Label)
   resultLabel: cc.Label = null;
 
-  // 3) 블록 부모 노드
   @property(cc.Node)
   blockParent: cc.Node = null;
 
-  // 4) 블록 프리팹
   @property(cc.Prefab)
   blockPrefab: cc.Prefab = null;
 
-  // 5) Next/Skip 버튼
   @property(cc.Button)
   nextButton: cc.Button = null;
-
-  // 6) Score 레이블
-  @property(cc.Label)
-  scoreLabel: cc.Label = null;
-
-
-  // 7) 남은 시간 표시용 레이블
-  @property(cc.Label)
-  timeLabel: cc.Label = null;
 
   @property(cc.Prefab)
   gameStartOverlayPrefab: cc.Prefab = null;
 
-
-  // 게임 오버 오버레이 프리팹
   @property(cc.Prefab)
   gameOverUIPrefab: cc.Prefab = null;
 
-  // 리스트로 돌아가기 버튼 
-  @property(cc.Button) exitButton: cc.Node = null;
+  @property(cc.Button)
+  exitButton: cc.Node = null;
 
+  // 추가된 프리팹 속성
+  @property(cc.Prefab)
+  scoreUIPrefab: cc.Prefab = null;
+
+  @property(cc.Prefab)
+  timeUIPrefab: cc.Prefab = null;
+
+  // 내부에서 연결될 Label 컴포넌트
+  private scoreLabel: cc.Label = null;
+  private timeLabel: cc.Label = null;
 
   private correctCount: number = 0;
   private score: number = 0;
   private answered: boolean = false;
-
-  // 전체 게임 시간 (초)
   private timeLeft: number = 60;
 
-  // y축(높이)마다 사용할 색상
   private blockTextures: string[] = [
-    "Images/Sim/navyBlock",       // y=0
-    "Images/Sim/darkBlueBlock",   // y=1
-    "Images/Sim/blueBlock",       // y=2
-    "Images/Sim/whiteblueBlock"   // y=3
+    "Images/Sim/navyBlock",
+    "Images/Sim/darkBlueBlock",
+    "Images/Sim/blueBlock",
+    "Images/Sim/whiteblueBlock"
   ];
-
 
   onLoad() {
     GameState.lastGameScene = cc.director.getScene().name;
     cc.debug.setDisplayStats(false);
+
+    // Score UI 프리팹 인스턴스화
+    if (this.scoreUIPrefab) {
+      const scoreUI = cc.instantiate(this.scoreUIPrefab);
+      this.node.addChild(scoreUI);
+
+
+      const scoreLabelNode = scoreUI.getChildByName("ScoreLabel");
+      if (scoreLabelNode) {
+        this.scoreLabel = scoreLabelNode.getComponent(cc.Label);
+      }
+
+      if (!this.scoreLabel) {
+        console.warn("⚠️ ScoreLabel 연결 실패! 프리팹 구조 또는 노드 이름을 확인하세요.");
+      }
+    }
+
+    // Time UI 프리팹 인스턴스화
+    if (this.timeUIPrefab) {
+      const timeUI = cc.instantiate(this.timeUIPrefab);
+      this.node.addChild(timeUI);
+
+      const timeLabelNode = timeUI.getComponentInChildren(cc.Label); // 일반적인 구조
+      if (timeLabelNode) {
+        this.timeLabel = timeLabelNode;
+      }
+
+      if (!this.timeLabel) {
+        console.warn("⚠️ TimeLabel 연결 실패! 프리팹 구조 또는 컴포넌트 확인하세요.");
+      }
+    }
 
     if (this.nextButton) {
       this.nextButton.node.on('click', this.nextQuestion, this);
     }
 
     this.score = 0;
-    if (this.scoreLabel) {
-      this.scoreLabel.string = `${this.score}`;
-    }
+    if (this.scoreLabel) this.scoreLabel.string = `${this.score}`;
 
     this.timeLeft = 100;
-    if (this.timeLabel) {
-      this.timeLabel.string = `${this.timeLeft}`;
-    }
+    if (this.timeLabel) this.timeLabel.string = `${this.timeLeft}`;
 
-    // Game Start 오버레이 적용
     if (this.gameStartOverlayPrefab) {
       const overlay = cc.instantiate(this.gameStartOverlayPrefab);
       this.node.addChild(overlay);
       overlay.setPosition(0, 0);
-
-      // 오버레이 애니메이션 시간 (예: 2초) 후 시작
-      this.scheduleOnce(() => {
-        this.startGame();
-      }, 2);
+      this.scheduleOnce(() => this.startGame(), 2);
     } else {
       this.startGame();
     }
   }
 
   private startGame() {
-    this.startTimer();         // 타이머 시작
-    this.generateQuestion();   // 첫 문제 생성
+    this.startTimer();
+    this.generateQuestion();
   }
 
-
-
-
-  /** 100초 타이머 시작 */
   private startTimer() {
     this.unschedule(this.updateTimer);
-    this.timeLeft = 10;
-    if (this.timeLabel) {
-      this.timeLabel.string = `${this.timeLeft}`;
-    }
+    this.timeLeft = 30;
+    if (this.timeLabel) this.timeLabel.string = `${this.timeLeft}`;
     this.schedule(this.updateTimer, 1);
   }
 
-  /** 1초마다 호출되어 남은 시간을 갱신 */
   private updateTimer() {
     this.timeLeft--;
-    if (this.timeLabel) {
-      this.timeLabel.string = `${this.timeLeft}`;
-    }
+    if (this.timeLabel) this.timeLabel.string = `${this.timeLeft}`;
     if (this.timeLeft <= 0) {
       this.unschedule(this.updateTimer);
       this.onTimeout();
     }
   }
 
-  /** 전체 시간이 다 됐을 때 호출 */
   private onTimeout() {
-    // 모든 버튼 비활성화
     this.optionButtons.forEach(btn => btn.interactable = false);
-    if (this.nextButton) {
-      this.nextButton.interactable = false;
-    }
+    if (this.nextButton) this.nextButton.interactable = false;
 
-    // 게임 상태 저장
     GameState.lastGameScene = cc.director.getScene().name;
     GameState.score = this.score;
-    GameState.gameId = "block-count-game"; // 원하는 식별자
-    // 게임종료 Prefab 생성
+    GameState.gameId = "block-count-game";
+
     const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
-    this.node.addChild(gameOverUI);  // 또는 Canvas에 직접 붙여도 됨
-
-    // 정중앙 배치
+    this.node.addChild(gameOverUI);
     gameOverUI.setPosition(0, 0);
-
   }
 
-
-  /** 새 문제 생성 (시간은 계속 흐릅니다) */
   generateQuestion() {
     this.answered = false;
 
-    // Next 버튼 레이블 초기화
     if (this.nextButton) {
       const lbl = this.nextButton.node.getComponentInChildren(cc.Label)!;
       lbl.string = '건너뛰기';
       this.nextButton.interactable = true;
     }
 
-    // 결과 레이블 초기화
     this.resultLabel.string = '';
-
-    // 정답 개수 결정 및 블록 배치
     this.correctCount = Math.floor(Math.random() * 20) + 1;
     this.spawnBlocks(this.correctCount);
 
-    // 보기 세팅
     const options = new Set<number>([this.correctCount]);
     while (options.size < this.optionButtons.length) {
       options.add(Math.floor(Math.random() * 30) + 1);
     }
+
     const list = Array.from(options);
     this.shuffleArray(list);
+
     this.optionButtons.forEach((btn, i) => {
       btn.interactable = true;
       const lbl = btn.node.getComponentInChildren(cc.Label)!;
@@ -179,7 +169,6 @@ export default class GameManager extends cc.Component {
       btn.node.on('click', () => this.checkAnswer(list[i]));
     });
   }
-
   /** 답안 확인 */
   checkAnswer(selected: number) {
     if (this.answered) return;
@@ -211,19 +200,18 @@ export default class GameManager extends cc.Component {
     }
   }
 
-  /** 다음 문제로 넘어가기 */
   nextQuestion() {
     if (this.timeLeft > 0) {
       this.generateQuestion();
     }
   }
 
-  /** 블록 생성 & 애니메이션 (column-first, y축 기준) */
   spawnBlocks(count: number) {
     if (!this.blockParent) {
       console.error('[GameManager] blockParent가 연결되지 않았습니다!');
       return;
     }
+
     this.blockParent.removeAllChildren();
 
     const blockW = 100, blockH = 50, blockD = 50;
@@ -235,11 +223,13 @@ export default class GameManager extends cc.Component {
         xzList.push({ x, z });
       }
     }
+
     this.shuffleArray(xzList);
 
     type Pos = { x: number; z: number; y: number };
     const placedCoords: Pos[] = [];
     let placed = 0;
+
     outer: for (const { x, z } of xzList) {
       for (let y = 0; y < maxHeight && placed < count; y++) {
         placedCoords.push({ x, z, y });
@@ -294,7 +284,6 @@ export default class GameManager extends cc.Component {
     }
   }
 
-  /** 배열 셔플 유틸 */
   shuffleArray<T>(arr: T[]) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -306,5 +295,4 @@ export default class GameManager extends cc.Component {
     console.log("싱글 게임 리스트로 돌아가기");
     cc.director.loadScene('SingleGameList');
   }
-
 }

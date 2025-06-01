@@ -908,7 +908,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "41bf0ewRo5Mm5+zTEYBxk9j",
+    "_componentId": "8ce8fHZrg9NhKJ4PqiMsmMT",
     "handler": "onClickSingle",
     "customEventData": ""
   },
@@ -1190,7 +1190,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "41bf0ewRo5Mm5+zTEYBxk9j",
+    "_componentId": "8ce8fHZrg9NhKJ4PqiMsmMT",
     "handler": "onClickMulti",
     "customEventData": ""
   },
@@ -1569,7 +1569,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "41bf0ewRo5Mm5+zTEYBxk9j",
+    "_componentId": "8ce8fHZrg9NhKJ4PqiMsmMT",
     "handler": "onClickMyPage",
     "customEventData": ""
   },
@@ -1730,7 +1730,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "41bf0ewRo5Mm5+zTEYBxk9j",
+    "_componentId": "8ce8fHZrg9NhKJ4PqiMsmMT",
     "handler": "onClickLogin",
     "customEventData": ""
   },
@@ -1811,7 +1811,7 @@
     "_id": "29zXboiXFBKoIV4PQ2liTe"
   },
   {
-    "__type__": "41bf0ewRo5Mm5+zTEYBxk9j",
+    "__type__": "8ce8fHZrg9NhKJ4PqiMsmMT",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1827,6 +1827,6 @@
     "myPageButton": {
       "__id__": 31
     },
-    "_id": "c9bX7HE/NHa4kgHnF6AZQ5"
+    "_id": "c3H4Tio6tK9aP4pUz3fIzk"
   }
 ]

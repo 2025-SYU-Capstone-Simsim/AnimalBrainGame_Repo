@@ -2631,7 +2631,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "27642C/u3lNKZ4yxR6PTK/R",
+    "_componentId": "724b4McXHlDyZSM2r3LX3+s",
     "handler": "onClickStart",
     "customEventData": ""
   },
@@ -2712,7 +2712,7 @@
     "_id": "29zXboiXFBKoIV4PQ2liTe"
   },
   {
-    "__type__": "27642C/u3lNKZ4yxR6PTK/R",
+    "__type__": "724b4McXHlDyZSM2r3LX3+s",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -2726,13 +2726,13 @@
       "__id__": 53
     },
     "dogPrefab": {
-      "__uuid__": "2c1bc090-26c4-4f7b-95eb-53cea45cd1ec"
+      "__uuid__": "afa1a94f-3d5e-48f7-ba7c-8501779a4614"
     },
     "rabbitPrefab": {
-      "__uuid__": "0dc11da4-913a-4254-a73b-7a39a324b4e6"
+      "__uuid__": "5ffe99da-d507-46a5-a13a-6a5a9fc2ee68"
     },
     "tigerPrefab": {
-      "__uuid__": "0d62a576-9602-40e7-bdef-eb92efa81b2a"
+      "__uuid__": "d39864bb-3247-4cdf-916a-13f059e99e97"
     },
     "dogCharacter": {
       "__id__": 14
@@ -2752,6 +2752,6 @@
     "tigerSlot": {
       "__id__": 29
     },
-    "_id": "36UyvNkllITbDsvX8q7qY4"
+    "_id": "27IfMoSMxBNbaJ4uA2VRcN"
   }
 ]

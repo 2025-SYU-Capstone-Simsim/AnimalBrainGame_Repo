@@ -1,3 +1,4 @@
+// /assets/Scripts/main/PlayerController.ts
 const { ccclass, property } = cc._decorator;
 import MazeLogic from "./MazeLogic";
 import GameData from "./MazeGameData";
@@ -8,28 +9,45 @@ export default class PlayerController extends cc.Component {
   @property(cc.SpriteFrame) dogFrame!: cc.SpriteFrame;
   @property(cc.SpriteFrame) rabbitFrame!: cc.SpriteFrame;
 
+  // GameOver UI Prefab (원하지 않으면 주석 처리)
+  @property(cc.Prefab) gameOverUIPrefab!: cc.Prefab;
+
+  //────────────────────────────────────────
+  // ① 시작 위치를 상수로 지정 (필요에 따라 변경)
+  private readonly START_XY = cc.v2(1, 1);
+  //────────────────────────────────────────
+
   public baseX: number = 0;
   public baseY: number = 0;
-  public currentGridPos: cc.Vec2 = cc.v2(1, 1);
+  public currentGridPos: cc.Vec2 = this.START_XY.clone();
   public mazeLogic!: MazeLogic;
 
   private isMoving = false;
+  private movedOnce = false;      // 한 번만 이동했는지 체크
+  private gameOverShown = false;  // GameOver UI를 이미 띄웠는지 체크
   private sprite!: cc.Sprite;
 
   private drawnPath: cc.Vec2[] = [];
-  private drawingLine: cc.Graphics = null;
+  private drawingLine: cc.Graphics = null!;
   private isDrawing: boolean = false;
   private visualPathPixels: cc.Vec2[] = [];
   private pathGrids: cc.Vec2[] = [];
-  public resetPlayer(pos: cc.Vec2) {
-  this.isMoving = false;
-  this.pathGrids = [];
-  this.visualPathPixels = [];
-  if (this.drawingLine) this.drawingLine.clear();
 
-  this.currentGridPos = pos.clone();
-  this.node.setPosition(this.gridToWorld(pos));
-}
+  //────────────────────────────────────────
+  // ② resetPlayer: 시작 위치(START_XY)로 되돌린 뒤, 상태 초기화
+  public resetPlayer() {
+    this.isMoving = false;
+    this.movedOnce = false;
+    this.gameOverShown = false;
+    this.pathGrids = [];
+    this.visualPathPixels = [];
+    if (this.drawingLine) this.drawingLine.clear();
+
+    this.currentGridPos = this.START_XY.clone(); 
+    this.node.setPosition(this.gridToWorld(this.START_XY));
+  }
+  //────────────────────────────────────────
+
   onLoad() {
     this.sprite = this.node.getComponent(cc.Sprite) || this.node.addComponent(cc.Sprite);
     switch (GameData.playerType) {
@@ -63,6 +81,10 @@ export default class PlayerController extends cc.Component {
     inputNode.on(cc.Node.EventType.TOUCH_START, this.onDrawStart, this);
     inputNode.on(cc.Node.EventType.TOUCH_MOVE, this.onDrawMove, this);
     inputNode.on(cc.Node.EventType.TOUCH_END, this.onDrawEnd, this);
+    inputNode.on(cc.Node.EventType.TOUCH_CANCEL, this.onDrawEnd, this);
+
+    // ── 게임 시작 시, 플레이어를 시작 위치로 배치
+    this.resetPlayer();
   }
 
   onDestroy() {
@@ -70,6 +92,7 @@ export default class PlayerController extends cc.Component {
     inputNode.off(cc.Node.EventType.TOUCH_START, this.onDrawStart, this);
     inputNode.off(cc.Node.EventType.TOUCH_MOVE, this.onDrawMove, this);
     inputNode.off(cc.Node.EventType.TOUCH_END, this.onDrawEnd, this);
+    inputNode.off(cc.Node.EventType.TOUCH_CANCEL, this.onDrawEnd, this);
   }
 
   private gridToWorld(gridPos: cc.Vec2): cc.Vec2 {
@@ -81,19 +104,20 @@ export default class PlayerController extends cc.Component {
   }
 
   private screenToGrid(worldPos: cc.Vec2): cc.Vec2 {
-  const cs = this.mazeLogic.cellSize;
-  const gx = Math.floor((worldPos.x - this.baseX) / cs);
-  const gy = Math.floor((worldPos.y - this.baseY) / cs);
+    const cs = this.mazeLogic.cellSize;
+    const gx = Math.floor((worldPos.x - this.baseX) / cs);
+    const gy = Math.floor((worldPos.y - this.baseY) / cs);
 
-  if (
-    gx < 0 || gy < 0 ||
-    gx >= this.mazeLogic.maze[0].length ||
-    gy >= this.mazeLogic.maze.length
-  ) {
-    return this.currentGridPos.clone();
+    if (
+      gx < 0 || gy < 0 ||
+      gx >= this.mazeLogic.maze[0].length ||
+      gy >= this.mazeLogic.maze.length
+    ) {
+      return this.currentGridPos.clone();
+    }
+    return cc.v2(gx, gy);
   }
-  return cc.v2(gx, gy);
-}
+
   private isValidGrid(gridPos: cc.Vec2): boolean {
     return (
       gridPos.x >= 0 &&
@@ -139,74 +163,113 @@ export default class PlayerController extends cc.Component {
   }
 
   private onDrawStart(event: cc.Event.EventTouch) {
-  if (!this.mazeLogic) return;   // mazeLogic 할당 전엔 무시
-  if (this.isMoving) return;     // 이동중엔 무시
-  this.drawingLine.clear();
-  this.visualPathPixels = [];
-  this.pathGrids = [];
-  let startPixel = this.gridToWorld(this.currentGridPos);
-  this.visualPathPixels.push(startPixel.clone());
-  this.pathGrids.push(this.currentGridPos.clone());
-  this.drawingLine.moveTo(startPixel.x, startPixel.y);
-}
+    if (!this.mazeLogic) return;
+    if (this.isMoving) return;
 
-// ...생략 (onLoad 등 기존 코드 동일)...
+    // ── (1) 이미 한 번 이동했거나 GameOver UI가 이미 떴다면 터치 무시
+    if (this.movedOnce || this.gameOverShown) {
+      return;
+    }
 
-private onDrawMove(event: cc.Event.EventTouch) {
-  const worldPos = event.getLocation();
-  let curGrid = this.screenToGrid(worldPos);
-  let lastGrid = this.pathGrids[this.pathGrids.length - 1];
+    // ── (2) 경로 그리기 초기화
+    this.drawingLine.clear();
+    this.visualPathPixels = [];
+    this.pathGrids = [];
 
-  if (!lastGrid.equals(curGrid)) {
-    let path = this.sampleGridLine(lastGrid, curGrid);
-    for (let cell of path) {
-      if (!this.isValidGrid(cell)) break; // 벽 만나면 추가/그리기 X
-      if (this.pathGrids.find(p => p.equals(cell))) continue;
-      this.pathGrids.push(cell.clone());
-      let pixel = this.gridToWorld(cell);
-      this.visualPathPixels.push(pixel.clone());
-      this.drawingLine.lineTo(pixel.x, pixel.y);
-      this.drawingLine.strokeColor = cc.color(255,0,0,255);
-      this.drawingLine.lineWidth = 6;
-      this.drawingLine.stroke();
+    // ── (3) 터치 위치를 그리드로 계산
+    const worldPos = event.getLocation();
+    const touchGrid = this.screenToGrid(worldPos);
+
+    // ── (4) “터치한 칸”이 “플레이어가 있는 currentGridPos”와 다르면 리턴
+    if (!touchGrid.equals(this.currentGridPos)) {
+      return;
+    }
+
+    // ── (5) 현재 플레이어 위치 픽셀 좌표 → 첫 점으로 등록
+    const startPixel = this.gridToWorld(this.currentGridPos);
+    this.visualPathPixels.push(startPixel.clone());
+    this.pathGrids.push(this.currentGridPos.clone());
+    this.drawingLine.moveTo(startPixel.x, startPixel.y);
+  }
+
+  private onDrawMove(event: cc.Event.EventTouch) {
+    if (this.isMoving) return;
+
+    // ── (1) pathGrids가 비어 있거나 이미 GameOver 상태라면 무시
+    if (this.pathGrids.length === 0 || this.movedOnce || this.gameOverShown) {
+      return;
+    }
+
+    const worldPos = event.getLocation();
+    const curGrid = this.screenToGrid(worldPos);
+    const lastGrid = this.pathGrids[this.pathGrids.length - 1];
+
+    if (this.pathGrids.length === 1 && lastGrid.equals(curGrid)) {
+      return;
+    }
+
+    if (!lastGrid.equals(curGrid)) {
+      const path = this.getManhattanPath(lastGrid, curGrid);
+      if (path.length > 0) {
+        for (let cell of path) {
+          if (!this.isValidGrid(cell)) break;
+          if (this.pathGrids.find(p => p.equals(cell))) continue;
+          this.pathGrids.push(cell.clone());
+          const pixel = this.gridToWorld(cell);
+          this.visualPathPixels.push(pixel.clone());
+          this.drawingLine.lineTo(pixel.x, pixel.y);
+          this.drawingLine.strokeColor = cc.color(255, 0, 0, 255);
+          this.drawingLine.lineWidth = 6;
+          this.drawingLine.stroke();
+        }
+      }
     }
   }
-}
-
-// 두 칸 사이에 모든 격자(벽 확인 포함) 반환 (브레젠험 라인 알고리즘)
-private sampleGridLine(from: cc.Vec2, to: cc.Vec2): cc.Vec2[] {
-  let result: cc.Vec2[] = [];
-  let x0 = from.x, y0 = from.y, x1 = to.x, y1 = to.y;
-  let dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0);
-  let sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
-  let err = dx - dy;
-  let x = x0, y = y0;
-  while (x !== x1 || y !== y1) {
-    if (!(x === x0 && y === y0)) result.push(cc.v2(x, y));
-    let e2 = 2 * err;
-    if (e2 > -dy) { err -= dy; x += sx; }
-    if (e2 < dx) { err += dx; y += sy; }
-  }
-  result.push(cc.v2(x1, y1));
-  return result;
-}
-
-
 
   private onDrawEnd(event: cc.Event.EventTouch) {
-  // pathGrids가 2칸 이상이면 이동 시작
-  if (this.pathGrids.length > 1) {
-    this.followPath([...this.pathGrids]);
+    // ── (1) 이미 이동했거나 GameOver 상태라면 무시
+    if (this.movedOnce || this.gameOverShown) {
+      return;
+    }
+
+    // pathGrids가 2칸 이상이면 이동 시작
+    if (this.pathGrids.length > 1) {
+      this.followPath([...this.pathGrids]);
+    }
   }
-}
 
   private async followPath(path: cc.Vec2[]) {
     this.isMoving = true;
     for (let i = 1; i < path.length; i++) {
       await this.moveToGrid(path[i]);
+
+      // ── (2) 매 칸 이동할 때마다 목표(19,19) 도달 여부 검사
+      if (this.currentGridPos.x === 19 && this.currentGridPos.y === 19) {
+        // Goal에 도달했으므로 즉시 초기 위치로 리셋
+        this.isMoving = false;
+        this.drawingLine.clear();
+        this.pathGrids = [];
+        this.visualPathPixels = [];
+        this.resetPlayer();
+        return;
+      }
     }
     this.isMoving = false;
     this.drawingLine.clear();
+    this.pathGrids = [];
+    this.visualPathPixels = [];
+
+    // ── (3) 이동이 끝났으니 movedOnce = true
+    this.movedOnce = true;
+
+    // ── (4) Goal에 도달하지 않았다면 GameOver UI 띄우기
+    if (this.gameOverUIPrefab) {
+      const uiRoot = cc.find("Canvas/UI") || cc.find("Canvas");
+      const goUI = cc.instantiate(this.gameOverUIPrefab);
+      uiRoot.addChild(goUI);
+      goUI.setPosition(0, 0);
+      this.gameOverShown = true;
+    }
   }
 
   private moveToGrid(gridPos: cc.Vec2): Promise<void> {
@@ -222,4 +285,4 @@ private sampleGridLine(from: cc.Vec2, to: cc.Vec2): cc.Vec2[] {
         .start();
     });
   }
-} 
+}

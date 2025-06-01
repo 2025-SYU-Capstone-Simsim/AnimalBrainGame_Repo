@@ -114,7 +114,7 @@ export default class GameManager extends cc.Component {
     this.playerCtrl.baseY = baseY;
     // 플레이어 배치
     const st = this.logic.getStartPosition();
-this.playerCtrl.resetPlayer(cc.v2(st.x, st.y));
+    this.playerCtrl.resetPlayer(cc.v2(st.x, st.y));
 
     let goalSprite: cc.SpriteFrame;
     switch (GameData.playerType) {

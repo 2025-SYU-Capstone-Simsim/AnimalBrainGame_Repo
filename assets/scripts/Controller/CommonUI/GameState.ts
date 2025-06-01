@@ -5,8 +5,16 @@ export default class GameState {
   static score: number = 0;
   static gameId: string = '';
   static incomingRoomId: string = '';
-  static isHost: boolean = false; // 역할 구분 추가
+  static createdRoomId: string = '';
+  static isHost: boolean = false;
 
+  //  상대방 정보 저장용
+  static hostNickname: string = '';
+  static hostCharacter: string = '';
+  static guestNickname: string = '';
+  static guestCharacter: string = '';
+
+  // 싱글 게임 기록
   static recentSingleScores: {
     gameId: string;
     score: number;
@@ -23,6 +31,29 @@ export default class GameState {
     this.character = '';
     this.recentSingleScores = [];
     this.incomingRoomId = '';
-    // this.isHost = false;
+    this.createdRoomId = '';
+    this.isHost = false;
+
+    // ✅ 상대방 정보 초기화
+    this.hostNickname = '';
+    this.hostCharacter = '';
+    this.guestNickname = '';
+    this.guestCharacter = '';
   }
+
+  static resetMultiplay() {
+    this.createdRoomId = '';
+    this.incomingRoomId = '';
+    this.isHost = false;
+
+    // ✅ 상대방 정보도 함께 초기화
+    this.hostNickname = '';
+    this.hostCharacter = '';
+    this.guestNickname = '';
+    this.guestCharacter = '';
+  }
+
+  // 멀티플레이 선택 게임 목록과 인덱스
+  static selectedGameSequence: string[] = [];
+  static currentGameIndex: number = 0;
 }

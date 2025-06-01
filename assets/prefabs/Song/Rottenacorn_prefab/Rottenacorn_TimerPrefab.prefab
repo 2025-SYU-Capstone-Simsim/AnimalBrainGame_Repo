@@ -40,7 +40,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 266,
+      "width": 270,
       "height": 141
     },
     "_anchorPoint": {
@@ -52,8 +52,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -370,
-        670,
+        200,
+        1700,
         0,
         0,
         0,
@@ -224,10 +224,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "602e6747-7e5b-460e-bc52-c3d7a4d72284"
+      "__uuid__": "31d5ff2b-9a18-409b-9717-a6c7feaae347"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",

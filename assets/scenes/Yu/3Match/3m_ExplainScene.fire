@@ -682,7 +682,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "4555fuqKwZLtIPc8Kc5j3Nw",
+    "_componentId": "47031C8yUdJybh/T2EMl8MH",
     "handler": "onClickBackSingleGameList",
     "customEventData": ""
   },
@@ -1234,7 +1234,7 @@
     "_id": "29zXboiXFBKoIV4PQ2liTe"
   },
   {
-    "__type__": "4555fuqKwZLtIPc8Kc5j3Nw",
+    "__type__": "47031C8yUdJybh/T2EMl8MH",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1247,6 +1247,6 @@
     "BackToSingleGameListButton": {
       "__id__": 12
     },
-    "_id": "b4Ujw2A79OrKmDfN+owbdX"
+    "_id": "98qit3yRVPrK/1J9ueUmVt"
   }
 ]

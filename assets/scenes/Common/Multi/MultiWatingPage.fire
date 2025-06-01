@@ -866,7 +866,7 @@
     "_id": "56A2iu2dZCn579XVRMgj5V"
   },
   {
-    "__type__": "3baacbyTvtI44NjbuLlpKqP",
+    "__type__": "012c28XmmBC+IePFsvpf6TO",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -879,7 +879,7 @@
     "backButton": {
       "__id__": 18
     },
-    "_id": "bbNpqVQItDKZoE/ZY+k0WV"
+    "_id": "d9NHoC9hJGaKslxNKYCKYG"
   },
   {
     "__type__": "cc.Node",
@@ -1058,7 +1058,7 @@
       "__id__": 16
     },
     "component": "",
-    "_componentId": "3baacbyTvtI44NjbuLlpKqP",
+    "_componentId": "012c28XmmBC+IePFsvpf6TO",
     "handler": "onClickMain",
     "customEventData": ""
   },

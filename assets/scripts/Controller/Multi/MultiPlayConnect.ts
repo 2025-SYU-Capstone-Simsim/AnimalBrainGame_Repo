@@ -36,7 +36,6 @@ export default class MultiPlayConnect extends cc.Component {
         cc.log("MultiPlayConnect start() 진입");
         cc.log("GameState.isHost:", GameState.isHost);
 
-        // StartButton은 Host에게만 보이도록 처리
         if (this.StartButton) {
             this.StartButton.active = GameState.isHost;
             if (GameState.isHost) {
@@ -54,17 +53,24 @@ export default class MultiPlayConnect extends cc.Component {
             cc.log("Host UI 세팅");
             if (this.player1Label) this.player1Label.string = `닉네임 : ${nickname}`;
             this.setCharacterSprite(this.player1CharacterNode, character);
+
+            // Host일 경우 GameState에 저장된 roomId 사용
+            if (GameState.createdRoomId) {
+                this.roomId = GameState.createdRoomId;
+                this.listenForGuestUpdate(); // 바로 상태 감지 시작
+            }
+
         } else {
             cc.log("Guest UI 세팅");
             if (this.player2Label) this.player2Label.string = `닉네임 : ${nickname}`;
             this.setCharacterSprite(this.player2CharacterNode, character);
-        }
 
-        const incomingRoomId = GameState.incomingRoomId;
-        if (incomingRoomId) {
-            this.roomId = incomingRoomId;
-            cc.log("Guest 방 입장 요청:", this.roomId);
-            this.joinRoomAsGuest();
+            const incomingRoomId = GameState.incomingRoomId;
+            if (incomingRoomId) {
+                this.roomId = incomingRoomId;
+                cc.log("Guest 방 입장 요청:", this.roomId);
+                this.joinRoomAsGuest();
+            }
         }
     }
 
@@ -78,6 +84,7 @@ export default class MultiPlayConnect extends cc.Component {
             cc.warn("Guest는 방을 생성할 수 없습니다.");
             return;
         }
+
         cc.log("📡 createRoomAndShowInviteLink 실행됨");
 
         const token = localStorage.getItem('jwtToken');
@@ -100,6 +107,8 @@ export default class MultiPlayConnect extends cc.Component {
 
             if (result.success) {
                 this.roomId = result.roomId;
+                GameState.createdRoomId = this.roomId; // Host roomId 저장
+
                 if (this.ConnectLinkLabel) this.ConnectLinkLabel.string = result.inviteUrl;
 
                 cc.log(`생성된 방 코드: ${this.roomId}`);
@@ -112,43 +121,71 @@ export default class MultiPlayConnect extends cc.Component {
         }
     }
 
-
     listenForGuestUpdate() {
         this.checkGuestUpdate();
-        this.pollingTimer = setInterval(() => this.checkGuestUpdate(), 5000);
+        this.pollingTimer = setInterval(() => this.checkGuestUpdate(), 3000); // ✅ 반응성 개선
     }
 
-    async checkGuestUpdate() {
-        if (!this.roomId) return;
+async checkGuestUpdate() {
+    if (!this.roomId) {
+        cc.warn("roomId 없음. polling 중단됨");
+        return;
+    }
 
-        try {
-            const response = await fetch(`http://localhost:3000/api/room-status/${this.roomId}`);
-            const result = await response.json();
+    try {
+        const response = await fetch(`http://localhost:3000/api/room-status/${this.roomId}`);
+        const result = await response.json();
 
-            if (result.success && result.data) {
-                const data = result.data;
+        cc.log("서버 응답:", result);
 
-                if (GameState.isHost) {
-                    // Host 입장일 때: Guest 정보 표시 (Player2)
-                    if (data.guestNickname && data.guestCharacter) {
-                        if (this.player2Label) this.player2Label.string = `닉네임 : ${data.guestNickname}`;
-                        this.setCharacterSprite(this.player2CharacterNode, data.guestCharacter);
-                    }
-                } else {
-                    // Guest 입장일 때: Host 정보 표시 (Player1)
-                    if (data.hostNickname && data.hostCharacter) {
-                        if (this.player1Label) this.player1Label.string = `닉네임 : ${data.hostNickname}`;
-                        this.setCharacterSprite(this.player1CharacterNode, data.hostCharacter);
-                    }
+        if (result.success && result.data) {
+            const data = result.data;
+            cc.log("현재 status:", data.status);
+
+            if (GameState.isHost) {
+                if (data.guestNickname && data.guestCharacter) {
+                    GameState.guestNickname = data.guestNickname;
+                    GameState.guestCharacter = data.guestCharacter;
+
+                    if (this.player2Label)
+                        this.player2Label.string = `닉네임 : ${data.guestNickname}`;
+                    this.setCharacterSprite(this.player2CharacterNode, data.guestCharacter);
+                }
+            } else {
+                if (data.hostNickname && data.hostCharacter) {
+                    GameState.hostNickname = data.hostNickname;
+                    GameState.hostCharacter = data.hostCharacter;
+
+                    if (this.player1Label)
+                        this.player1Label.string = `닉네임 : ${data.hostNickname}`;
+                    this.setCharacterSprite(this.player1CharacterNode, data.hostCharacter);
                 }
             }
-        } catch (err) {
-            cc.log('방 상태 확인 실패:', err.message);
+
+            if (GameState.isHost && data.status === 'ready') {
+                cc.log("모든 인원 입장 완료. 게임 시작 가능");
+
+                const label = this.StartButton.getComponentInChildren(cc.Label);
+                if (label) label.string = "게임 시작 !";
+
+                this.StartButton.off(cc.Node.EventType.TOUCH_END);
+                this.StartButton.off(cc.Node.EventType.MOUSE_DOWN);
+                this.registerButtonEvents(this.StartButton, this.startGame.bind(this));
+            }
+
+            if (!GameState.isHost && data.status === 'started') {
+                cc.log("Host가 게임 시작 → Guest도 MultiGameList 이동");
+                cc.director.loadScene("MultiGameList");
+            }
         }
+    } catch (err) {
+        cc.error(" [checkGuestUpdate] 방 상태 확인 실패:", err.message);
     }
+}
+
+
 
     setCharacterSprite(node: cc.Node, characterKey: string) {
-        
         const sprite = node.getComponent(cc.Sprite);
         if (!sprite) return;
 
@@ -187,6 +224,27 @@ export default class MultiPlayConnect extends cc.Component {
         if (this.pollingTimer) {
             clearInterval(this.pollingTimer);
             this.pollingTimer = null;
+        }
+    }
+
+    onClickMain() {
+    cc.log("뒤로가기 버튼 클릭됨. MainScene으로 이동.");
+    GameState.resetMultiplay();  // 멀티플레이 상태 초기화
+    cc.director.loadScene("MainScene");
+    }
+
+
+    async startGame() {
+        cc.log("🎮 Host 게임 시작 버튼 클릭됨");
+
+        try {
+            await fetch(`http://localhost:3000/api/start-game/${this.roomId}`, {
+                method: 'POST'
+            });
+
+            cc.director.loadScene("MultiGameList");
+        } catch (err) {
+            cc.error("start-game API 실패:", err.message);
         }
     }
 }
