@@ -1,7 +1,5 @@
 // MultiplayerMoleController.ts
 import GameState from "../../Controller/CommonUI/GameState";
-import MultiGameFlowController from "../../Controller/Multi/MultiFlowController";
-// import socket from "../../Socket"; // 실제 소켓 연결 시 사용
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -224,7 +222,7 @@ export default class MultiplayerGameScene extends cc.Component {
                 .start();
         };
 
-        this.schedule(this.moleSpawnCallback, 0.5, cc.macro.REPEAT_FOREVER);
+        this.schedule(this.moleSpawnCallback, 1, cc.macro.REPEAT_FOREVER);
     }
 
 
@@ -269,7 +267,7 @@ export default class MultiplayerGameScene extends cc.Component {
                 },
             };
 
-            cc.log("📤 [emit] game-end →", eventPayload);
+            cc.log("[emit] game-end →", eventPayload);
             window.socket.emit("game-event", eventPayload);
         }
 

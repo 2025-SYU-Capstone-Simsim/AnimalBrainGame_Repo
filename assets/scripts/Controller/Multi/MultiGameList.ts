@@ -14,15 +14,19 @@ export default class MultiGameListController extends cc.Component {
     private currentIndex: number = 0;
     private cards: cc.Node[] = [];
     private selectedScene: string = null;
+    private _gameEventHandler: any = null; // 리스너 참조 변수 선언
+
+    private pollingTimer: number = null;
+
+
 
     private gameList = [
         { title: '두더지 게임', thumbnail: 'mole_thumb', scene: 'MultiMoleGameScene' },
-        { title: '과일 퍼즐', thumbnail: 'three_thumb', scene: '3m_ExplainScene' },
-        { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'BlockCount_ExplainScene' },
-        { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'RememberGame_ExplainScene' },
-        { title: '숫자 뒤집어 맞추기', thumbnail: 'reverse_thumb', scene: 'Reversecorrect_ExplainScene' },
+        { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'MultiBlockCountGameScene' },
+        { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'MultiRememberGameScene' },
+        { title: '숫자 뒤집어 맞추기', thumbnail: 'reverse_thumb', scene: 'Reversecorrect_Multiscene' },
         { title: '집중력 게임', thumbnail: 'concetration_thumb', scene: 'Rottenacorn_Explain_scene' },
-        { title: '미로 게임', thumbnail: 'maze_thumb', scene: 'Maze_ExplainScene' },
+        { title: '미로 게임', thumbnail: 'maze_thumb', scene: 'Maze_MultiScene' },
     ];
 
     onLoad() {
@@ -42,11 +46,10 @@ export default class MultiGameListController extends cc.Component {
         // 게스트는 UI 제어 비활성화
         if (!GameState.isHost) {
             this.selectButton.node.active = false;
-            this.leftArrow.active = false;
-            this.rightArrow.active = false;
         }
 
-        // 소켓 존재 및 연결 상태 확인
+
+
         if (!cc.sys.isNative && window.socket) {
             const roomId = GameState.createdRoomId || GameState.incomingRoomId;
 
@@ -55,18 +58,13 @@ export default class MultiGameListController extends cc.Component {
                 window.socket.connect();
             }
 
-            // 방 재입장 처리
             if (roomId) {
                 cc.log("join-room 재요청:", roomId);
                 window.socket.emit("join-room", roomId);
             }
 
-            // 기존 리스너 제거 후 재등록
-            window.socket.off("game-event");
-            cc.log("기존 socket 리스너 제거 완료");
-
-            cc.log("game-event 리스너 등록 (move-scene / host-left)");
-            window.socket.on("game-event", (message: any) => {
+            // 기존 리스너를 오프할 때 핸들러 참조로 해제
+            this._gameEventHandler = (message: any) => {
                 cc.log("game-event 수신:", message);
 
                 switch (message?.type) {
@@ -82,16 +80,23 @@ export default class MultiGameListController extends cc.Component {
 
                     case "host-left":
                         cc.warn("호스트가 방을 나갔습니다. 메인 화면으로 이동합니다.");
+                        // pollingTimer 해제 (있을 때만)
+                        if (this.pollingTimer) {
+                            clearInterval(this.pollingTimer);
+                            this.pollingTimer = null;
+                        }
                         GameState.resetMultiplay();
+                        cc.sys.localStorage.removeItem("isHost");
                         cc.director.loadScene("MainScene");
                         break;
 
                     default:
                         cc.warn("알 수 없는 game-event 타입 또는 잘못된 구조:", message);
                 }
-            });
+            };
 
-            // 연결 복구 후 join-room 재전송
+            window.socket.on("game-event", this._gameEventHandler);
+
             window.socket.on("connect", () => {
                 cc.log("소켓 재연결됨. join-room 재전송");
                 if (roomId) {
@@ -99,7 +104,20 @@ export default class MultiGameListController extends cc.Component {
                 }
             });
         }
+
     }
+
+    onDestroy() {
+        if (this.pollingTimer) {
+            clearInterval(this.pollingTimer);
+            this.pollingTimer = null;
+        }
+        if (!cc.sys.isNative && window.socket && this._gameEventHandler) {
+            window.socket.off("game-event", this._gameEventHandler);
+        }
+    }
+
+
 
 
 
@@ -184,9 +202,27 @@ export default class MultiGameListController extends cc.Component {
 
         console.log("window.socket 상태:", window.socket && window.socket.connected);
     }
-
     onClickMain() {
-        cc.log("뒤로가기 버튼 클릭됨. Main 씬으로 이동.");
+        // pollingTimer 해제 (있을 때만)
+        if (this.pollingTimer) {
+            clearInterval(this.pollingTimer);
+            this.pollingTimer = null;
+        }
+
+        // 1. roomId, playerId는 emit 전에 읽어둬야 함!
+        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+        const playerId = GameState.browserId;
+        cc.log("[leave-room emit]", { roomId, playerId });
+        if (window.socket && roomId && playerId) {
+            window.socket.emit("leave-room", { roomId, playerId });
+        }
+
+        // 2. 상태/스토리지 초기화
+        GameState.resetMultiplay();
+        cc.sys.localStorage.removeItem("isHost");
+
+        // 3. 씬 이동
         cc.director.loadScene("MainScene");
     }
-}
+
+} 

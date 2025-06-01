@@ -149,14 +149,10 @@ export default class MultiplayerMoleGameController extends cc.Component {
                         cc.director.loadScene("MainScene");
                         break;
 
-
-
                     default:
                         console.warn("알 수 없는 game-event 타입:", type);
                 }
             });
-
-
 
             cc.log("[소켓 리스너] game-event 리스너 등록 완료");
 
@@ -173,8 +169,6 @@ export default class MultiplayerMoleGameController extends cc.Component {
             }
         }
     }
-
-
 
     setPlayerInfoFromGameState() {
         const isHost = GameState.isHost;
@@ -215,7 +209,6 @@ export default class MultiplayerMoleGameController extends cc.Component {
 
     loadMain() {
         console.log("메인메뉴로 돌아가기");
-
         // 1. leave-room emit 먼저 (초기화 전에)
         if (!cc.sys.isNative && window.socket) {
             const roomId = GameState.incomingRoomId || GameState.createdRoomId;
@@ -229,11 +222,9 @@ export default class MultiplayerMoleGameController extends cc.Component {
                 console.warn("leave-room emit 차단됨 (누락):", { roomId, playerId });
             }
         }
-
         // 2. GameState 초기화는 그 다음
         GameState.resetMultiplay();
         cc.sys.localStorage.removeItem("isHost");
-
         // 3. 메인 씬 이동
         const canvas = document.getElementById("GameCanvas");
         if (canvas) canvas.style.cursor = "default";
