@@ -106,7 +106,14 @@ export default class MultiPlayConnect extends cc.Component {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    selectedGameSequence: ["MultiMoleGameScene"]  // 반드시 배열 형태로 포함시켜야 함
+                    selectedGameSequence: // 반드시 배열 형태로 포함시켜야 함
+                        ["MultiMoleGameScene",
+                            "MultiBlockCountGameScene",
+                            "MultiRememberGameScene",
+                            "Rottenacorn_Multiscene",
+                            "Reversecorrect_Multiscene",
+                            "Maze_MultiScene"
+                        ],
                 })
             });
 
@@ -146,7 +153,7 @@ export default class MultiPlayConnect extends cc.Component {
 
             cc.log("서버 응답:", result);
 
-            // ✅ 방이 삭제되었거나 에러가 발생한 경우(방이 없음, 권한 없음 등)
+            // 방이 삭제되었거나 에러가 발생한 경우(방이 없음, 권한 없음 등)
             if (!result.success || !result.data) {
                 cc.warn("[checkGuestUpdate] 방이 존재하지 않거나 에러:", result.message);
                 this.handleRoomJoinFail();

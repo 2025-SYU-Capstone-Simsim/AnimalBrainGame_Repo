@@ -25,7 +25,7 @@ export default class MultiGameListController extends cc.Component {
         { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'MultiBlockCountGameScene' },
         { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'MultiRememberGameScene' },
         { title: '숫자 뒤집어 맞추기', thumbnail: 'reverse_thumb', scene: 'Reversecorrect_Multiscene' },
-        { title: '집중력 게임', thumbnail: 'concetration_thumb', scene: 'Rottenacorn_Explain_scene' },
+        { title: '집중력 게임', thumbnail: 'concetration_thumb', scene: 'Rottenacorn_Multiscene' },
         { title: '미로 게임', thumbnail: 'maze_thumb', scene: 'Maze_MultiScene' },
     ];
 
@@ -54,7 +54,7 @@ export default class MultiGameListController extends cc.Component {
             const roomId = GameState.createdRoomId || GameState.incomingRoomId;
 
             if (!window.socket.connected) {
-                console.warn("소켓이 끊겨 있음. 재연결 시도 중...");
+                console.warn("소켓이 끊겨 있음. 재연결 시도 중");
                 window.socket.connect();
             }
 
@@ -74,7 +74,7 @@ export default class MultiGameListController extends cc.Component {
                             cc.log("씬 이동 시도:", sceneName);
                             cc.director.loadScene(sceneName);
                         } else {
-                            cc.warn("⚠️ sceneName 누락됨:", message);
+                            cc.warn("sceneName 누락됨:", message);
                         }
                         break;
 
@@ -97,6 +97,7 @@ export default class MultiGameListController extends cc.Component {
 
             window.socket.on("game-event", this._gameEventHandler);
 
+            // MultiConnect -> MultiGameList로 이동 후 소켓연결이 끊겼으므로 재연결 해줘야 함
             window.socket.on("connect", () => {
                 cc.log("소켓 재연결됨. join-room 재전송");
                 if (roomId) {
@@ -116,11 +117,6 @@ export default class MultiGameListController extends cc.Component {
             window.socket.off("game-event", this._gameEventHandler);
         }
     }
-
-
-
-
-
 
     registerButtonEvents(node: cc.Node, callback: () => void) {
         node.off(cc.Node.EventType.TOUCH_END);
@@ -185,7 +181,6 @@ export default class MultiGameListController extends cc.Component {
         this.selectButton.interactable = true;
     }
 
-    // MultiGameListController.ts
     onSelectButtonClick() {
         if (!this.selectedScene) return;
 
@@ -209,7 +204,7 @@ export default class MultiGameListController extends cc.Component {
             this.pollingTimer = null;
         }
 
-        // 1. roomId, playerId는 emit 전에 읽어둬야 함!
+        // 1. roomId, playerId는 emit 전에 읽어둬야 함
         const roomId = GameState.createdRoomId || GameState.incomingRoomId;
         const playerId = GameState.browserId;
         cc.log("[leave-room emit]", { roomId, playerId });
