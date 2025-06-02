@@ -157,12 +157,13 @@ export default class PlayerMoleGameScene extends cc.Component {
           if (!cc.sys.isNative && window.socket && roomId) {
             window.socket.emit("game-event", {
               type: "hit-mole",
-              roomId,
+              roomId, // 이거 빼먹으면 안됌
               payload: {
                 index: idx,
                 moleType: isGoodMole ? "good" : "bad"
               }
             });
+            // 공통 이벤트
             window.socket.emit("game-event", {
               type: "score-update",
               roomId,

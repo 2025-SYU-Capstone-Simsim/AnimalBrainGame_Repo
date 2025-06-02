@@ -88,6 +88,10 @@ export default class MultiplayerMoleGameController extends cc.Component {
         // ─── 4) 화면에 닉네임·캐릭터 세팅 ───
         this.setPlayerInfoFromGameState();
 
+
+
+
+        // 이걸 작성해주시면 됩니다.
         // ─── 5) 공통 소켓 초기화 + 리스너 등록 ───
         MultiGameFlowController.initializeSocketListeners();
 
@@ -104,6 +108,13 @@ export default class MultiplayerMoleGameController extends cc.Component {
                 this.opponentView.hitMoleAnimation(data.index, data.moleType);
             }
         });
+
+
+
+
+
+
+
 
         // ─── 6-1) score-update 리스너 수정 ───
         cc.director.on("score-update", (data: { player: "host" | "guest"; score: number }) => {
@@ -125,6 +136,8 @@ export default class MultiplayerMoleGameController extends cc.Component {
         }
     }
 
+
+    // 공통 -> 복붙해도됌
     setPlayerInfoFromGameState() {
         const isHost = GameState.isHost;
         const myName = GameState.nickname || "나";
@@ -147,6 +160,7 @@ export default class MultiplayerMoleGameController extends cc.Component {
         }
     }
 
+    // 공통 -> 복붙해도됌
     setCharacterSprite(node: cc.Node, characterKey: string) {
         const sprite = node.getComponent(cc.Sprite);
         if (!sprite) return;
@@ -156,6 +170,7 @@ export default class MultiplayerMoleGameController extends cc.Component {
         });
     }
 
+    // 공통 -> 복붙해도됌
     loadMain() {
         const roomId = GameState.incomingRoomId || GameState.createdRoomId;
         const playerId = GameState.browserId;

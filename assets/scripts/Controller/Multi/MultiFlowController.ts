@@ -46,7 +46,7 @@ static initializeSocketListeners() {
       case "spawn-mole":
       case "hit-mole":
       case "score-update":
-        cc.director.emit(type, payload);
+        cc.director.emit(type, payload); // 필수 
         break;
 
       case "move-scene":
