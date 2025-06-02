@@ -84,7 +84,7 @@ export default class PlayerController extends cc.Component {
     inputNode.on(cc.Node.EventType.TOUCH_CANCEL, this.onDrawEnd, this);
 
     // ── 게임 시작 시, 플레이어를 시작 위치로 배치
-    this.resetPlayer();
+
   }
 
   onDestroy() {
@@ -238,39 +238,50 @@ export default class PlayerController extends cc.Component {
     }
   }
 
-  private async followPath(path: cc.Vec2[]) {
-    this.isMoving = true;
-    for (let i = 1; i < path.length; i++) {
-      await this.moveToGrid(path[i]);
+ // PlayerController.ts (골 감지 → emit만)
+private async followPath(path: cc.Vec2[]) {
+  this.isMoving = true;
+  const goalGrid = this.mazeLogic.getGoalPosition();
 
-      // ── (2) 매 칸 이동할 때마다 목표(19,19) 도달 여부 검사
-      if (this.currentGridPos.x === 19 && this.currentGridPos.y === 19) {
-        // Goal에 도달했으므로 즉시 초기 위치로 리셋
-        this.isMoving = false;
-        this.drawingLine.clear();
-        this.pathGrids = [];
-        this.visualPathPixels = [];
-        this.resetPlayer();
-        return;
-      }
-    }
-    this.isMoving = false;
-    this.drawingLine.clear();
-    this.pathGrids = [];
-    this.visualPathPixels = [];
+  for (let i = 1; i < path.length; i++) {
+    await this.moveToGrid(path[i]);
 
-    // ── (3) 이동이 끝났으니 movedOnce = true
-    this.movedOnce = true;
+    // ── 골 도달 판정 (PlayerController는 오직 emit만)
+    if (
+      this.currentGridPos.x === goalGrid.x &&
+      this.currentGridPos.y === goalGrid.y
+    ) {
+      this.isMoving = false;
+      this.drawingLine.clear();
+      this.pathGrids = [];
+      this.visualPathPixels = [];
 
-    // ── (4) Goal에 도달하지 않았다면 GameOver UI 띄우기
-    if (this.gameOverUIPrefab) {
-      const uiRoot = cc.find("Canvas/UI") || cc.find("Canvas");
-      const goUI = cc.instantiate(this.gameOverUIPrefab);
-      uiRoot.addChild(goUI);
-      goUI.setPosition(0, 0);
-      this.gameOverShown = true;
+      // **resetPlayer() 호출 삭제** → 순수히 이벤트만 emit
+      // this.resetPlayer();   <–– 이 줄을 지웁니다.
+
+      this.node.emit("playerReachedGoal");
+      return;
     }
   }
+
+  // ── 골에 도달하지 못했을 때만 GameOver UI 띄우기
+  this.isMoving = false;
+  this.drawingLine.clear();
+  this.pathGrids = [];
+  this.visualPathPixels = [];
+
+  this.movedOnce = true;
+  if (this.gameOverUIPrefab) {
+    const uiRoot = cc.find("Canvas/UI") || cc.find("Canvas");
+    const goUI = cc.instantiate(this.gameOverUIPrefab);
+    uiRoot.addChild(goUI);
+    goUI.setPosition(0, 0);
+    this.gameOverShown = true;
+  }
+}
+
+
+
 
   private moveToGrid(gridPos: cc.Vec2): Promise<void> {
     return new Promise(resolve => {
