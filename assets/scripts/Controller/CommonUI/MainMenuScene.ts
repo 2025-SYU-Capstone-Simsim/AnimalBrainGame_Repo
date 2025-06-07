@@ -51,7 +51,7 @@ async onLoad() {
 
     // 3. 토큰 서버 검증
     try {
-      const res = await fetch('http://43.203.243.173:3000/auth/verify-token', {
+      const res = await fetch('http://43.201.75.158:3000/auth/verify-token', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${jwtToken}` }
       });

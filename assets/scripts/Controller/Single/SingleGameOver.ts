@@ -59,7 +59,7 @@ async submitScoreToServer() {
     });
 
     try {
-        const response = await fetch('http://43.203.243.173:3000/single/submit', {
+        const response = await fetch('http://43.201.75.158:3000/single/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
