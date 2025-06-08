@@ -209,6 +209,10 @@ onLoad() {
   this.uiMgr.setTimer(this.timeRem);
   if (this.timeRem <= 0) {
     this.gameOver = true;
+            // 게임 상태 저장
+            GameState.lastGameScene = cc.director.getScene().name;
+            GameState.score = GameData.score;
+            GameState.gameId = "maze-game"; // 기억력 게임 고유 식별자
     if (this.gameOverUIPrefab) {
   const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
 
