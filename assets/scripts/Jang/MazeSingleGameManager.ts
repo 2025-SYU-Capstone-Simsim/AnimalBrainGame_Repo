@@ -51,11 +51,22 @@ onLoad() {
 
   start() {
     GameState.lastGameScene = cc.director.getScene().name;
-    if (this.gameStartOverlayPrefab) {
-      const startOverlay = cc.instantiate(this.gameStartOverlayPrefab);
-      this.node.addChild(startOverlay);
-      startOverlay.setPosition(0, 0);
+  if (this.gameStartOverlayPrefab) {
+  const startOverlay = cc.instantiate(this.gameStartOverlayPrefab);
 
+  // ❌ 지우기
+  // this.node.addChild(startOverlay);
+
+  // ✅ Canvas에만 붙이기
+  const canvas = cc.find("Canvas");
+  canvas.addChild(startOverlay);
+
+  // zIndex 설정
+  startOverlay.zIndex = 1000;
+  // 같은 부모 내 맨 뒤로 보내기
+  startOverlay.setSiblingIndex(canvas.childrenCount - 1);
+
+  startOverlay.setPosition(540, 960);
       const anim = startOverlay.getComponent(cc.Animation);
       if (anim) {
         anim.play("GameStartFade");
@@ -199,9 +210,21 @@ onLoad() {
   if (this.timeRem <= 0) {
     this.gameOver = true;
     if (this.gameOverUIPrefab) {
-      const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
-      cc.find("Canvas/UI").addChild(gameOverUI);
-      gameOverUI.setPosition(0, 0);
+  const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
+
+  // ① Canvas에 붙이기
+  const canvas = cc.find("Canvas");
+  canvas.addChild(gameOverUI);
+
+  // ② zIndex 설정 (player·goal 500 위)
+  gameOverUI.zIndex = 1000;
+
+  // ③ 같은 부모 내 맨 뒤로 보내기
+  gameOverUI.setSiblingIndex(canvas.childrenCount - 1);
+
+  // ④ 화면 중앙에 배치
+  gameOverUI.setPosition(540, 960);
+
       const retryBtn = gameOverUI.getChildByName("RetryButton");
       if (retryBtn) {
         retryBtn.on(cc.Node.EventType.TOUCH_END, () => {
