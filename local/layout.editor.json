@@ -5,21 +5,21 @@
       "main": true,
       "url": "app://editor/index.html",
       "windowType": "dockable",
-      "x": 0,
+      "x": -7,
       "y": 0,
-      "width": 2560,
-      "height": 1400,
+      "width": 2567,
+      "height": 1407,
       "layout": {
         "type": "dock-h",
         "children": [
           {
-            "width": 411,
+            "width": 411.5625,
             "height": 1284.3333740234375,
             "type": "dock-v",
             "children": [
               {
-                "width": 411,
-                "height": 639.15625,
+                "width": 411.5625,
+                "height": 640.15625,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -27,8 +27,8 @@
                 ]
               },
               {
-                "width": 411,
-                "height": 642.1666870117188,
+                "width": 411.5625,
+                "height": 641.1666870117188,
                 "type": "panel",
                 "active": 0,
                 "children": [
@@ -38,17 +38,17 @@
             ]
           },
           {
-            "width": 1516,
+            "width": 1515.125,
             "height": 1284.3333740234375,
             "type": "dock-v",
             "children": [
               {
-                "width": 1516,
+                "width": 1515.125,
                 "height": 640.6666870117188,
                 "type": "dock-h",
                 "children": [
                   {
-                    "width": 979.9896240234375,
+                    "width": 979.1354370117188,
                     "height": 640.6666870117188,
                     "type": "panel",
                     "active": 0,
@@ -57,7 +57,7 @@
                     ]
                   },
                   {
-                    "width": 533,
+                    "width": 532.9791870117188,
                     "height": 640.6666870117188,
                     "type": "panel",
                     "active": 0,
@@ -68,7 +68,7 @@
                 ]
               },
               {
-                "width": 1516,
+                "width": 1515.125,
                 "height": 640.6666870117188,
                 "type": "panel",
                 "active": 0,
@@ -81,7 +81,7 @@
             ]
           },
           {
-            "width": 613,
+            "width": 613.3125,
             "height": 1284.3333740234375,
             "type": "panel",
             "active": 0,

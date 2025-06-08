@@ -10,106 +10,157 @@ declare global {
 
 @ccclass
 export default class Multiplayer extends cc.Component {
-    @property(cc.Label) questionLabel: cc.Label = null;
-    @property(cc.Label) scoreLabel: cc.Label = null;
+     @property(cc.Prefab) scoreDisplayPrefab: cc.Prefab = null;
+    @property(cc.Prefab) timerDisplayPrefab: cc.Prefab = null;
 
-    private currentAnswer: string = "";
-    private inputBuffer: string = "";
+    @property(cc.Node) correctSign: cc.Node = null;
+    @property(cc.Node) wrongSign: cc.Node = null;
+
+    private numbersToShow: number[] = [];
+    private userInput: number[] = [];
+    private isReverseMode: boolean = false;
+
     private score: number = 0;
     private questionLength: number = 3;
 
+    private scoreLabel: cc.Label = null;
+    private timerLabel: cc.Label = null;
+
+    private timer: number = 30;
+    private timerNode: cc.Node = null;
+
     startGame() {
+        this.initScoreUI();
+        this.initTimerUI();
+
         this.score = 0;
         this.questionLength = 3;
+
+        this.schedule(this.decreaseTimer, 1);
         this.updateScoreLabel();
         this.showNewQuestion();
     }
 
+    initScoreUI() {
+        const scoreNode = cc.instantiate(this.scoreDisplayPrefab);
+        this.node.addChild(scoreNode);
+        this.scoreLabel = scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
+        this.updateScoreLabel();
+    }
+
+    initTimerUI() {
+        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
+        this.node.addChild(this.timerNode);
+        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
+        this.updateTimerLabel();
+    }
+
     updateScoreLabel() {
-        this.scoreLabel.string = `${this.score}`;
+        if (this.scoreLabel) {
+            this.scoreLabel.string = `${this.score}`;
+        }
+    }
+
+    updateTimerLabel() {
+        if (this.timerLabel) {
+            this.timerLabel.string = `${this.timer}`;
+        }
+    }
+
+    decreaseTimer() {
+        if (this.timer <= 0) {
+            this.endGame();
+            return;
+        }
+        this.timer--;
+        this.updateTimerLabel();
     }
 
     showNewQuestion() {
-        const digits = this.generateRandomDigits(this.questionLength);
-        const isReverse = Math.random() < 0.5;
+        this.userInput = [];
+        this.isReverseMode = Math.random() < 0.5;
+        this.numbersToShow = [];
 
-        const questionText = isReverse ? digits.split("").reverse().join("") : digits;
-        this.currentAnswer = isReverse ? digits : digits.split("").reverse().join("");
+        for (let i = 0; i < this.questionLength; i++) {
+            this.numbersToShow.push(Math.floor(Math.random() * 10));
+        }
 
-        this.questionLabel.string = questionText;
-        this.inputBuffer = "";
+        cc.director.emit("spawn-question", {
+            numbers: this.numbersToShow,
+            direction: this.isReverseMode ? "reverse" : "forward",
+        });
+    }
 
-        // 문제 출제 이벤트 emit
-        const roomId = window.GameState.createdRoomId || window.GameState.incomingRoomId;
+    onNumberClick(event: cc.Event.EventTouch, customData: string) {
+        const inputNum = parseInt(customData);
+        if (isNaN(inputNum)) return;
+
+        this.userInput.push(inputNum);
+
+        const target = this.isReverseMode
+            ? this.numbersToShow[this.numbersToShow.length - this.userInput.length]
+            : this.numbersToShow[this.userInput.length - 1];
+
+        if (inputNum !== target) {
+            this.showResult(false);
+            return;
+        }
+
+        if (this.userInput.length === this.numbersToShow.length) {
+            this.showResult(true);
+        }
+    }
+
+    showResult(isCorrect: boolean) {
+        if (isCorrect) {
+            this.score += 10;
+            this.updateScoreLabel();
+            this.correctSign.active = true;
+            this.scheduleOnce(() => {
+                this.correctSign.active = false;
+                this.showNewQuestion();
+            }, 0.5);
+        } else {
+            this.wrongSign.active = true;
+            this.scheduleOnce(() => {
+                this.wrongSign.active = false;
+                this.showNewQuestion();
+            }, 0.5);
+        }
+
+        cc.director.emit("answer-result", {
+            input: [...this.userInput],
+            isCorrect: isCorrect,
+        });
+
+        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
         if (window.socket && roomId) {
             window.socket.emit("game-event", {
-                type: "show-question",
+                type: "score-update",
                 roomId,
                 payload: {
-                    question: questionText
-                }
+                    player: GameState.isHost ? "host" : "guest",
+                    score: this.score,
+                },
             });
         }
     }
 
-    onNumberClick(event: cc.Event, customData: string) {
-        this.inputBuffer += customData;
-
-        // 정답 길이 도달 시 판별
-        if (this.inputBuffer.length === this.currentAnswer.length) {
-            const isCorrect = this.inputBuffer === this.currentAnswer;
-            if (isCorrect) {
-                this.score += 10;
-                this.questionLength = Math.min(this.questionLength + 1, 8); // 점점 더 길게
-            }
-
-            this.updateScoreLabel();
-            this.showFeedback(isCorrect);
-            this.showNewQuestion();
-
-            // 결과 이벤트 emit
-            const roomId = window.GameState.createdRoomId || window.GameState.incomingRoomId;
-            if (window.socket && roomId) {
-                window.socket.emit("game-event", {
-                    type: "submit-answer",
-                    roomId,
-                    payload: {
-                        input: this.inputBuffer,
-                        isCorrect: isCorrect
-                    }
-                });
-
-                window.socket.emit("game-event", {
-                    type: "score-update",
-                    roomId,
-                    payload: {
-                        player: window.GameState.isHost ? "host" : "guest",
-                        score: this.score
-                    }
-                });
-            }
+    endGame() {
+        this.unscheduleAllCallbacks();
+        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+        if (window.socket && roomId) {
+            window.socket.emit("game-event", {
+                type: "game-end",
+                roomId,
+                payload: {
+                    score: this.score,
+                    nickname: GameState.nickname,
+                    character: GameState.character,
+                    isHost: GameState.isHost === true,
+                },
+            });
         }
-    }
-
-    showFeedback(isCorrect: boolean) {
-        const feedbackNodeName = isCorrect ? "correct_sign" : "wrong_sign";
-        const sign = this.node.getChildByName(feedbackNodeName);
-        if (!sign) return;
-
-        sign.active = true;
-        sign.opacity = 255;
-        cc.tween(sign)
-            .delay(0.5)
-            .to(0.3, { opacity: 0 })
-            .call(() => (sign.active = false))
-            .start();
-    }
-
-    generateRandomDigits(length: number): string {
-        let result = "";
-        for (let i = 0; i < length; i++) {
-            result += Math.floor(Math.random() * 10).toString();
-        }
-        return result;
+        cc.log("게임 종료. 최종 점수:", this.score);
     }
 }

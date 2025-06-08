@@ -1,5 +1,5 @@
 "use strict";
-cc._RF.push(module, 'b50cdZeRIBML5xf5ovOKREW', '3MatchManager');
+cc._RF.push(module, '091b5m547lGtbmQKguAskOZ', '3MatchManager');
 // scripts/Yu/3Match/3MatchManager.ts
 
 "use strict";

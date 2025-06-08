@@ -10,7 +10,7 @@
                     };
                     function __define (exports, require, module) {
                         if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
-cc._RF.push(module, '4b9bcgU2iZNSYqYzUz565+a', 'Tile');
+cc._RF.push(module, 'c7cedhE7n5Ok6dpc1CXkHoy', 'Tile');
 // scripts/Yu/3Match/Tile.ts
 
 "use strict";

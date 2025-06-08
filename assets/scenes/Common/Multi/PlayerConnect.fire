@@ -1154,9 +1154,7 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 14
-    },
+    "target": null,
     "component": "",
     "_componentId": "55b5f5aZTNIaqvFwvNlUyiI",
     "handler": "createRoomAndShowInviteLink",

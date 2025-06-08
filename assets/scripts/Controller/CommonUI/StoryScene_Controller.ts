@@ -1,7 +1,7 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class StoryScene extends cc.Component {
 
     start() {
         cc.director.preloadScene("StoryScene_2");

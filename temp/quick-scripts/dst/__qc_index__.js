@@ -10,13 +10,21 @@
                     };
                     function __define (exports, require, module) {
                         if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}
+require('./assets/scenes/Yu/3Match/3MExplain');
+require('./assets/scenes/Yu/3Match/3MatchBoard');
+require('./assets/scenes/Yu/3Match/3MatchManager');
+require('./assets/scenes/Yu/3Match/Tile');
+require('./assets/scenes/Yu/MoleGame/MoleExplain');
+require('./assets/scenes/Yu/MoleGame/MoleGameScene');
+require('./assets/scenes/Yu/MultiMoleGame/MultiGuestViewer');
+require('./assets/scenes/Yu/MultiMoleGame/MultiplayerGameScene');
+require('./assets/scenes/Yu/MultiMoleGame/MultiplayerMoleGameController');
 require('./assets/scripts/Controller/CommonUI/GameStartOverlay');
 require('./assets/scripts/Controller/CommonUI/GameState');
 require('./assets/scripts/Controller/CommonUI/LoginManager');
 require('./assets/scripts/Controller/CommonUI/MainMenuScene');
+require('./assets/scripts/Controller/CommonUI/SplashMain');
 require('./assets/scripts/Controller/CommonUI/StoryScene_Controller');
-require('./assets/scripts/Controller/LoginManager');
-require('./assets/scripts/Controller/MainMenuScene');
 require('./assets/scripts/Controller/Multi/MultiFlowController');
 require('./assets/scripts/Controller/Multi/MultiGameList');
 require('./assets/scripts/Controller/Multi/MultiGameResult');
@@ -24,7 +32,6 @@ require('./assets/scripts/Controller/Multi/MultiGameWait');
 require('./assets/scripts/Controller/Multi/MultiPlayConnect');
 require('./assets/scripts/Controller/MyPage/MyInfoController');
 require('./assets/scripts/Controller/MyPage/MyRecordController');
-require('./assets/scripts/Controller/SingleGameList');
 require('./assets/scripts/Controller/Single/SingleGameList');
 require('./assets/scripts/Controller/Single/SingleGameOver');
 require('./assets/scripts/Jang/MazeGameData');
