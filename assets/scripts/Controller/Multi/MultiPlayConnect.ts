@@ -76,8 +76,8 @@ export default class MultiPlayConnect extends cc.Component {
     }
 
     registerButtonEvents(node: cc.Node, callback: () => void) {
+        node.off(cc.Node.EventType.TOUCH_END); // 기존 리스너 제거
         node.on(cc.Node.EventType.TOUCH_END, callback);
-        node.on(cc.Node.EventType.MOUSE_DOWN, callback);
     }
 
     async createRoomAndShowInviteLink() {

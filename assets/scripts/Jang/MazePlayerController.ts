@@ -1,116 +1,299 @@
-// /assets/Scripts/player/PlayerController.ts
+// /assets/Scripts/main/PlayerController.ts
 const { ccclass, property } = cc._decorator;
 import MazeLogic from "./MazeLogic";
 import GameData from "./MazeGameData";
 
 @ccclass
-
 export default class PlayerController extends cc.Component {
   @property(cc.SpriteFrame) tigerFrame!: cc.SpriteFrame;
   @property(cc.SpriteFrame) dogFrame!: cc.SpriteFrame;
   @property(cc.SpriteFrame) rabbitFrame!: cc.SpriteFrame;
 
+  // GameOver UI Prefab (원하지 않으면 주석 처리)
+  @property(cc.Prefab) gameOverUIPrefab!: cc.Prefab;
 
- 
-  public currentGridPos: cc.Vec2 = cc.v2(1, 1);
+  //────────────────────────────────────────
+  // ① 시작 위치를 상수로 지정 (필요에 따라 변경)
+  private readonly START_XY = cc.v2(1, 1);
+  //────────────────────────────────────────
+
+  public baseX: number = 0;
+  public baseY: number = 0;
+  public currentGridPos: cc.Vec2 = this.START_XY.clone();
   public mazeLogic!: MazeLogic;
 
   private isMoving = false;
+  private movedOnce = false;      // 한 번만 이동했는지 체크
+  private gameOverShown = false;  // GameOver UI를 이미 띄웠는지 체크
   private sprite!: cc.Sprite;
 
- onLoad() {
-  this.sprite = this.node.getComponent(cc.Sprite) || this.node.addComponent(cc.Sprite);
-  // 캐릭터 타입에 따라 스프라이트 이미지 선택
-  switch (GameData.playerType) {
-    case "tiger":
-      this.sprite.spriteFrame = this.tigerFrame;
-      break;
-    case "dog":
-      this.sprite.spriteFrame = this.dogFrame;
-      break;
-    case "rabbit":
-      this.sprite.spriteFrame = this.rabbitFrame;
-      break;
-    default:
-      this.sprite.spriteFrame = this.tigerFrame; // 혹시 모를 기본값
+  private drawnPath: cc.Vec2[] = [];
+  private drawingLine: cc.Graphics = null!;
+  private isDrawing: boolean = false;
+  private visualPathPixels: cc.Vec2[] = [];
+  private pathGrids: cc.Vec2[] = [];
+
+  //────────────────────────────────────────
+  // ② resetPlayer: 시작 위치(START_XY)로 되돌린 뒤, 상태 초기화
+  public resetPlayer() {
+    this.isMoving = false;
+    this.movedOnce = false;
+    this.gameOverShown = false;
+    this.pathGrids = [];
+    this.visualPathPixels = [];
+    if (this.drawingLine) this.drawingLine.clear();
+
+    this.currentGridPos = this.START_XY.clone(); 
+    this.node.setPosition(this.gridToWorld(this.START_XY));
   }
-    cc.systemEvent.on('devicemotion', this._onDeviceMotion, this);
+  //────────────────────────────────────────
+
+  onLoad() {
     this.sprite = this.node.getComponent(cc.Sprite) || this.node.addComponent(cc.Sprite);
-    this.sprite.type        = cc.Sprite.Type.SIMPLE;
+    switch (GameData.playerType) {
+      case "tiger":
+        this.sprite.spriteFrame = this.tigerFrame;
+        break;
+      case "dog":
+        this.sprite.spriteFrame = this.dogFrame;
+        break;
+      case "rabbit":
+        this.sprite.spriteFrame = this.rabbitFrame;
+        break;
+      default:
+        this.sprite.spriteFrame = this.tigerFrame;
+    }
+    this.sprite.type = cc.Sprite.Type.SIMPLE;
     this.sprite.sizeMode = cc.Sprite.SizeMode.TRIMMED;
-    this.node.setScale(2.5); // cellSize 동기화
-    this.node.setContentSize(50, 50); // ← 항상 50x50 px
-    this.node.setScale(1);            // 필요 시 (보통 1)
+    this.node.setScale(1);
+    this.node.setContentSize(50, 50);
     this.node.setAnchorPoint(0.5, 0.5);
     this.node.zIndex = 500;
-    
 
-    // 4) 키 입력 리스너
-    cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this._onKeyDown, this);
+    let graphicsNode = this.node.parent.getChildByName("PathGraphics");
+    if (!graphicsNode) {
+      graphicsNode = new cc.Node("PathGraphics");
+      this.node.parent.addChild(graphicsNode, 999);
+    }
+    this.drawingLine = graphicsNode.getComponent(cc.Graphics) || graphicsNode.addComponent(cc.Graphics);
+
+    const inputNode = this.node.parent;
+    inputNode.on(cc.Node.EventType.TOUCH_START, this.onDrawStart, this);
+    inputNode.on(cc.Node.EventType.TOUCH_MOVE, this.onDrawMove, this);
+    inputNode.on(cc.Node.EventType.TOUCH_END, this.onDrawEnd, this);
+    inputNode.on(cc.Node.EventType.TOUCH_CANCEL, this.onDrawEnd, this);
+
+    // ── 게임 시작 시, 플레이어를 시작 위치로 배치
+
   }
 
   onDestroy() {
-    cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this._onKeyDown, this);
-    cc.systemEvent.off(cc.SystemEvent.EventType.DEVICEMOTION, this._onDeviceMotion, this);
+    const inputNode = this.node.parent;
+    inputNode.off(cc.Node.EventType.TOUCH_START, this.onDrawStart, this);
+    inputNode.off(cc.Node.EventType.TOUCH_MOVE, this.onDrawMove, this);
+    inputNode.off(cc.Node.EventType.TOUCH_END, this.onDrawEnd, this);
+    inputNode.off(cc.Node.EventType.TOUCH_CANCEL, this.onDrawEnd, this);
   }
-  private lastMoveTime: number = 0;
-  private moveInterval: number = 120;
-  // 
-  private _onDeviceMotion(event: any) {
-  if (this.isMoving) return;
-  const acc = event.acc;
-  const now = Date.now();
-  if (now - this.lastMoveTime < this.moveInterval) return;  // 연속이동방지
 
-   if (acc.x > 0.23)      this.move(1, 0);
-  else if (acc.x < -0.23) this.move(-1, 0);
-  else if (acc.y > 0.18)  this.move(0, 1);
-  else if (acc.y < -0.18) this.move(0, -1);
+  private gridToWorld(gridPos: cc.Vec2): cc.Vec2 {
+    const cs = this.mazeLogic.cellSize;
+    return cc.v2(
+      this.baseX + gridPos.x * cs + cs / 2,
+      this.baseY + gridPos.y * cs + cs / 2
+    );
+  }
 
-  this.lastMoveTime = now;
+  private screenToGrid(worldPos: cc.Vec2): cc.Vec2 {
+    const cs = this.mazeLogic.cellSize;
+    const gx = Math.floor((worldPos.x - this.baseX) / cs);
+    const gy = Math.floor((worldPos.y - this.baseY) / cs);
+
+    if (
+      gx < 0 || gy < 0 ||
+      gx >= this.mazeLogic.maze[0].length ||
+      gy >= this.mazeLogic.maze.length
+    ) {
+      return this.currentGridPos.clone();
+    }
+    return cc.v2(gx, gy);
+  }
+
+  private isValidGrid(gridPos: cc.Vec2): boolean {
+    return (
+      gridPos.x >= 0 &&
+      gridPos.y >= 0 &&
+      gridPos.x < this.mazeLogic.maze[0].length &&
+      gridPos.y < this.mazeLogic.maze.length &&
+      this.mazeLogic.isWalkable(gridPos.x, gridPos.y)
+    );
+  }
+
+  private getLinePath(from: cc.Vec2, to: cc.Vec2): cc.Vec2[] {
+    let result: cc.Vec2[] = [];
+    let x0 = from.x, y0 = from.y, x1 = to.x, y1 = to.y;
+    if (x0 === x1) {
+      let dir = y1 > y0 ? 1 : -1;
+      for (let y = y0 + dir; y !== y1 + dir; y += dir) {
+        let next = cc.v2(x0, y);
+        if (!this.isValidGrid(next)) break;
+        result.push(next);
+      }
+    }
+    else if (y0 === y1) {
+      let dir = x1 > x0 ? 1 : -1;
+      for (let x = x0 + dir; x !== x1 + dir; x += dir) {
+        let next = cc.v2(x, y0);
+        if (!this.isValidGrid(next)) break;
+        result.push(next);
+      }
+    }
+    return result;
+  }
+
+  private getManhattanPath(from: cc.Vec2, to: cc.Vec2): cc.Vec2[] {
+    let mid1 = cc.v2(to.x, from.y);
+    let mid2 = cc.v2(from.x, to.y);
+
+    let firstPath = this.getLinePath(from, mid1).concat(this.getLinePath(mid1, to));
+    let secondPath = this.getLinePath(from, mid2).concat(this.getLinePath(mid2, to));
+
+    if (firstPath.length === Math.abs(to.x - from.x) + Math.abs(to.y - from.y)) return firstPath;
+    if (secondPath.length === Math.abs(to.x - from.x) + Math.abs(to.y - from.y)) return secondPath;
+    return [];
+  }
+
+  private onDrawStart(event: cc.Event.EventTouch) {
+    if (!this.mazeLogic) return;
+    if (this.isMoving) return;
+
+    // ── (1) 이미 한 번 이동했거나 GameOver UI가 이미 떴다면 터치 무시
+    if (this.movedOnce || this.gameOverShown) {
+      return;
+    }
+
+    // ── (2) 경로 그리기 초기화
+    this.drawingLine.clear();
+    this.visualPathPixels = [];
+    this.pathGrids = [];
+
+    // ── (3) 터치 위치를 그리드로 계산
+    const worldPos = event.getLocation();
+    const touchGrid = this.screenToGrid(worldPos);
+
+    // ── (4) “터치한 칸”이 “플레이어가 있는 currentGridPos”와 다르면 리턴
+    if (!touchGrid.equals(this.currentGridPos)) {
+      return;
+    }
+
+    // ── (5) 현재 플레이어 위치 픽셀 좌표 → 첫 점으로 등록
+    const startPixel = this.gridToWorld(this.currentGridPos);
+    this.visualPathPixels.push(startPixel.clone());
+    this.pathGrids.push(this.currentGridPos.clone());
+    this.drawingLine.moveTo(startPixel.x, startPixel.y);
+  }
+
+  private onDrawMove(event: cc.Event.EventTouch) {
+    if (this.isMoving) return;
+
+    // ── (1) pathGrids가 비어 있거나 이미 GameOver 상태라면 무시
+    if (this.pathGrids.length === 0 || this.movedOnce || this.gameOverShown) {
+      return;
+    }
+
+    const worldPos = event.getLocation();
+    const curGrid = this.screenToGrid(worldPos);
+    const lastGrid = this.pathGrids[this.pathGrids.length - 1];
+
+    if (this.pathGrids.length === 1 && lastGrid.equals(curGrid)) {
+      return;
+    }
+
+    if (!lastGrid.equals(curGrid)) {
+      const path = this.getManhattanPath(lastGrid, curGrid);
+      if (path.length > 0) {
+        for (let cell of path) {
+          if (!this.isValidGrid(cell)) break;
+          if (this.pathGrids.find(p => p.equals(cell))) continue;
+          this.pathGrids.push(cell.clone());
+          const pixel = this.gridToWorld(cell);
+          this.visualPathPixels.push(pixel.clone());
+          this.drawingLine.lineTo(pixel.x, pixel.y);
+          this.drawingLine.strokeColor = cc.color(255, 0, 0, 255);
+          this.drawingLine.lineWidth = 6;
+          this.drawingLine.stroke();
+        }
+      }
+    }
+  }
+
+  private onDrawEnd(event: cc.Event.EventTouch) {
+    // ── (1) 이미 이동했거나 GameOver 상태라면 무시
+    if (this.movedOnce || this.gameOverShown) {
+      return;
+    }
+
+    // pathGrids가 2칸 이상이면 이동 시작
+    if (this.pathGrids.length > 1) {
+      this.followPath([...this.pathGrids]);
+    }
+  }
+
+ // PlayerController.ts (골 감지 → emit만)
+private async followPath(path: cc.Vec2[]) {
+  this.isMoving = true;
+  const goalGrid = this.mazeLogic.getGoalPosition();
+
+  for (let i = 1; i < path.length; i++) {
+    await this.moveToGrid(path[i]);
+
+    // ── 골 도달 판정 (PlayerController는 오직 emit만)
+    if (
+      this.currentGridPos.x === goalGrid.x &&
+      this.currentGridPos.y === goalGrid.y
+    ) {
+      this.isMoving = false;
+      this.drawingLine.clear();
+      this.pathGrids = [];
+      this.visualPathPixels = [];
+
+      // **resetPlayer() 호출 삭제** → 순수히 이벤트만 emit
+      // this.resetPlayer();   <–– 이 줄을 지웁니다.
+
+      this.node.emit("playerReachedGoal");
+      return;
+    }
+  }
+
+  // ── 골에 도달하지 못했을 때만 GameOver UI 띄우기
+  this.isMoving = false;
+  this.drawingLine.clear();
+  this.pathGrids = [];
+  this.visualPathPixels = [];
+
+  this.movedOnce = true;
+  if (this.gameOverUIPrefab) {
+    const uiRoot = cc.find("Canvas/UI") || cc.find("Canvas");
+    const goUI = cc.instantiate(this.gameOverUIPrefab);
+    uiRoot.addChild(goUI);
+    goUI.setPosition(0, 0);
+    this.gameOverShown = true;
+  }
 }
 
-  private _onKeyDown(e: cc.Event.EventKeyboard) {
-    if (this.isMoving) return;
-    let dx = 0, dy = 0;
-    switch (e.keyCode) {
-      case cc.macro.KEY.left:
-        dx = -1;
-        break;
-      case cc.macro.KEY.right:
-        dx = 1;
-        break;
-      case cc.macro.KEY.up:
-        dy = 1;
-        break;
-      case cc.macro.KEY.down:
-        dy = -1;
-        break;
-      default:
-        return;
-    }
-    this.move(dx, dy);
+
+
+
+  private moveToGrid(gridPos: cc.Vec2): Promise<void> {
+    return new Promise(resolve => {
+      const target = this.gridToWorld(gridPos);
+      cc.Tween.stopAllByTarget(this.node);
+      cc.tween(this.node)
+        .to(0.12, { x: target.x, y: target.y })
+        .call(() => {
+          this.currentGridPos = gridPos.clone();
+          resolve();
+        })
+        .start();
+    });
   }
-
-  private move(dx: number, dy: number) {
-  const nx = this.currentGridPos.x + dx;
-  const ny = this.currentGridPos.y + dy;
-  if (!this.mazeLogic.isWalkable(nx, ny)) return;
-
-  this.currentGridPos = cc.v2(nx, ny);
-
-  const cs = this.mazeLogic.cellSize;
-  const cols = this.mazeLogic.maze[0].length;
-  const rows = this.mazeLogic.maze.length;
-  const baseX = (1080 - cols * cs) / 2;
-  const baseY = (1920 - rows * cs) / 2;
-  const target = cc.v2(
-    baseX + nx * cs + cs / 2,
-    baseY + ny * cs + cs / 2
-  );
-
-  // 여기 추가
-  this.node.setPosition(target); // 실제 화면 이동!
-  }
-
 }

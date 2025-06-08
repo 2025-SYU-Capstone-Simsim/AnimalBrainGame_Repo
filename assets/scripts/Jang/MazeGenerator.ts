@@ -183,10 +183,29 @@ export default class MazeGenerator {
   }
 
   // 루프(사이클) 추가
+    // 루프(사이클) 추가
   private _addLoops(maze: number[][], level: number): number[][] {
-    const prob = Math.min(0.03 + level * 0.005, 0.20);//20%
-    for (let y = 1; y < this.rows-1; y++) {
-      for (let x = 1; x < this.cols-1; x++) {
+    // 1) 기준 레벨과 최대 레벨을 정의
+    const baseLevel = 1;
+    const maxLevel  = 22;
+
+    // 2) 확률의 최소값(레벨 1)과 최대값(레벨 22)
+    const minProb = 0.03;
+    const maxProb = 0.20;
+
+    // 3) 레벨당 증가폭 계산 (레벨 1→레벨 22 사이를 선형 보간)
+    //    (maxProb - minProb) / (maxLevel - baseLevel)
+    const delta = (maxProb - minProb) / (maxLevel - baseLevel);
+
+    // 4) 현재 레벨에 대응하는 확률 계산
+    //    level이 1일 때 minProb, level이 22일 때 maxProb, 그 이상은 maxProb
+    const prob = Math.min(
+      minProb + delta * (level - baseLevel),
+      maxProb
+    );
+
+    for (let y = 1; y < this.rows - 1; y++) {
+      for (let x = 1; x < this.cols - 1; x++) {
         if (
           maze[y][x] === 1 &&
           Math.random() < prob &&
@@ -199,21 +218,49 @@ export default class MazeGenerator {
     return maze;
   }
 
-  // 최단경로 보장
-  private _ensureMinPath(maze: number[][], level: number): number[][] {
-    const maxAttempts = 5;
-    const minLen = Math.floor((this.rows + this.cols) * (1 + 0.08 * level));
-    let attempts = 0;
-    while (++attempts < maxAttempts) {
-      if (this._calcShortestPath(maze) >= minLen) break;
-      // 재생성
-      if (level <= 4) maze.splice(0, maze.length, ...this._dfs());
-      else if (level <= 10) maze.splice(0, maze.length, ...this._huntAndKill());
-      else maze.splice(0, maze.length, ...this._wilson());
-      this._addLoops(maze, level);
+
+  
+private _ensureMinPath(maze: number[][], level: number): number[][] {
+  const MAX_ENFORCE_LEVEL = 22;    // “최단경로 보장을 계산할 최대 레벨”
+  const effectiveLevel = Math.min(level, MAX_ENFORCE_LEVEL);
+
+  // rows, cols는 클래스 필드(21×21 기준)
+  const rows = this.rows;
+  const cols = this.cols;
+
+  // 레벨 1~22에 대응하는 minLen을 계산.
+  // 예: (21+21) * (1 + 0.08 * effectiveLevel)
+  const baseLen = rows + cols;  // 42
+  const minLen = Math.floor(baseLen * (1 + 0.08 * effectiveLevel));
+
+  // 반복 재생성 최대 횟수는 레벨이 높아도 동일하게 5회 유지
+  const maxAttempts = 5;
+  let attempts = 0;
+
+  while (++attempts < maxAttempts) {
+    // 현재 미로의 최단경로가 기준 길이(minLen) 이상이면 탈출
+    if (this._calcShortestPath(maze) >= minLen) {
+      break;
     }
-    return maze;
+
+    // 조건 미달 시, 재생성: DFS / Hunt-and-Kill / Wilson 중 하나 다시 호출
+    if (level <= 4) {
+      maze.splice(0, maze.length, ...this._dfs());
+    }
+    else if (level <= 10) {
+      maze.splice(0, maze.length, ...this._huntAndKill());
+    }
+    else {
+      maze.splice(0, maze.length, ...this._wilson());
+    }
+
+    // 다시 루프(순환 구조) 추가
+    this._addLoops(maze, level);
   }
+
+  return maze;
+}
+
 
   // (1,1)~(19,19) 최단거리 BFS
   private _calcShortestPath(maze: number[][]): number {
