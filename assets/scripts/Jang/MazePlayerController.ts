@@ -239,14 +239,38 @@ export default class PlayerController extends cc.Component {
   }
 
  // PlayerController.ts (골 감지 → emit만)
+// PlayerController.ts 에서…
 private async followPath(path: cc.Vec2[]) {
   this.isMoving = true;
-  const goalGrid = this.mazeLogic.getGoalPosition();
 
+  // ── (1) path 그리드 좌표를 월드 좌표(픽셀) 리스트로 변환
+  this.visualPathPixels = path.map(cell => this.gridToWorld(cell));
+
+  const goalGrid = this.mazeLogic.getGoalPosition();
   for (let i = 1; i < path.length; i++) {
+    // ── (2) 한 칸 이동
     await this.moveToGrid(path[i]);
 
-    // ── 골 도달 판정 (PlayerController는 오직 emit만)
+    // ── (3) 이동한 첫 픽셀 제거
+    this.visualPathPixels.shift();
+
+    // ── (4) 기존 선 모두 지우고, 남은 픽셀만 다시 그리기
+    this.drawingLine.clear();
+    if (this.visualPathPixels.length >= 2) {
+      // 시작점
+      const first = this.visualPathPixels[0];
+      this.drawingLine.moveTo(first.x, first.y);
+      // 나머지
+      for (let j = 1; j < this.visualPathPixels.length; j++) {
+        const p = this.visualPathPixels[j];
+        this.drawingLine.lineTo(p.x, p.y);
+      }
+      this.drawingLine.strokeColor = cc.color(255, 0, 0, 255);
+      this.drawingLine.lineWidth = 6;
+      this.drawingLine.stroke();
+    }
+
+    // ── (5) 골 도착 체크 (기존 로직)
     if (
       this.currentGridPos.x === goalGrid.x &&
       this.currentGridPos.y === goalGrid.y
@@ -255,29 +279,34 @@ private async followPath(path: cc.Vec2[]) {
       this.drawingLine.clear();
       this.pathGrids = [];
       this.visualPathPixels = [];
-
-      // **resetPlayer() 호출 삭제** → 순수히 이벤트만 emit
-      // this.resetPlayer();   <–– 이 줄을 지웁니다.
-
       this.node.emit("playerReachedGoal");
       return;
     }
   }
 
-  // ── 골에 도달하지 못했을 때만 GameOver UI 띄우기
+  // ── (6) 목표 미도달 시 GameOver UI (기존 코드 유지)
   this.isMoving = false;
   this.drawingLine.clear();
   this.pathGrids = [];
   this.visualPathPixels = [];
-
   this.movedOnce = true;
   if (this.gameOverUIPrefab) {
-    const uiRoot = cc.find("Canvas/UI") || cc.find("Canvas");
-    const goUI = cc.instantiate(this.gameOverUIPrefab);
-    uiRoot.addChild(goUI);
-    goUI.setPosition(0, 0);
-    this.gameOverShown = true;
-  }
+  const goUI = cc.instantiate(this.gameOverUIPrefab);
+
+  // ① Canvas에 붙이기
+  const canvas = cc.find("Canvas");
+  canvas.addChild(goUI);
+
+  // ② zIndex 설정
+  goUI.zIndex = 1000;
+  // ③ 같은 부모 내 맨 뒤로 보내기
+  goUI.setSiblingIndex(canvas.childrenCount - 1);
+
+  // ④ 중앙 위치
+  goUI.setPosition(540, 960);
+
+  this.gameOverShown = true;
+}
 }
 
 

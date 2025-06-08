@@ -42,35 +42,49 @@ export default class GameOverUI extends cc.Component {
         }
     }
 
-    async submitScoreToServer() {
-        const token = localStorage.getItem('jwtToken');
-        if (!token) {
-            console.warn("JWT 토큰이 없어 점수 저장 불가");
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost:3000/score/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    gameId: GameState.gameId,
-                    score: GameState.score,
-                    mode: "single"
-                })
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                console.log("점수 저장 성공:", result);
-            } else {
-                console.warn("점수 저장 실패:", result.message);
-            }
-        } catch (error) {
-            console.error("점수 저장 중 오류 발생:", error);
-        }
+async submitScoreToServer() {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+        console.warn("JWT 토큰이 없어 점수 저장 불가");
+        return;
     }
+    // 여기 추가!
+    console.log("[클라이언트] localStorage jwtToken =", token);
+    console.log("점수 저장 요청", {
+        gameId: GameState.gameId,
+        score: GameState.score,
+        mode: "single",
+        nickname: GameState.nickname,
+        character: GameState.character
+    });
+
+    try {
+        const response = await fetch('http://43.203.243.173:3000/single/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                gameId: GameState.gameId,
+                score: GameState.score,
+                mode: "single",
+                nickname: GameState.nickname,   
+                character: GameState.character  
+            })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log("점수 저장 성공:", result);
+        } else {
+            console.warn("점수 저장 실패:", result.message);
+        }
+    } catch (error) {
+        console.error("점수 저장 중 오류 발생:", error);
+    }
+}
+
+
+
 }

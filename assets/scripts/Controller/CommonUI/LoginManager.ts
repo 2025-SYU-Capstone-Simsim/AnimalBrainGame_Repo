@@ -153,10 +153,10 @@ export default class LoginManager extends cc.Component {
       if (!browserId) {
         browserId = this.generateBrowserId();
         localStorage.setItem('browserId', browserId);
-        cc.log("새 브라우저 ID 생성됨:", browserId);
       }
+      GameState.browserId = browserId; 
 
-      const loginRes = await fetch('http://localhost:3000/auth/login', {
+      const loginRes = await fetch('http://43.203.243.173:3000/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ browserId })
@@ -167,7 +167,7 @@ export default class LoginManager extends cc.Component {
       const jwtToken = loginData.token;
       localStorage.setItem('jwtToken', jwtToken);
 
-      const profileRes = await fetch('http://localhost:3000/auth/set-profile', {
+      const profileRes = await fetch('http://43.203.243.173:3000/auth/set-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ export default class LoginManager extends cc.Component {
       cc.log("GameState 저장됨:", GameState.nickname, GameState.character);
       const pendingRoomId = localStorage.getItem("pendingRoomId");
       if (pendingRoomId) {
-        cc.log("🔁 로그인 후 초대 방으로 이동:", pendingRoomId);
+        cc.log("로그인 후 초대 방으로 이동:", pendingRoomId);
         GameState.incomingRoomId = pendingRoomId;
         GameState.isHost = false;
         localStorage.removeItem("pendingRoomId");
@@ -208,15 +208,16 @@ export default class LoginManager extends cc.Component {
     const jwtToken = localStorage.getItem('jwtToken');
     const browserId = localStorage.getItem('browserId');
     if (!jwtToken || !browserId) return;
+    GameState.browserId = browserId; // 자동 로그인에서도 할당
 
-    const verify = await fetch('http://localhost:3000/auth/verify-token', {
+    const verify = await fetch('http://43.203.243.173:3000/auth/verify-token', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${jwtToken}` }
     });
     const verifyResult = await verify.json();
     if (!verify.ok || !verifyResult.success) return;
 
-    const res = await fetch('http://localhost:3000/auth/user-info', {
+    const res = await fetch('http://43.203.243.173:3000/auth/user-info', {
       method: 'GET',
       headers: { 'Authorization': `Bearer ${jwtToken}` }
     });
