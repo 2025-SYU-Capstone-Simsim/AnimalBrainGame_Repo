@@ -12,39 +12,46 @@ export default class MainMenu extends cc.Component {
   @property(cc.Button)
   myPageButton: cc.Button = null;
 
-  async onLoad() {
+async onLoad() {
     const urlParams = new URLSearchParams(window.location.search);
     const incomingRoomId = urlParams.get("roomId");
 
     const jwtToken = localStorage.getItem('jwtToken');
     const browserId = localStorage.getItem('browserId');
 
-    //  초대 링크 감지 + 로그인 상태 확인
+    // 1. 초대 링크 감지 시
     if (incomingRoomId) {
       cc.log("초대 링크 감지 roomId:", incomingRoomId);
 
+      // 로그인 안됨 → pendingRoomId 저장 후 LoginScene으로 이동
       if (!jwtToken || !browserId) {
         cc.warn("로그인 안됨 → 로그인 후 복귀를 위해 roomId 저장");
         localStorage.setItem("pendingRoomId", incomingRoomId);
+        // URL에서 roomId 쿼리 제거 (중복 이동 방지)
+        history.replaceState(null, '', window.location.pathname);
         cc.director.loadScene("LoginScene");
         return;
       }
 
+      // 이미 로그인 상태 → 바로 PlayerConnect로 이동 (url에 roomId 쿼리 제거)
+      history.replaceState(null, '', window.location.pathname);
+
       GameState.incomingRoomId = incomingRoomId;
-      GameState.isHost = false; // ✅ guest 입장
+      GameState.isHost = false; // 게스트 입장
       cc.director.loadScene("PlayerConnect");
       return;
     }
 
-    // ✅ 로그인 상태 확인
+    // 2. 일반 로그인 상태 체크
     if (!jwtToken || !browserId) {
       cc.warn('토큰 또는 브라우저 ID 없음 → 로그인으로 이동');
       cc.director.loadScene('LoginScene');
       return;
     }
 
+    // 3. 토큰 서버 검증
     try {
-      const res = await fetch('http://localhost:3000/auth/verify-token', {
+      const res = await fetch('http://43.201.75.158:3000/auth/verify-token', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${jwtToken}` }
       });
@@ -67,7 +74,8 @@ export default class MainMenu extends cc.Component {
       cc.error("서버 통신 오류 → 로그인으로 이동", err);
       cc.director.loadScene("LoginScene");
     }
-  }
+}
+
 
 
   registerButtonEvents(node: cc.Node, callback: () => void) {

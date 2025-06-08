@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "2fc748eb-7ed9-40c2-841d-0be64318146f",
+  "uuid": "95eaf3a3-282b-4590-b234-17e62680871a",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -14,9 +14,9 @@
   "subMetas": {
     "ReverseThumb": {
       "ver": "1.0.6",
-      "uuid": "e08c4fd7-0025-4950-819d-657f0ccc8987",
+      "uuid": "220d0646-d4cb-4ef0-b9a7-ff0381a3a9cb",
       "importer": "sprite-frame",
-      "rawTextureUuid": "2fc748eb-7ed9-40c2-841d-0be64318146f",
+      "rawTextureUuid": "95eaf3a3-282b-4590-b234-17e62680871a",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

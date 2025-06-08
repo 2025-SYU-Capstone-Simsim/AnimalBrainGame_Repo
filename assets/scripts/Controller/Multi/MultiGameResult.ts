@@ -23,7 +23,7 @@ export default class MultiGameResult extends cc.Component {
             cc.warn("roomId 없음");
             return;
         }
-        fetch(`http://localhost:3000/game/result/${roomId}`)
+        fetch(`http://43.201.75.158:3000/multi/game/result/${roomId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success && data.data?.winner && !data.data.winner.isTie) {
@@ -59,16 +59,18 @@ export default class MultiGameResult extends cc.Component {
     }
 
     
-    onClickBack() { // 추후 leave-room 성공 시켜서 적용
-        cc.log("BackButton 클릭됨 → MainScene으로");
+    onClickBack() {
+        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+        const playerId = GameState.browserId;
 
-        // 1. isHost 제거
+        // 멀티방에서 나가기
+        if (window.socket && roomId && playerId) {
+            window.socket.emit("leave-room", { roomId, playerId });
+        }
+
+        // 상태 초기화 및 메인 이동
         cc.sys.localStorage.removeItem("isHost");
-
-        // 2. GameState 초기화
         GameState.resetMultiplay();
-
-        // 3. 씬 이동
         cc.director.loadScene("MainScene");
     }
 }
