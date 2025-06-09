@@ -3,6 +3,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class MultiOpponent extends cc.Component {
     @property(cc.Label) questionLabel: cc.Label = null;
+    @property(cc.Label) sequenceLabel: cc.Label = null;
     @property(cc.Prefab) scoreDisplayPrefab: cc.Prefab = null;
 
     @property(cc.Node) correctSign: cc.Node = null;
@@ -25,32 +26,29 @@ export default class MultiOpponent extends cc.Component {
 
     resetDisplay() {
         this.questionLabel.string = "";
+        this.sequenceLabel.string = "";
         this.correctSign.active = false;
         this.wrongSign.active = false;
     }
 
     showNewQuestion(numbers: number[], direction: string) {
-        const showNumbers = direction === "reverse" ? [...numbers].reverse() : numbers;
-        const numberString = showNumbers.join("");
-
-        this.questionLabel.string = numberString;
+        const displayNums = direction === "reverse" ? [...numbers].reverse() : numbers;
+        this.questionLabel.string = displayNums.join("");
         this.questionLabel.node.active = true;
+        this.sequenceLabel.node.active = false;
 
         this.scheduleOnce(() => {
             this.questionLabel.node.active = false;
-        }, 1.0);
-
-        this.correctSign.active = false;
-        this.wrongSign.active = false;
+            this.sequenceLabel.string = direction === "reverse" ? "역방향" : "정방향";
+            this.sequenceLabel.node.active = true;
+        }, 1.2);
     }
 
     showAnswerResult(input: number[], isCorrect: boolean) {
-        const targetSign = isCorrect ? this.correctSign : this.wrongSign;
-        if (!targetSign) return;
-
-        targetSign.active = true;
+        const signNode = isCorrect ? this.correctSign : this.wrongSign;
+        signNode.active = true;
         this.scheduleOnce(() => {
-            targetSign.active = false;
+            signNode.active = false;
         }, 1.0);
     }
 
@@ -59,7 +57,7 @@ export default class MultiOpponent extends cc.Component {
         this.updateScoreLabel();
     }
 
-    private updateScoreLabel() {
+    updateScoreLabel() {
         if (this.scoreLabel) {
             this.scoreLabel.string = `${this.score}`;
         }

@@ -10,13 +10,12 @@ export default class MultiReversecorrectGameController extends cc.Component {
     @property(cc.Node) myGameArea: cc.Node = null;
     @property(cc.Node) opponentGameArea: cc.Node = null;
 
-    @property(cc.Node) exitButton: cc.Node = null;
-
     @property(cc.Label) myNameLabel: cc.Label = null;
-    @property(cc.Node) myCharacterNode: cc.Node = null;
+    @property(cc.Sprite) myCharacterSprite: cc.Sprite = null;
+    @property([cc.SpriteFrame]) characterSprites: cc.SpriteFrame[] = [];
 
     @property(cc.Label) guestNameLabel: cc.Label = null;
-    @property(cc.Node) guestCharacterNode: cc.Node = null;
+    @property(cc.Sprite) guestCharacterSprite: cc.Sprite = null;
 
     private myGame: Multiplayer = null;
     private opponent: MultiOpponent = null;
@@ -51,62 +50,27 @@ export default class MultiReversecorrectGameController extends cc.Component {
                 payload: {}
             });
         }
+
+        this.myGame.startGame();
+    }
+
+    setPlayerInfoFromGameState() {
+        const isHost = GameState.isHost;
+        const myName = GameState.nickname || "나";
+        const guestName = isHost ? GameState.guestNickname : GameState.hostNickname;
+        const myCharacter = GameState.character || 0;
+        const guestCharacter = isHost ? GameState.guestCharacter : GameState.hostCharacter;
+
+        this.myNameLabel.string = myName;
+        this.guestNameLabel.string = guestName || "상대";
+
+        this.myCharacterSprite.spriteFrame = this.characterSprites[myCharacter];
+        this.guestCharacterSprite.spriteFrame = this.characterSprites[guestCharacter];
     }
 
     onDestroy() {
         cc.director.off("spawn-question");
         cc.director.off("answer-result");
         cc.director.off("score-update");
-    }
-
-    setPlayerInfoFromGameState() {
-        const isHost = GameState.isHost;
-
-        const myName = GameState.nickname || "나";
-        const myChar = GameState.character || "dog";
-
-        const guestName = GameState.guestNickname || "게스트";
-        const guestChar = GameState.guestCharacter || "rabbit";
-
-        const hostName = GameState.hostNickname || "호스트";
-        const hostChar = GameState.hostCharacter || "tiger";
-
-        if (isHost) {
-            if (this.myNameLabel) this.myNameLabel.string = myName;
-            if (this.guestNameLabel) this.guestNameLabel.string = guestName;
-            this.setCharacterSprite(this.myCharacterNode, myChar);
-            this.setCharacterSprite(this.guestCharacterNode, guestChar);
-        } else {
-            if (this.myNameLabel) this.myNameLabel.string = myName;
-            if (this.guestNameLabel) this.guestNameLabel.string = hostName;
-            this.setCharacterSprite(this.myCharacterNode, myChar);
-            this.setCharacterSprite(this.guestCharacterNode, hostChar);
-        }
-    }
-
-    setCharacterSprite(node: cc.Node, characterKey: string) {
-        const sprite = node.getComponent(cc.Sprite);
-        if (!sprite) return;
-
-        const path = `Images/Common/characters/${characterKey}Head`;
-        cc.resources.load(path, cc.SpriteFrame, (err, spriteFrame) => {
-            if (!err && spriteFrame) {
-                sprite.spriteFrame = spriteFrame;
-            } else {
-                cc.warn(`Failed to load sprite for: ${path}`);
-            }
-        });
-    }
-
-    loadMain() {
-        const roomId = GameState.incomingRoomId || GameState.createdRoomId;
-        const playerId = GameState.browserId;
-        if (!cc.sys.isNative && window.socket && roomId && playerId) {
-            console.log("[MMGC] 'leave-room' emit →", { roomId, playerId });
-            window.socket.emit("leave-room", { roomId, playerId });
-        }
-        GameState.resetMultiplay();
-        cc.sys.localStorage.removeItem("isHost");
-        cc.director.loadScene("MainScene");
     }
 }

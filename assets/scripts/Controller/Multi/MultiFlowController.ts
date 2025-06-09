@@ -45,6 +45,8 @@ static initializeSocketListeners() {
 
       case "spawn-mole":
       case "hit-mole":
+      case "spawn-question":
+      case "answer-result":
       case "score-update":
         cc.director.emit(type, payload); // 필수 
         break;

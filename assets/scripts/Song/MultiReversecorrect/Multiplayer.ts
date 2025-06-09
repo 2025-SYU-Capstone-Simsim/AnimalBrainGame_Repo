@@ -2,42 +2,29 @@ import GameState from "../../Controller/CommonUI/GameState";
 
 const { ccclass, property } = cc._decorator;
 
-declare global {
-    interface Window {
-        GameState: any;
-    }
-}
-
 @ccclass
 export default class Multiplayer extends cc.Component {
-     @property(cc.Prefab) scoreDisplayPrefab: cc.Prefab = null;
+    @property(cc.Prefab) scoreDisplayPrefab: cc.Prefab = null;
     @property(cc.Prefab) timerDisplayPrefab: cc.Prefab = null;
-
     @property(cc.Node) correctSign: cc.Node = null;
     @property(cc.Node) wrongSign: cc.Node = null;
+    @property(cc.Label) sequenceLabel: cc.Label = null;
+    @property(cc.Label) inputDisplayLabel: cc.Label = null;
 
     private numbersToShow: number[] = [];
     private userInput: number[] = [];
     private isReverseMode: boolean = false;
-
+    private correctCount: number = 0;
     private score: number = 0;
     private questionLength: number = 3;
-
+    private timer: number = 60;
     private scoreLabel: cc.Label = null;
     private timerLabel: cc.Label = null;
-
-    private timer: number = 30;
-    private timerNode: cc.Node = null;
 
     startGame() {
         this.initScoreUI();
         this.initTimerUI();
-
-        this.score = 0;
-        this.questionLength = 3;
-
         this.schedule(this.decreaseTimer, 1);
-        this.updateScoreLabel();
         this.showNewQuestion();
     }
 
@@ -49,46 +36,67 @@ export default class Multiplayer extends cc.Component {
     }
 
     initTimerUI() {
-        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
-        this.node.addChild(this.timerNode);
-        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
+        const timerNode = cc.instantiate(this.timerDisplayPrefab);
+        this.node.addChild(timerNode);
+        this.timerLabel = timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
         this.updateTimerLabel();
     }
 
     updateScoreLabel() {
-        if (this.scoreLabel) {
-            this.scoreLabel.string = `${this.score}`;
-        }
+        if (this.scoreLabel) this.scoreLabel.string = `${this.score}`;
     }
 
     updateTimerLabel() {
-        if (this.timerLabel) {
-            this.timerLabel.string = `${this.timer}`;
-        }
+        if (this.timerLabel) this.timerLabel.string = `${this.timer}`;
     }
 
     decreaseTimer() {
-        if (this.timer <= 0) {
-            this.endGame();
+        if (--this.timer < 0) {
+            this.unscheduleAllCallbacks();
             return;
         }
-        this.timer--;
         this.updateTimerLabel();
     }
 
     showNewQuestion() {
         this.userInput = [];
+        this.inputDisplayLabel.string = "";
         this.isReverseMode = Math.random() < 0.5;
-        this.numbersToShow = [];
 
+        const milestone = Math.floor(this.correctCount / 3);
+        this.questionLength = 3 + milestone;
+        const hideDelay = Math.max(0.8, 1.5 - milestone * 0.2);
+
+        this.numbersToShow = [];
+        let candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         for (let i = 0; i < this.questionLength; i++) {
-            this.numbersToShow.push(Math.floor(Math.random() * 10));
+            const rand = candidate[Math.floor(Math.random() * candidate.length)];
+            this.numbersToShow.push(rand);
         }
 
-        cc.director.emit("spawn-question", {
-            numbers: this.numbersToShow,
-            direction: this.isReverseMode ? "reverse" : "forward",
-        });
+        this.sequenceLabel.node.active = false;
+        this.sequenceLabel.string = "";
+
+        this.inputDisplayLabel.string = this.numbersToShow.join("");
+        this.inputDisplayLabel.node.active = true;
+
+        this.scheduleOnce(() => {
+            this.inputDisplayLabel.node.active = false;
+            this.sequenceLabel.string = this.isReverseMode ? "역방향" : "정방향";
+            this.sequenceLabel.node.active = true;
+        }, hideDelay);
+
+        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+        if (window.socket && roomId) {
+            window.socket.emit("game-event", {
+                type: "spawn-question",
+                roomId,
+                payload: {
+                    numbers: this.numbersToShow,
+                    direction: this.isReverseMode ? "reverse" : "forward"
+                }
+            });
+        }
     }
 
     onNumberClick(event: cc.Event.EventTouch, customData: string) {
@@ -96,6 +104,7 @@ export default class Multiplayer extends cc.Component {
         if (isNaN(inputNum)) return;
 
         this.userInput.push(inputNum);
+        this.inputDisplayLabel.string = this.userInput.join("");
 
         const target = this.isReverseMode
             ? this.numbersToShow[this.numbersToShow.length - this.userInput.length]
@@ -113,8 +122,8 @@ export default class Multiplayer extends cc.Component {
 
     showResult(isCorrect: boolean) {
         if (isCorrect) {
+            this.correctCount++;
             this.score += 10;
-            this.updateScoreLabel();
             this.correctSign.active = true;
             this.scheduleOnce(() => {
                 this.correctSign.active = false;
@@ -128,39 +137,18 @@ export default class Multiplayer extends cc.Component {
             }, 0.5);
         }
 
-        cc.director.emit("answer-result", {
-            input: [...this.userInput],
-            isCorrect: isCorrect,
-        });
+        this.updateScoreLabel();
 
         const roomId = GameState.createdRoomId || GameState.incomingRoomId;
         if (window.socket && roomId) {
             window.socket.emit("game-event", {
-                type: "score-update",
+                type: "answer-result",
                 roomId,
                 payload: {
-                    player: GameState.isHost ? "host" : "guest",
-                    score: this.score,
-                },
+                    input: [...this.userInput],
+                    isCorrect
+                }
             });
         }
-    }
-
-    endGame() {
-        this.unscheduleAllCallbacks();
-        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
-        if (window.socket && roomId) {
-            window.socket.emit("game-event", {
-                type: "game-end",
-                roomId,
-                payload: {
-                    score: this.score,
-                    nickname: GameState.nickname,
-                    character: GameState.character,
-                    isHost: GameState.isHost === true,
-                },
-            });
-        }
-        cc.log("게임 종료. 최종 점수:", this.score);
     }
 }
