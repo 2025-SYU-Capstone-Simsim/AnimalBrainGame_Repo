@@ -33,7 +33,11 @@ export default class MultiReversecorrectGameController extends cc.Component {
         MultiGameFlowController.initializeSocketListeners();
 
         cc.director.on("spawn-question", (payload) => {
+<<<<<<< HEAD
         this.opponent.showQuestion(payload.numbers, payload.direction); // ✅ 여기 OK
+=======
+    this.opponent.showQuestion(payload.numbers, payload.direction); // ✅ 여기 OK
+>>>>>>> e706b8f9642b56277177545ade68493d20b7a1d1
 });
 
         cc.director.on("answer-result", (payload) => {
