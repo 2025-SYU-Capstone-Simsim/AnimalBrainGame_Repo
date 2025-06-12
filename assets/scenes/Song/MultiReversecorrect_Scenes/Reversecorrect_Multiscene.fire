@@ -3308,8 +3308,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 167,
-      "height": 142
+      "width": 153,
+      "height": 130
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3361,7 +3361,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "140bacb0-ad06-493c-99b6-87b0b912dd8c"
+      "__uuid__": "72fd1cb3-de89-4ed7-b51c-de24f5822440"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -6510,8 +6510,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 133,
-      "height": 142
+      "width": 129,
+      "height": 138
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -6563,7 +6563,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "25714a2e-12f7-4ca6-ac47-e27346bcdbf0"
+      "__uuid__": "79499324-15cb-4e07-9749-e88612c57f95"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -6856,18 +6856,20 @@
     "opponentGameArea": {
       "__id__": 81
     },
+    "exitButton": {
+      "__id__": 156
+    },
     "myNameLabel": {
       "__id__": 74
     },
-    "myCharacterSprite": {
-      "__id__": 77
+    "myCharacterNode": {
+      "__id__": 76
     },
-    "characterSprites": [],
     "guestNameLabel": {
       "__id__": 150
     },
-    "guestCharacterSprite": {
-      "__id__": 153
+    "guestCharacterNode": {
+      "__id__": 152
     },
     "_id": "60j+FlRMJKLo4f2VAmxoSr"
   }
