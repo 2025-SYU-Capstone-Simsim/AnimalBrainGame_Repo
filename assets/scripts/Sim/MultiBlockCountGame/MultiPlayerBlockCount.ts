@@ -25,7 +25,7 @@ export default class GameManager extends cc.Component {
   @property(cc.Prefab)
   gameOverUIPrefab: cc.Prefab = null;
 
-
+  //
   // 추가된 프리팹 속성
   @property(cc.Prefab)
   scoreUIPrefab: cc.Prefab = null;

@@ -845,21 +845,11 @@
     "_N$normalSprite": {
       "__uuid__": "1f1595d8-2923-41bc-b1ea-8ce15a751d56"
     },
-    "_N$pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "_N$hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$pressedSprite": null,
+    "pressedSprite": null,
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 56
     },
@@ -1365,21 +1355,11 @@
     "_N$normalSprite": {
       "__uuid__": "1f1595d8-2923-41bc-b1ea-8ce15a751d56"
     },
-    "_N$pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "_N$hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$pressedSprite": null,
+    "pressedSprite": null,
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 21
     },
@@ -1738,21 +1718,11 @@
     "_N$normalSprite": {
       "__uuid__": "1f1595d8-2923-41bc-b1ea-8ce15a751d56"
     },
-    "_N$pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "_N$hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$pressedSprite": null,
+    "pressedSprite": null,
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 28
     },
@@ -2111,21 +2081,11 @@
     "_N$normalSprite": {
       "__uuid__": "1f1595d8-2923-41bc-b1ea-8ce15a751d56"
     },
-    "_N$pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "_N$hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$pressedSprite": null,
+    "pressedSprite": null,
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 35
     },
@@ -2484,21 +2444,11 @@
     "_N$normalSprite": {
       "__uuid__": "1f1595d8-2923-41bc-b1ea-8ce15a751d56"
     },
-    "_N$pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "_N$hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$pressedSprite": null,
+    "pressedSprite": null,
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 42
     },
@@ -2857,21 +2807,11 @@
     "_N$normalSprite": {
       "__uuid__": "1f1595d8-2923-41bc-b1ea-8ce15a751d56"
     },
-    "_N$pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "_N$hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "hoverSprite": {
-      "__uuid__": "f0048c10-f03e-4c97-b9d3-3506e1d58952"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$pressedSprite": null,
+    "pressedSprite": null,
+    "_N$hoverSprite": null,
+    "hoverSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 49
     },
@@ -3154,8 +3094,10 @@
     "_fontSize": 80,
     "_lineHeight": 80,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "91552fea-5973-46b9-aa4f-c27f893b4fed"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -3185,14 +3127,14 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 17,
+      "g": 153,
+      "b": 128,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
+      "width": 393.92,
       "height": 100.8
     },
     "_anchorPoint": {
@@ -3204,8 +3146,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -26.959,
-        -234.801,
+        -9.847,
+        -251.914,
         0,
         0,
         0,
