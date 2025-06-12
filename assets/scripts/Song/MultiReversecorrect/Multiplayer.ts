@@ -1,4 +1,5 @@
 import GameState from "../../Controller/CommonUI/GameState";
+import MultiGameFlowController from "../../Controller/Multi/MultiFlowController";
 
 const { ccclass, property } = cc._decorator;
 
@@ -22,11 +23,12 @@ export default class Multiplayer extends cc.Component {
     private correctCount: number = 0;
     private score: number = 0;
     private questionLength: number = 3;
-    private timer: number = 60;
+    private timer: number = 10;
     private scoreLabel: cc.Label = null;
     private timerLabel: cc.Label = null;
 
     private inputEnabled: boolean = false;
+    public isGameOver: boolean = false;
 
     startGame() {
         this.initScoreUI();
@@ -60,7 +62,7 @@ export default class Multiplayer extends cc.Component {
 
     decreaseTimer() {
         if (--this.timer < 0) {
-            this.unscheduleAllCallbacks();
+            this.endGame();
             return;
         }
         this.updateTimerLabel();
@@ -79,7 +81,7 @@ export default class Multiplayer extends cc.Component {
     }
 
     onButtonClicked(event: cc.Event) {
-        if (!this.inputEnabled) return;  // ❌ 입력 제한 중이면 무시
+        if (!this.inputEnabled) return;
 
         const btnNode = event.target as cc.Node;
         let num = 0;
@@ -204,8 +206,7 @@ export default class Multiplayer extends cc.Component {
                 this.sequenceLabel.string = this.isReverseMode ? "역방향" : "정방향";
                 this.sequenceLabel.node.active = true;
             }
-
-            this.inputEnabled = true;  // ✅ 방향 표시 후에만 입력 허용
+            this.inputEnabled = true;
         }, hideDelay);
 
         const roomId = GameState.createdRoomId || GameState.incomingRoomId;
@@ -216,6 +217,14 @@ export default class Multiplayer extends cc.Component {
                 numbers: this.numbersToShow,
                 direction: this.isReverseMode ? "reverse" : "forward"
             }
+        });
+    }
+
+    private endGame() {
+        MultiGameFlowController.endGame({
+            isGameOver: this.isGameOver,
+            unscheduleAllCallbacks: () => this.unscheduleAllCallbacks(),
+            score: this.score
         });
     }
 }
