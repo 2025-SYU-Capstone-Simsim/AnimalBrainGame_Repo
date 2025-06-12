@@ -2514,7 +2514,7 @@
     "_N$string": "",
     "_fontSize": 250,
     "_lineHeight": 200,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "288b58d1-60b1-405b-b1df-520c93fc99ab"
     },
@@ -2734,7 +2734,7 @@
     "_N$string": "",
     "_fontSize": 250,
     "_lineHeight": 200,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "288b58d1-60b1-405b-b1df-520c93fc99ab"
     },
@@ -3285,7 +3285,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "자산 9@4x",
+    "_name": "MyChracter",
     "_objFlags": 0,
     "_parent": {
       "__id__": 5
@@ -3456,7 +3456,7 @@
       "__uuid__": "6f6958b3-8ec7-415e-8734-928a8c315f82"
     },
     "correctSign": {
-      "__id__": 64
+      "__id__": 67
     },
     "wrongSign": {
       "__id__": 64
@@ -3464,8 +3464,14 @@
     "sequenceLabel": {
       "__id__": 54
     },
-    "inputDisplayLabel": {
+    "input_label": {
       "__id__": 57
+    },
+    "random_label": {
+      "__id__": 51
+    },
+    "layout": {
+      "__id__": 7
     },
     "_id": "6e3qzIBxxNRbio600kTiYb"
   },
@@ -5710,7 +5716,7 @@
     "_N$string": "",
     "_fontSize": 250,
     "_lineHeight": 200,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "288b58d1-60b1-405b-b1df-520c93fc99ab"
     },
@@ -5820,7 +5826,7 @@
     "_N$string": "",
     "_fontSize": 250,
     "_lineHeight": 200,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "288b58d1-60b1-405b-b1df-520c93fc99ab"
     },
@@ -6481,7 +6487,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "자산 8@4x",
+    "_name": "GuestChracter",
     "_objFlags": 0,
     "_parent": {
       "__id__": 81
