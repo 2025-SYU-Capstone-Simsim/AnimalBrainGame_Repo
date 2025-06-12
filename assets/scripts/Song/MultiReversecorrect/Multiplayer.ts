@@ -30,12 +30,28 @@ export default class Multiplayer extends cc.Component {
     private inputEnabled: boolean = false;
     public isGameOver: boolean = false;
 
+    private lastSentQuestion: { numbers: number[], direction: string } = null;
+
     startGame() {
         this.initScoreUI();
         this.initTimerUI();
         this.schedule(this.decreaseTimer, 1);
         this.showNewQuestion();
         this.registerButtons();
+
+        window.socket.on("game-event", (data) => {
+            if (data.type === "guest-ready") {
+                const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+                if (GameState.isHost && this.lastSentQuestion) {
+                    console.log("[DEBUG] guest-ready 수신 → 마지막 문제 재전송");
+                    window.socket.emit("game-event", {
+                        type: "spawn-question",
+                        roomId,
+                        payload: this.lastSentQuestion
+                    });
+                }
+            }
+        });
     }
 
     initScoreUI() {
@@ -114,6 +130,7 @@ export default class Multiplayer extends cc.Component {
                 return;
             }
         }
+
         if (this.userInput.length === expected.length) {
             this.handleCorrectAnswer();
         }
@@ -124,14 +141,14 @@ export default class Multiplayer extends cc.Component {
         if (this.correctSign) this.correctSign.active = true;
 
         this.correctCount++;
-        this.score += 10; // ✅ 먼저 점수 올림
+        this.score += 10;
         this.updateScoreLabel();
 
-        this.sendAnswerResult(true); // ✅ 점수 올린 후 emit
+        this.sendAnswerResult(true);
 
         this.scheduleOnce(() => {
             if (this.correctSign) this.correctSign.active = false;
-                this.showNewQuestion();
+            this.showNewQuestion();
         }, 1.5);
     }
 
@@ -161,7 +178,7 @@ export default class Multiplayer extends cc.Component {
         });
 
         if (isCorrect) {
-            console.log("점수 emit 호출1");
+            console.log("점수 emit 호출");
             window.socket.emit("game-event", {
                 type: "score-update",
                 roomId,
@@ -185,7 +202,7 @@ export default class Multiplayer extends cc.Component {
         const hideDelay = Math.max(0.8, 1.5 - milestone * 0.2);
 
         this.numbersToShow = [];
-        let candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         for (let i = 0; i < this.questionLength; i++) {
             const rand = candidate[Math.floor(Math.random() * candidate.length)];
             this.numbersToShow.push(rand);
@@ -211,13 +228,14 @@ export default class Multiplayer extends cc.Component {
         }, hideDelay);
 
         const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+        this.lastSentQuestion = {
+            numbers: this.numbersToShow,
+            direction: this.isReverseMode ? "reverse" : "forward"
+        };
         window.socket.emit("game-event", {
             type: "spawn-question",
             roomId,
-            payload: {
-                numbers: this.numbersToShow,
-                direction: this.isReverseMode ? "reverse" : "forward"
-            }
+            payload: this.lastSentQuestion
         });
     }
 
