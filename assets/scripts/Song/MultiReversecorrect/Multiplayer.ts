@@ -28,10 +28,7 @@ export default class Multiplayer extends cc.Component {
     private timerLabel: cc.Label = null;
 
     private inputEnabled: boolean = false;
-<<<<<<< HEAD
     public isGameOver: boolean = false;
-=======
->>>>>>> e706b8f9642b56277177545ade68493d20b7a1d1
 
     startGame() {
         this.initScoreUI();
@@ -84,11 +81,7 @@ export default class Multiplayer extends cc.Component {
     }
 
     onButtonClicked(event: cc.Event) {
-<<<<<<< HEAD
         if (!this.inputEnabled) return;
-=======
-        if (!this.inputEnabled) return;  // ❌ 입력 제한 중이면 무시
->>>>>>> e706b8f9642b56277177545ade68493d20b7a1d1
 
         const btnNode = event.target as cc.Node;
         let num = 0;
@@ -213,12 +206,7 @@ export default class Multiplayer extends cc.Component {
                 this.sequenceLabel.string = this.isReverseMode ? "역방향" : "정방향";
                 this.sequenceLabel.node.active = true;
             }
-<<<<<<< HEAD
             this.inputEnabled = true;
-=======
-
-            this.inputEnabled = true;  // ✅ 방향 표시 후에만 입력 허용
->>>>>>> e706b8f9642b56277177545ade68493d20b7a1d1
         }, hideDelay);
 
         const roomId = GameState.createdRoomId || GameState.incomingRoomId;
@@ -230,7 +218,6 @@ export default class Multiplayer extends cc.Component {
                 direction: this.isReverseMode ? "reverse" : "forward"
             }
         });
-<<<<<<< HEAD
     }
 
     private endGame() {
@@ -239,7 +226,5 @@ export default class Multiplayer extends cc.Component {
             unscheduleAllCallbacks: () => this.unscheduleAllCallbacks(),
             score: this.score
         });
-=======
->>>>>>> e706b8f9642b56277177545ade68493d20b7a1d1
     }
 }
