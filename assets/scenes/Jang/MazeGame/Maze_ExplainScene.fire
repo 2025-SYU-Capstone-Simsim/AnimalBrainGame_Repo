@@ -656,8 +656,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 896.9,
-      "height": 158.2
+      "width": 956.42,
+      "height": 298.2
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -669,7 +669,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -400,
+        -450,
         0,
         0,
         0,
@@ -708,8 +708,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "동물들의 맛있는 음식이 없어졌어!\n동물들이 음식을 찾는걸 도와줘",
-    "_N$string": "동물들의 맛있는 음식이 없어졌어!\n동물들이 음식을 찾는걸 도와줘",
+    "_string": "동물들의 맛있는 음식이 없어졌어요!\n미로를 뚫고, \n음식을 찾는 걸 도와주세요.\n기회는 단 한번뿐이에요!",
+    "_N$string": "동물들의 맛있는 음식이 없어졌어요!\n미로를 뚫고, \n음식을 찾는 걸 도와주세요.\n기회는 단 한번뿐이에요!",
     "_fontSize": 64,
     "_lineHeight": 70,
     "_enableWrapText": true,

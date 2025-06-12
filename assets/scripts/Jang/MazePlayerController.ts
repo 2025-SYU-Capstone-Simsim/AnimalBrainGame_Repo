@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import MazeLogic from "./MazeLogic";
 import GameData from "./MazeGameData";
+import GameState from "../Controller/CommonUI/GameState";
 
 @ccclass
 export default class PlayerController extends cc.Component {
@@ -306,6 +307,10 @@ private async followPath(path: cc.Vec2[]) {
   goUI.setPosition(540, 960);
 
   this.gameOverShown = true;
+          // // 게임 상태 저장
+          // GameState.lastGameScene = cc.director.getScene().name;
+          // GameState.score = this.score;
+          // GameState.gameId = "remember-game"; // 기억력 게임 고유 식별자
 }
 }
 

@@ -554,16 +554,13 @@
     },
     "_enabled": true,
     "tigerFrame": {
-      "__uuid__": "c3f81aec-3b49-4e4c-b72f-249a2b70fa06"
+      "__uuid__": "4a44a25f-86f9-45e5-9e3d-fba988437d2f"
     },
     "dogFrame": {
-      "__uuid__": "72fd1cb3-de89-4ed7-b51c-de24f5822440"
+      "__uuid__": "69751965-0096-4372-9e0e-a563b2279cd1"
     },
     "rabbitFrame": {
-      "__uuid__": "79499324-15cb-4e07-9749-e88612c57f95"
-    },
-    "gameOverUIPrefab": {
-      "__uuid__": "00f0c755-0393-4852-a5d7-6f63c49d597c"
+      "__uuid__": "0f0478ae-1e46-4d23-9bec-23c50f99ab6f"
     },
     "_id": "126Lb48pBF8q9Wp369wLiz"
   },
@@ -1066,12 +1063,6 @@
     },
     "goalCarrot": {
       "__uuid__": "4bfb3e57-8b79-4548-abfd-c96541b3d5b3"
-    },
-    "gameStartOverlayPrefab": {
-      "__uuid__": "a699ad5e-ef78-4575-804f-0fa58359e54a"
-    },
-    "gameOverUIPrefab": {
-      "__uuid__": "00f0c755-0393-4852-a5d7-6f63c49d597c"
     },
     "_id": "90oP8X5R9IjL/RDwQNk3zF"
   }

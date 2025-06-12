@@ -1,56 +1,65 @@
-// /assets/Scripts/logic/MazeMultiRenderer.ts
-// (기존 MazeMultiRenderer.ts를 대체)
+// File: MazeMultiRenderer.ts
 
-const { ccclass, property } = cc._decorator;
+export default class MazeMultiRenderer {
+  private localContainer: cc.Node;
+  private remoteContainer: cc.Node;
+  private tilePrefab: cc.Prefab;
+  private pathFrame: cc.SpriteFrame;
+  private wallFrame: cc.SpriteFrame;
 
-@ccclass
-export default class MultiRenderer {
   constructor(
-    private localContainer: cc.Node,
-    private remoteContainer: cc.Node,
-    private tilePrefab: cc.Prefab,
-    private pathFrame: cc.SpriteFrame,
-    private grassFrame: cc.SpriteFrame,
-    private cellSize: number
-  ) {}
+    localContainer: cc.Node,
+    remoteContainer: cc.Node,
+    tilePrefab: cc.Prefab,
+    pathFrame: cc.SpriteFrame,
+    wallFrame: cc.SpriteFrame
+  ) {
+    this.localContainer = localContainer;
+    this.remoteContainer = remoteContainer;
+    this.tilePrefab = tilePrefab;
+    this.pathFrame = pathFrame;
+    this.wallFrame = wallFrame;
+  }
 
-  /** 
-   * 단일 컨테이너에 미로를 그립니다.
-   */
-  private renderSingle(container: cc.Node, maze: number[][]): void {
-    container.removeAllChildren();  // 이전 타일 전부 삭제
-    for (let y = 0; y < maze.length; y++) {
-      for (let x = 0; x < maze[y].length; x++) {
-        const tile = cc.instantiate(this.tilePrefab);
-        tile.parent = container;
-        // 타일 중앙 정렬
-        tile.setPosition(
-          x * this.cellSize + this.cellSize / 2,
-          y * this.cellSize + this.cellSize / 2
-        );
-        tile.setContentSize(this.cellSize, this.cellSize);
-
-        const spr = tile.getComponent(cc.Sprite)!;
-        spr.spriteFrame = maze[y][x] === 0
-          ? this.pathFrame
-          : this.grassFrame;
-      }
+  public render(maze: number[][]) {
+    if (this.localContainer) {
+      this.renderMazeToContainer(this.localContainer, maze);
+    }
+    if (this.remoteContainer) {
+      this.renderMazeToContainer(this.remoteContainer, maze);
     }
   }
 
-  /**
-   * 로컬/원격 미로를 동시에 렌더링
-   * @param localMaze   내 화면용 2D 미로 배열
-   * @param remoteMaze  상대 화면용 2D 미로 배열
-   */
-  public render(localMaze: number[][], remoteMaze: number[][]): void {
-    this.renderSingle(this.localContainer, localMaze);
-    this.renderSingle(this.remoteContainer, remoteMaze);
-  }
+  private renderMazeToContainer(container: cc.Node, maze: number[][]) {
+    container.removeAllChildren();
 
-  /** 양쪽 컨테이너 모두 비웁니다. */
-  public clearAll(): void {
-    this.localContainer.removeAllChildren();
-    this.remoteContainer.removeAllChildren();
+    const rows = maze.length;
+    const cols = maze[0].length;
+    // Field 크기에 맞춰 한 칸 크기 계산
+    const cellSize = Math.min(container.width / cols, container.height / rows);
+
+    // 좌표계: container의 (0,0)이 중앙이 되도록
+    const startX = -container.width  / 2 + cellSize / 2;
+    const startY = -container.height / 2 + cellSize / 2;
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const tile = cc.instantiate(this.tilePrefab);
+        tile.setContentSize(cellSize, cellSize);
+        tile.setPosition(
+          startX + x * cellSize,
+          startY + y * cellSize
+        );
+        tile.zIndex = 250;
+
+        const sprite = tile.getComponent(cc.Sprite);
+        if (sprite) {
+          sprite.spriteFrame =
+            maze[y][x] === 1 ? this.wallFrame : this.pathFrame;
+        }
+
+        container.addChild(tile);
+      }
+    }
   }
 }

@@ -1042,7 +1042,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "27642C/u3lNKZ4yxR6PTK/R",
+    "_componentId": "724b4McXHlDyZSM2r3LX3+s",
     "handler": "onSelectCharacter",
     "customEventData": "dog"
   },
@@ -1385,7 +1385,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "27642C/u3lNKZ4yxR6PTK/R",
+    "_componentId": "724b4McXHlDyZSM2r3LX3+s",
     "handler": "onSelectCharacter",
     "customEventData": "rabbit"
   },
@@ -1728,7 +1728,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "27642C/u3lNKZ4yxR6PTK/R",
+    "_componentId": "724b4McXHlDyZSM2r3LX3+s",
     "handler": "onSelectCharacter",
     "customEventData": "tiger"
   },
@@ -2252,7 +2252,7 @@
       "__id__": 2
     },
     "component": "",
-    "_componentId": "27642C/u3lNKZ4yxR6PTK/R",
+    "_componentId": "724b4McXHlDyZSM2r3LX3+s",
     "handler": "onNicknameChanged",
     "customEventData": ""
   },

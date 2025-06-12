@@ -1,116 +1,151 @@
-// /assets/Scripts/Jang/MazeMulti/MultiplayerMazeGameController.ts
+// File: MultiplayerMazeGameController.ts
 
-import MultiplayerMazeGameScene from "./MultiplayerMazeGameScene";
-import GameState                from "../../Controller/CommonUI/GameState";
-import MazeMultiGameFlowController
-                                from "../../Controller/Multi/MultiFlowController";
+import PlayerMazeGameScene from "./PlayerMazeGameScene";
+import OpponentMazeViewer from "./OpponentMazeViewer";
+import GameState from "../../Controller/CommonUI/GameState";
+import MultiGameFlowController from "../../Controller/Multi/MultiFlowController";
 
 const { ccclass, property } = cc._decorator;
 
 declare global {
-  interface Window { socket: any; }
+  interface Window {
+    socket: any;
+  }
 }
 
 @ccclass
 export default class MultiplayerMazeGameController extends cc.Component {
-  /** 멀티 미로 씬 컨트롤러가 붙은 노드 */
-  @property(cc.Node) gameSceneNode!: cc.Node;
-  /** 종료 버튼 */
-  @property(cc.Node)  exitButton!: cc.Node;
+  @property(cc.Node) myGameArea: cc.Node = null;
+  @property(cc.Node) opponentGameArea: cc.Node = null;
+  @property(cc.Node) exitButton: cc.Node = null;
 
-  @property(cc.Label) myNameLabel!: cc.Label;
-  @property(cc.Node)  myCharacterNode!: cc.Node;
-  @property(cc.Label) guestNameLabel!: cc.Label;
-  @property(cc.Node)  guestCharacterNode!: cc.Node;
+  @property(cc.Label) myNameLabel: cc.Label = null;
+  @property(cc.Node) myCharacterNode: cc.Node = null;
 
-  private sceneCtrl: MultiplayerMazeGameScene | null = null;
-  private _started = false;
+  @property(cc.Label) guestNameLabel: cc.Label = null;
+  @property(cc.Node) guestCharacterNode: cc.Node = null;
+
+  private myGameCtrl: PlayerMazeGameScene = null;
+  private opponentView: OpponentMazeViewer = null;
+
+  private _alreadyStarted = false;
 
   start() {
-    if (this._started) return;
-    this._started = true;
+    console.log("[MMGC] myGameArea 연결 상태:", !!this.myGameArea);
 
-    // 1) multi-game-start 이벤트로 게임 시작
-    cc.director.on("multi-game-start", () => {
-      if (this.sceneCtrl) {
-        this.sceneCtrl.startGame();
-      } else {
-        cc.error("[MMGC] sceneCtrl is null, cannot start game");
+    if (this._alreadyStarted) return;
+    this._alreadyStarted = true;
+
+    // 1) GameState 복구
+    const savedSequence = cc.sys.localStorage.getItem("selectedGameSequence");
+    const savedIndex = cc.sys.localStorage.getItem("currentGameIndex");
+    if (savedSequence) {
+      try {
+        GameState.selectedGameSequence = JSON.parse(savedSequence);
+        GameState.currentGameIndex = Number(savedIndex) || 0;
+        cc.log("GameState 복구 완료:", GameState.selectedGameSequence, GameState.currentGameIndex);
+      } catch (e) {
+        cc.warn("selectedGameSequence 복구 실패:", e);
+      }
+    }
+    const savedHost = cc.sys.localStorage.getItem("isHost");
+    GameState.isHost = savedHost === "true";
+    cc.log("복원된 isHost 값:", GameState.isHost);
+
+    // 2) 컨트롤러 연결
+    this.myGameCtrl = this.myGameArea?.getComponent(PlayerMazeGameScene) || null;
+    this.opponentView = this.opponentGameArea?.getComponent(OpponentMazeViewer) || null;
+
+    // 3) maze-data 수신 시 applyMaze()
+    cc.director.on("maze-data", (payload: { maze: number[][] }) => {
+      if (!GameState.isHost && this.myGameCtrl) {
+        this.myGameCtrl.applyMaze(payload.maze);
+        cc.log("[게스트] maze-data 수신 → applyMaze()");
       }
     });
 
-    // 2) GameState 복구
-    const seq = cc.sys.localStorage.getItem("selectedGameSequence");
-    const idx = cc.sys.localStorage.getItem("currentGameIndex");
-    if (seq) {
-      try {
-        GameState.selectedGameSequence = JSON.parse(seq);
-        GameState.currentGameIndex      = Number(idx) || 0;
-      } catch {}
-    }
-    GameState.isHost = cc.sys.localStorage.getItem("isHost") === "true";
+    // 4) 상대 위치 수신
+    cc.director.on("opponent-move", (payload: { x: number; y: number }) => {
+      if (this.opponentView) {
+        this.opponentView.onOpponentMoved(payload);
+      }
+    });
 
-    // 3) 씬 컨트롤러 연결
-    this.sceneCtrl = this.gameSceneNode.getComponent(MultiplayerMazeGameScene);
-    if (!this.sceneCtrl) {
-      cc.error("[MMGC] gameSceneNode에 MultiplayerMazeGameScene 컴포넌트가 없습니다.");
-    }
+    // ✅ 5) 게임 시작 이벤트 수신
+    cc.director.on("multi-game-start", () => {
+      cc.log("[MMGC] 'multi-game-start' 수신 → myGameCtrl:", this.myGameCtrl);
 
-    // 4) UI 닉네임·캐릭터 세팅
+      if (this.myGameCtrl) {
+        this.myGameCtrl.startGame();
+
+        if (GameState.isHost) {
+          // 🔧 generate 이후 100ms 지연 후 maze emit
+          setTimeout(() => {
+            const maze = this.myGameCtrl.getLogic().getMaze();
+            const roomId = GameState.createdRoomId;
+            if (maze && maze.length && window.socket && roomId) {
+              cc.log("[호스트] maze-data emit:", maze);
+              window.socket.emit("game-event", {
+                type: "maze-data",
+                roomId,
+                payload: { maze }
+              });
+            } else {
+              cc.warn("[호스트] maze emit 실패 - maze 데이터 없음");
+            }
+          }, 100);
+        }
+      }
+    });
+
+    // 6) 닉네임/캐릭터 UI 세팅
     this.setPlayerInfoFromGameState();
 
-    // 5) 소켓 이벤트 초기화
-    MazeMultiGameFlowController.initializeSocketListeners();
-
-    // 6) 원격 플레이어 경로 그리기 수신
-    cc.director.on("draw-path", (data: { path: { x: number; y: number }[]; player: string }) => {
-      if (!this.sceneCtrl) return;
-      const isHost    = GameState.isHost;
-      const fromRemote = isHost ? data.player === "guest" : data.player === "host";
-      if (!fromRemote) return;
-      const gridPath = data.path.map(p => cc.v2(p.x, p.y));
-      this.sceneCtrl.remotePlayerCtrl.followPath(gridPath);
-    });
-
-    // 7) 원격 플레이어 골 도달 수신
-    cc.director.on("playerReachedGoal", (data: { player: string }) => {
-      if (!this.sceneCtrl) return;
-      const isHost    = GameState.isHost;
-      const fromRemote = isHost ? data.player === "guest" : data.player === "host";
-      if (!fromRemote) return;
-      this.sceneCtrl.remotePlayerCtrl.node.emit("playerReachedGoal");
-    });
+    // 7) 소켓 리스너 등록
+    MultiGameFlowController.initializeSocketListeners();
 
     // 8) 종료 버튼
-    this.exitButton?.on(cc.Node.EventType.TOUCH_END, this.loadMain, this);
+    if (this.exitButton) {
+      this.exitButton.on(cc.Node.EventType.TOUCH_END, this.loadMain, this);
+    }
   }
 
-  private setPlayerInfoFromGameState() {
-    const isHost     = GameState.isHost;
-    const myName     = GameState.nickname || "나";
-    const myChar     = GameState.character || "tiger";
-    const guestName  = isHost ? GameState.guestNickname : GameState.hostNickname;
-    const guestChar  = isHost ? GameState.guestCharacter : GameState.hostCharacter;
+  setPlayerInfoFromGameState() {
+    const isHost = GameState.isHost;
+    const myName = GameState.nickname || "나";
+    const myChar = GameState.character || "dog";
+    const guestName = GameState.guestNickname || "게스트";
+    const guestChar = GameState.guestCharacter || "rabbit";
+    const hostName = GameState.hostNickname || "호스트";
+    const hostChar = GameState.hostCharacter || "tiger";
 
-    if (this.myNameLabel)    this.myNameLabel.string    = myName;
-    if (this.guestNameLabel) this.guestNameLabel.string = guestName;
-    this.setCharacterSprite(this.myCharacterNode, myChar);
-    this.setCharacterSprite(this.guestCharacterNode, guestChar);
+    if (isHost) {
+      if (this.myNameLabel) this.myNameLabel.string = myName;
+      if (this.guestNameLabel) this.guestNameLabel.string = guestName;
+      this.setCharacterSprite(this.myCharacterNode, myChar);
+      this.setCharacterSprite(this.guestCharacterNode, guestChar);
+    } else {
+      if (this.myNameLabel) this.myNameLabel.string = myName;
+      if (this.guestNameLabel) this.guestNameLabel.string = hostName;
+      this.setCharacterSprite(this.myCharacterNode, myChar);
+      this.setCharacterSprite(this.guestCharacterNode, hostChar);
+    }
   }
 
-  private setCharacterSprite(node: cc.Node, key: string) {
-    const sp = node.getComponent(cc.Sprite);
-    if (!sp) return;
-    const path = `Images/Common/characters/${key}Head`;
-    cc.resources.load(path, cc.SpriteFrame, (err, frame) => {
-      if (!err && frame) sp.spriteFrame = frame;
+  setCharacterSprite(node: cc.Node, characterKey: string) {
+    const sprite = node.getComponent(cc.Sprite);
+    if (!sprite) return;
+    const path = `Images/Common/characters/${characterKey}Head`;
+    cc.resources.load(path, cc.SpriteFrame, (err, spriteFrame) => {
+      if (!err && spriteFrame) sprite.spriteFrame = spriteFrame;
     });
   }
 
-  private loadMain() {
-    const roomId   = GameState.incomingRoomId || GameState.createdRoomId;
+  loadMain() {
+    const roomId = GameState.incomingRoomId || GameState.createdRoomId;
     const playerId = GameState.browserId;
     if (!cc.sys.isNative && window.socket && roomId && playerId) {
+      console.log("[MMGC] 'leave-room' emit →", { roomId, playerId });
       window.socket.emit("leave-room", { roomId, playerId });
     }
     GameState.resetMultiplay();
