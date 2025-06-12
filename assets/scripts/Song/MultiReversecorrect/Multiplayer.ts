@@ -23,7 +23,7 @@ export default class Multiplayer extends cc.Component {
     private correctCount: number = 0;
     private score: number = 0;
     private questionLength: number = 3;
-    private timer: number = 10;
+    private timer: number = 30;
     private scoreLabel: cc.Label = null;
     private timerLabel: cc.Label = null;
 
@@ -114,7 +114,6 @@ export default class Multiplayer extends cc.Component {
                 return;
             }
         }
-
         if (this.userInput.length === expected.length) {
             this.handleCorrectAnswer();
         }
@@ -122,16 +121,17 @@ export default class Multiplayer extends cc.Component {
 
     handleCorrectAnswer() {
         this.inputEnabled = false;
-        this.sendAnswerResult(true);
-
         if (this.correctSign) this.correctSign.active = true;
+
+        this.correctCount++;
+        this.score += 10; // ✅ 먼저 점수 올림
+        this.updateScoreLabel();
+
+        this.sendAnswerResult(true); // ✅ 점수 올린 후 emit
 
         this.scheduleOnce(() => {
             if (this.correctSign) this.correctSign.active = false;
-            this.correctCount++;
-            this.score += 10;
-            this.updateScoreLabel();
-            this.showNewQuestion();
+                this.showNewQuestion();
         }, 1.5);
     }
 
@@ -161,6 +161,7 @@ export default class Multiplayer extends cc.Component {
         });
 
         if (isCorrect) {
+            console.log("점수 emit 호출1");
             window.socket.emit("game-event", {
                 type: "score-update",
                 roomId,

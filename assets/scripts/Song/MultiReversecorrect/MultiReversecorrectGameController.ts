@@ -31,6 +31,7 @@ export default class MultiReversecorrectGameController extends cc.Component {
 
         
         MultiGameFlowController.initializeSocketListeners();
+        console.log("[DEBUG] initializeSocketListeners 호출됨");
 
         cc.director.on("spawn-question", (payload) => {
         this.opponent.showQuestion(payload.numbers, payload.direction); // ✅ 여기 OK
