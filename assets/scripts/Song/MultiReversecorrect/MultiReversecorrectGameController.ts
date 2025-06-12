@@ -28,11 +28,11 @@ export default class MultiReversecorrectGameController extends cc.Component {
         MultiGameFlowController.initializeSocketListeners();
 
         cc.director.on("spawn-question", (payload) => {
-            this.opponent.showNewQuestion(payload.numbers, payload.direction);
-        });
+    this.opponent.showQuestion(payload.numbers, payload.direction); // ✅ 여기 OK
+});
 
         cc.director.on("answer-result", (payload) => {
-            this.opponent.showAnswerResult(payload.input, payload.isCorrect);
+            this.opponent.showResult(payload.input, payload.isCorrect);
         });
 
         cc.director.on("score-update", (payload) => {
@@ -73,4 +73,5 @@ export default class MultiReversecorrectGameController extends cc.Component {
         cc.director.off("answer-result");
         cc.director.off("score-update");
     }
+    
 }
