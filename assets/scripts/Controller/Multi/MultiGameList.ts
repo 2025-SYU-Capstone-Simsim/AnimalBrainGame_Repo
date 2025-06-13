@@ -23,14 +23,14 @@ export default class MultiGameListController extends cc.Component {
     private gameList = [
         { title: '두더지 게임', thumbnail: 'mole_thumb', scene: 'MultiMoleGameScene'
             , desc: '나쁜 두더지를 최대한 많이 잡으세요!\n 착한 두더지를 잡으면 점수가 떨어지니 조심하세요!' },
-        { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'MultiBlockCountGameScene'
-            , desc: '떨어지는 블록의 개수를 맞추세요!\n 오답을 고르면 점수가 떨어지니\n 조심하세요!'  },
+        // { title: '블록 개수 세기', thumbnail: 'block_thumb', scene: 'MultiBlockCountGameScene'
+        //     , desc: '떨어지는 블록의 개수를 맞추세요!\n 오답을 고르면 점수가 떨어지니\n 조심하세요!'  },
         { title: '기억력 게임', thumbnail: 'remember_thumb', scene: 'MultiRememberGameScene'
             , desc: '깜빡이는 잎의 순서를 잘 기억해서\n  그대로 눌러보세요!\n 하지만 방심하면 반전에 놀랄지도 몰라요!'},
         { title: '숫자 뒤집어 맞추기', thumbnail: 'reverse_thumb', scene: 'Reversecorrect_Multiscene'
             , desc: '잠깐 공개된 숫자를 기억하고 맞혀보세요!\n가끔씩은 역방향으로 맞춰보세요! '  },
-        { title: '집중력 게임', thumbnail: 'concetration_thumb', scene: 'Rottenacorn_Multiscene' 
-            , desc: '잠깐 내부가 보였다 사라지는 도토리들! \n 벌레 먹은 도토리를 기억하고,\n정확히 골라내세요.' },
+        // { title: '집중력 게임', thumbnail: 'concetration_thumb', scene: 'Rottenacorn_Multiscene' 
+        //     , desc: '잠깐 내부가 보였다 사라지는 도토리들! \n 벌레 먹은 도토리를 기억하고,\n정확히 골라내세요.' },
         { title: '미로 게임', thumbnail: 'maze_thumb', scene: 'Maze_MultiScene' 
             , desc: '미로를 뚫고 동물들이 음식을 찾는 걸 \n 도와주세요!  기회는 단 한번 뿐이에요!' },
     ];
