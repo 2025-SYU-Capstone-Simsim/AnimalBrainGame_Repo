@@ -75,15 +75,15 @@
         }
 
         // 4) 게임 시작 오버레이 (FlowController가 “multi-game-start”를 보내지 않을 때만)
-        if (this.gameStartOverlayPrefab) {
-        const overlay = cc.instantiate(this.gameStartOverlayPrefab);
-        this.node.addChild(overlay);
-        overlay.setPosition(0, 400);
+        // if (this.gameStartOverlayPrefab) {
+        // const overlay = cc.instantiate(this.gameStartOverlayPrefab);
+        // this.node.addChild(overlay);
+        // overlay.setPosition(0, 400);
 
-        this.scheduleOnce(() => {
-            this.beginGame();
-        }, 2);
-        }
+        // this.scheduleOnce(() => {
+        //     this.beginGame();
+        // }, 2);
+        // }
 
         cc.debug.setDisplayStats(false);
 

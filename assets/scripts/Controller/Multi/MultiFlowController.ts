@@ -43,13 +43,15 @@ static initializeSocketListeners() {
         }
         break;
 
-      case "spawn-mole":
-      case "hit-mole":
-      case "spawn-question":
-      case "answer-result":
-      case "score-update":
-      case "input-result":
-      case "sequence-generated":    
+        case "spawn-mole": 
+        case "hit-mole": 
+        case "sequence-generated": 
+        case "user-input": 
+        case "input-result": 
+        case "level-up": 
+        case "spawn-question":
+        case "answer-result":
+        case "score-update":   
         cc.director.emit(type, payload); // 필수 
         break;
 
