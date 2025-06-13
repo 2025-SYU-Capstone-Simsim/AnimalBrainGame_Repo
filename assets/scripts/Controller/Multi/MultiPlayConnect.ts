@@ -108,7 +108,7 @@ export default class MultiPlayConnect extends cc.Component {
         }
 
         try {
-            const response = await fetch('http://43.201.75.158:3000/multi/room/create-room', {
+            const response = await fetch('https://smartzoo.shop/multi/room/create-room', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ export default class MultiPlayConnect extends cc.Component {
         }
 
         try {
-            const response = await fetch(`http://43.201.75.158:3000/multi/room/room-status/${this.roomId}`);
+            const response = await fetch(`https://smartzoo.shop/multi/room/room-status/${this.roomId}`);
             const result = await response.json();
 
             cc.log("서버 응답:", result);
@@ -277,7 +277,7 @@ export default class MultiPlayConnect extends cc.Component {
         }
 
         try {
-            const response = await fetch(`http://43.201.75.158:3000/multi/room/join-room/${this.roomId}`, {
+            const response = await fetch(`https://smartzoo.shop/multi/room/join-room/${this.roomId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -335,7 +335,7 @@ export default class MultiPlayConnect extends cc.Component {
         cc.sys.localStorage.setItem("isHost", "true");
 
         try {
-            await fetch(`http://43.201.75.158:3000/multi/room/start-game/${this.roomId}`, {
+            await fetch(`https://smartzoo.shop/multi/room/start-game/${this.roomId}`, {
                 method: 'POST'
             });
 
