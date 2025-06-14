@@ -1,5 +1,3 @@
-// File: MazeMultiPlayerController.ts
-
 import MazeMultiLogic, { GridPos } from "./MazeMultiLogic";
 import GameState from "../../Controller/CommonUI/GameState";
 
@@ -18,7 +16,7 @@ export default class MazeMultiPlayerController extends cc.Component {
   public baseX = 0;
   public baseY = 0;
   public currentGridPos: cc.Vec2 = cc.v2(1, 1);
-  public mazeLogic: MazeMultiLogic;
+  public mazeLogic: MazeMultiLogic = null;
 
   private isMoving = false;
   private drawingLine: cc.Graphics = null;
@@ -32,7 +30,17 @@ export default class MazeMultiPlayerController extends cc.Component {
     this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
     this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
     this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+
+   
   }
+
+ public setMazeLogic(logic: MazeMultiLogic) {
+  this.mazeLogic = logic;
+  if (!logic) {
+    cc.error("[MazeMultiPlayerController] setMazeLogic() → null이 전달됨");
+  }
+}
+
 
   public resetPlayer() {
     this.isMoving = false;
@@ -42,13 +50,13 @@ export default class MazeMultiPlayerController extends cc.Component {
   }
 
   private onTouchStart(event: cc.Event.EventTouch) {
-    if (this.isMoving) return;
+    if (this.isMoving || !this.mazeLogic) return;
     this.resetPlayer();
     this.addGridFromTouch(event.getLocation());
   }
 
   private onTouchMove(event: cc.Event.EventTouch) {
-    if (this.isMoving) return;
+    if (this.isMoving || !this.mazeLogic) return;
     this.addGridFromTouch(event.getLocation());
   }
 
@@ -64,10 +72,10 @@ export default class MazeMultiPlayerController extends cc.Component {
     const gridY = Math.floor((localPos.y - this.baseY) / 50);
     const grid = cc.v2(gridX, gridY);
 
-    if (
-      grid.x < 0 || grid.x >= this.mazeLogic.cols ||
-      grid.y < 0 || grid.y >= this.mazeLogic.rows ||
-      this.mazeLogic.maze[grid.y][grid.x] === 1
+    if (!this.mazeLogic || 
+        grid.x < 0 || grid.x >= this.mazeLogic.cols ||
+        grid.y < 0 || grid.y >= this.mazeLogic.rows ||
+        this.mazeLogic.maze[grid.y][grid.x] === 1
     ) return;
 
     const last = this.pathGrids[this.pathGrids.length - 1] || this.currentGridPos;

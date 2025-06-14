@@ -61,7 +61,7 @@ export default class MazeMultiGenerator {
     // 1단계: 랜덤 워크
     randomWalk(1, 1);
 
-    // 2단계: 헌트
+    // 2단계: 헌트 단계
     for (let y = 1; y < rows; y += 2) {
       for (let x = 1; x < cols; x += 2) {
         if (!visited[y][x] && hasUnvisitedNeighbor(x, y)) {
@@ -80,6 +80,10 @@ export default class MazeMultiGenerator {
         }
       }
     }
+
+    // ✅ 입구와 출구 지정
+    maze[1][1] = 0;             // 입구
+    maze[rows - 2][cols - 2] = 0; // 출구 (13,13 위치)
 
     return maze;
   }

@@ -23,7 +23,7 @@ export default class MultiGameResult extends cc.Component {
             cc.warn("roomId 없음");
             return;
         }
-        fetch(`http://43.201.75.158:3000/multi/game/result/${roomId}`)
+        fetch(`https://smartzoo.shop/multi/game/result/${roomId}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success && data.data?.winner && !data.data.winner.isTie) {

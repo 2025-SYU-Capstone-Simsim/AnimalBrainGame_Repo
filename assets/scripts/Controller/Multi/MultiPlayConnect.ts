@@ -25,12 +25,21 @@ export default class MultiPlayConnect extends cc.Component {
     @property(cc.Node)
     player2CharacterNode: cc.Node = null;
 
+    @property(cc.Button)
+    CopyButton: cc.Button = null;
+
+    @property(cc.Label)
+    CopyButtonLabel: cc.Label = null;
+
+
     roomId: string = '';
     pollingTimer: number = null;
     private isRoomCreating: boolean = false;
 
     onLoad() {
         cc.debug.setDisplayStats(false);
+        if (this.CopyButton) this.CopyButton.node.active = false;
+
     }
 
     start() {
@@ -99,37 +108,65 @@ export default class MultiPlayConnect extends cc.Component {
         }
 
         try {
-            const response = await fetch('http://43.201.75.158:3000/multi/room/create-room', {
+            const response = await fetch('https://smartzoo.shop/multi/room/create-room', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    selectedGameSequence: // 반드시 배열 형태로 포함시켜야 함
-                        ["MultiMoleGameScene",
-                            "MultiBlockCountGameScene",
-                            "MultiRememberGameScene",
-                            "Rottenacorn_Multiscene",
-                            "Reversecorrect_Multiscene",
-                            "Maze_MultiScene"
-                        ],
+                    // selectedGameSequence: // 반드시 배열 형태로 포함시켜야 함
+                    //     ["MultiMoleGameScene",
+                    //         "MultiRememberGameScene",
+                    //         "Reversecorrect_Multiscene",
+                    //         "Maze_MultiScene"
+                    //     ],
+                     selectedGameId: "MultiMoleGameScene"
                 })
             });
 
             const result = await response.json();
             cc.log("서버 응답:", result);
 
-            if (result.success) {
-                this.roomId = result.roomId;
-                GameState.createdRoomId = this.roomId;
-                if (this.ConnectLinkLabel) this.ConnectLinkLabel.string = result.inviteUrl;
+        if (result.success) {
+            this.roomId = result.roomId;
+            GameState.createdRoomId = this.roomId;
+            if (this.ConnectLinkLabel) this.ConnectLinkLabel.string = result.inviteUrl;
 
-                cc.log(`생성된 방 코드: ${this.roomId}`);
-                cc.log(`초대 링크: ${result.inviteUrl}`);
+            // 복사 버튼 활성화 및 터치 이벤트 등록
+            if (this.CopyButton) {
+                this.CopyButton.node.active = true;
 
-                this.listenForGuestUpdate();
+                // 터치 이벤트로 등록 (중복 방지)
+                this.CopyButton.node.off(cc.Node.EventType.TOUCH_END);
+                this.CopyButton.node.on(cc.Node.EventType.TOUCH_END, () => {
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(result.inviteUrl)
+                            .then(() => {
+                                cc.log("초대 링크 복사 완료");
+                                // 버튼 라벨 "복사 성공"으로 변경 후 1.5초 뒤 복원
+                                if (this.CopyButtonLabel) {
+                                    this.CopyButtonLabel.string = "복사 성공";
+                                    this.scheduleOnce(() => {
+                                        if (this.CopyButtonLabel) {
+                                            this.CopyButtonLabel.string = "복사";
+                                        }
+                                    }, 1.5);
+                                }
+                            })
+                            .catch(() => cc.warn("복사 실패"));
+                    } else {
+                        cc.warn("이 브라우저는 클립보드 복사를 지원하지 않습니다.");
+                    }
+                });
             }
+
+            cc.log(`생성된 방 코드: ${this.roomId}`);
+            cc.log(`초대 링크: ${result.inviteUrl}`);
+
+            this.listenForGuestUpdate();
+        }
+
         } catch (err) {
             cc.log('서버 요청 실패:', err.message);
         } finally {
@@ -148,7 +185,7 @@ export default class MultiPlayConnect extends cc.Component {
         }
 
         try {
-            const response = await fetch(`http://43.201.75.158:3000/multi/room/room-status/${this.roomId}`);
+            const response = await fetch(`https://smartzoo.shop/multi/room/room-status/${this.roomId}`);
             const result = await response.json();
 
             cc.log("서버 응답:", result);
@@ -240,7 +277,7 @@ export default class MultiPlayConnect extends cc.Component {
         }
 
         try {
-            const response = await fetch(`http://43.201.75.158:3000/multi/room/join-room/${this.roomId}`, {
+            const response = await fetch(`https://smartzoo.shop/multi/room/join-room/${this.roomId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -298,7 +335,7 @@ export default class MultiPlayConnect extends cc.Component {
         cc.sys.localStorage.setItem("isHost", "true");
 
         try {
-            await fetch(`http://43.201.75.158:3000/multi/room/start-game/${this.roomId}`, {
+            await fetch(`https://smartzoo.shop/multi/room/start-game/${this.roomId}`, {
                 method: 'POST'
             });
 
