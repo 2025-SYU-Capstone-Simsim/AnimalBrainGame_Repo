@@ -27,7 +27,14 @@ export default class OpponentMazeViewer extends cc.Component {
 
   onLoad() {
     // ✅ 로직 & 렌더러 설정
-    this.logic = new MazeMultiLogic(15, 15);
+    this.logic = new MazeMultiLogic(
+  null,                    // localContainer: 상대가 아니므로 null
+  this.guestField,         // remoteContainer: 상대 미로를 보여줄 필드
+  this.tilePrefab,         // 타일 프리팹
+  this.pathFrame,          // 길 이미지
+  this.wallFrame           // 벽 이미지
+  // 나머지 값 생략 시 기본값 사용: cellSize = 50, rows = 15, cols = 15, seed = 1234
+);
     this.logic.setFieldNode(this.guestField);
 
     this.renderer = new MazeMultiRenderer(

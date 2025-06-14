@@ -26,7 +26,14 @@ export default class PlayerMazeGameScene extends cc.Component {
   public logic: MazeMultiLogic = null;
   public renderer: MazeMultiRenderer = null;
 start() {
-  this.logic = new MazeMultiLogic(15, 15);
+ this.logic = new MazeMultiLogic(
+  this.playerField,     // localContainer (플레이어 필드)
+  null,                 // remoteContainer 없음
+  this.tilePrefab,      // 프리팹
+  this.pathFrame,       // 경로 sprite
+  this.wallFrame        // 벽 sprite
+  // 나머지 생략 가능: cellSize = 50, rows = 15, cols = 15, seed = 1234
+);
   this.logic.setFieldNode(this.playerField);
 
   this.renderer = new MazeMultiRenderer(
@@ -49,7 +56,7 @@ start() {
     cc.log("[DEBUG] 🎮 PlayerMazeGameScene → startGame() 진입");
 
     if (GameState.isHost) {
-      this.logic.generate();
+      this.logic.generateMaze();
       const maze = this.logic.getMaze();
       cc.log("[DEBUG] 🎮 생성된 Maze:", maze);
 
