@@ -1,8 +1,4 @@
 {
-  "scripts": {
-    "install": "npm install",
-    "build": "cocos-cli build --platform web-mobile"  
-  },
   "dependencies": {
     "socket.io-client": "^4.8.1"
   }
