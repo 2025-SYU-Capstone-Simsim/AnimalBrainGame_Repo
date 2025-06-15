@@ -14,11 +14,13 @@ export default class MazeMultiLogic {
 
   private generator: MazeMultiGenerator;
   private fieldNode: cc.Node = null;
+  private seed: number;
 
-  constructor(rows: number = 15, cols: number = 15) {
+  constructor(rows: number = 15, cols: number = 15, seed: number = 1234) {
     this.rows = rows;
     this.cols = cols;
-    this.generator = new MazeMultiGenerator();
+    this.seed = seed;
+    this.generator = new MazeMultiGenerator(rows, cols, seed);
   }
 
   public setFieldNode(node: cc.Node) {
@@ -26,7 +28,7 @@ export default class MazeMultiLogic {
   }
 
   public generate(): void {
-    this.maze = this.generator.generate(this.rows, this.cols);
+    this.maze = this.generator.generate();  // ✅ 인자 제거
     this.playerPos = { x: 1, y: 1 };
     this.goalPos = { x: this.cols - 2, y: this.rows - 2 };
   }

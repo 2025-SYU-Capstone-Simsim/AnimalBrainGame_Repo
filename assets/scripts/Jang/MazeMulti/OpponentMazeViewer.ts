@@ -26,29 +26,22 @@ export default class OpponentMazeViewer extends cc.Component {
   private renderer: MazeMultiRenderer = null;
 
   onLoad() {
-    // ✅ 로직 & 렌더러 설정
-    this.logic = new MazeMultiLogic(
-  null,                    // localContainer: 상대가 아니므로 null
-  this.guestField,         // remoteContainer: 상대 미로를 보여줄 필드
-  this.tilePrefab,         // 타일 프리팹
-  this.pathFrame,          // 길 이미지
-  this.wallFrame           // 벽 이미지
-  // 나머지 값 생략 시 기본값 사용: cellSize = 50, rows = 15, cols = 15, seed = 1234
-);
-    this.logic.setFieldNode(this.guestField);
+  // 게스트는 seed 쓸 필요 없음. 그냥 고정값 1234 등으로 줘도 상관 없음.
+  this.logic = new MazeMultiLogic(15, 15, 1234);
+  this.logic.setFieldNode(this.guestField);
 
-    this.renderer = new MazeMultiRenderer(
-      null,
-      this.guestField,
-      this.tilePrefab,
-      this.pathFrame,
-      this.wallFrame,
-    );
+  this.renderer = new MazeMultiRenderer(
+    null,
+    this.guestField,
+    this.tilePrefab,
+    this.pathFrame,
+    this.wallFrame,
+  );
 
-    // ✅ 이벤트 리스너 등록
-    cc.director.on("maze-data", this.onMazeReceived, this);
-    cc.director.on("update-opponent-position", this.onOpponentMoved, this);
-  }
+  // ✅ 이벤트 리스너 등록
+  cc.director.on("maze-data", this.onMazeReceived, this);
+  cc.director.on("update-opponent-position", this.onOpponentMoved, this);
+}
 
   private onMazeReceived(data: { maze: number[][] }) {
     this.logic.setMaze(data.maze);
