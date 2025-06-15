@@ -156,7 +156,7 @@ export default class LoginManager extends cc.Component {
       }
       GameState.browserId = browserId; 
 
-      const loginRes = await fetch('http://43.201.75.158:3000/auth/login', {
+      const loginRes = await fetch('https://smartzoo.shop/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ browserId })
@@ -167,7 +167,7 @@ export default class LoginManager extends cc.Component {
       const jwtToken = loginData.token;
       localStorage.setItem('jwtToken', jwtToken);
 
-      const profileRes = await fetch('http://43.201.75.158:3000/auth/set-profile', {
+      const profileRes = await fetch('https://smartzoo.shop/auth/set-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -210,14 +210,14 @@ export default class LoginManager extends cc.Component {
     if (!jwtToken || !browserId) return;
     GameState.browserId = browserId; // 자동 로그인에서도 할당
 
-    const verify = await fetch('http://43.201.75.158:3000/auth/verify-token', {
+    const verify = await fetch('https://smartzoo.shop/auth/verify-token', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${jwtToken}` }
     });
     const verifyResult = await verify.json();
     if (!verify.ok || !verifyResult.success) return;
 
-    const res = await fetch('http://43.201.75.158:3000/auth/user-info', {
+    const res = await fetch('https://smartzoo.shop/auth/user-info', {
       method: 'GET',
       headers: { 'Authorization': `Bearer ${jwtToken}` }
     });

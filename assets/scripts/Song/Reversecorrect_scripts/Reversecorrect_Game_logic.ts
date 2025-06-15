@@ -13,6 +13,12 @@ export default class Game_logic extends cc.Component {
     @property(cc.Label)
     sequence_label : cc.Label = null;
 
+    @property(cc.Sprite)
+    reverse_label : cc.Sprite = null;
+
+    @property(cc.Sprite)
+    verse_label : cc.Sprite = null;
+
     public static player_label_arr: number[] = [];
     public static count: number = 0;
     //사용자가 입력하는 label 업데이트

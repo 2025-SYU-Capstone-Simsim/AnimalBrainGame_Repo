@@ -10,7 +10,7 @@
                     };
                     function __define (exports, require, module) {
                         if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
-cc._RF.push(module, '68e51hefodGuLgR18OVI/tx', '3MatchBoard');
+cc._RF.push(module, '07eaclfpAxKkpP44S5qySwG', '3MatchBoard');
 // scripts/Yu/3Match/3MatchBoard.ts
 
 "use strict";

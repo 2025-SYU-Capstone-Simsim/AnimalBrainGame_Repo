@@ -10,7 +10,7 @@
                     };
                     function __define (exports, require, module) {
                         if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
-cc._RF.push(module, '091b5m547lGtbmQKguAskOZ', '3MatchManager');
+cc._RF.push(module, 'c8d14iCk/lJLps0BAQbziZK', '3MatchManager');
 // scripts/Yu/3Match/3MatchManager.ts
 
 "use strict";

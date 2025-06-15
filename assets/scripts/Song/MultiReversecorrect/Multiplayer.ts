@@ -17,6 +17,10 @@ export default class Multiplayer extends cc.Component {
 
     @property(cc.Node) layout: cc.Node = null;
 
+    @property(cc.Sprite) reverseLabel: cc.Sprite = null;
+
+    @property(cc.Sprite) verseLabel: cc.Sprite = null;
+
     private numbersToShow: number[] = [];
     private userInput: number[] = [];
     private isReverseMode: boolean = false;
@@ -191,53 +195,57 @@ export default class Multiplayer extends cc.Component {
     }
 
     showNewQuestion() {
-        this.inputEnabled = false;
-        this.userInput = [];
-        if (this.input_label) this.input_label.string = "";
+    this.inputEnabled = false;
+    this.userInput = [];
+    if (this.input_label) this.input_label.string = "";
 
-        this.isReverseMode = Math.random() < 0.5;
+    this.isReverseMode = Math.random() < 0.5;
 
-        const milestone = Math.floor(this.correctCount / 3);
-        this.questionLength = 3 + milestone;
-        const hideDelay = Math.max(0.8, 1.5 - milestone * 0.2);
+    const milestone = Math.floor(this.correctCount / 3);
+    this.questionLength = 3 + milestone;
+    const hideDelay = Math.max(0.8, 1.5 - milestone * 0.2);
 
-        this.numbersToShow = [];
-        const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        for (let i = 0; i < this.questionLength; i++) {
-            const rand = candidate[Math.floor(Math.random() * candidate.length)];
-            this.numbersToShow.push(rand);
-        }
-
-        if (this.random_label) {
-            this.random_label.string = this.numbersToShow.join("");
-            this.random_label.node.active = true;
-        }
-
-        if (this.sequenceLabel) {
-            this.sequenceLabel.node.active = false;
-            this.sequenceLabel.string = "";
-        }
-
-        this.scheduleOnce(() => {
-            if (this.random_label) this.random_label.node.active = false;
-            if (this.sequenceLabel) {
-                this.sequenceLabel.string = this.isReverseMode ? "역방향" : "정방향";
-                this.sequenceLabel.node.active = true;
-            }
-            this.inputEnabled = true;
-        }, hideDelay);
-
-        const roomId = GameState.createdRoomId || GameState.incomingRoomId;
-        this.lastSentQuestion = {
-            numbers: this.numbersToShow,
-            direction: this.isReverseMode ? "reverse" : "forward"
-        };
-        window.socket.emit("game-event", {
-            type: "spawn-question",
-            roomId,
-            payload: this.lastSentQuestion
-        });
+    this.numbersToShow = [];
+    const candidate = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    for (let i = 0; i < this.questionLength; i++) {
+        const rand = candidate[Math.floor(Math.random() * candidate.length)];
+        this.numbersToShow.push(rand);
     }
+
+    if (this.random_label) {
+        this.random_label.string = this.numbersToShow.join("");
+        this.random_label.node.active = true;
+    }
+
+   
+    if (this.reverseLabel) this.reverseLabel.node.active = false;
+    if (this.verseLabel) this.verseLabel.node.active = false;
+
+    this.scheduleOnce(() => {
+        if (this.random_label) this.random_label.node.active = false;
+
+        
+        if (this.isReverseMode && this.reverseLabel) {
+            this.reverseLabel.node.active = true;
+        } else if (!this.isReverseMode && this.verseLabel) {
+            this.verseLabel.node.active = true;
+        }
+
+        this.inputEnabled = true;
+    }, hideDelay);
+
+    const roomId = GameState.createdRoomId || GameState.incomingRoomId;
+    this.lastSentQuestion = {
+        numbers: this.numbersToShow,
+        direction: this.isReverseMode ? "reverse" : "forward"
+    };
+    window.socket.emit("game-event", {
+        type: "spawn-question",
+        roomId,
+        payload: this.lastSentQuestion
+    });
+}
+
 
     private endGame() {
         MultiGameFlowController.endGame({

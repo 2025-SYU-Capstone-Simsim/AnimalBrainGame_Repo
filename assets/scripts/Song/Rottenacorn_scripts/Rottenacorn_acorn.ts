@@ -7,10 +7,6 @@ export default class Acorn extends cc.Component {
     bugNode: cc.Node = null;
     private speed: number = 300;
     private minSpeed: number = 150;
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     public activate(isRotten: boolean): void {
         // 벌레 노출
         if (this.bugNode) {
@@ -33,10 +29,6 @@ export default class Acorn extends cc.Component {
             rigid.awake = true;
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     update(dt: number): void {
         const rigid = this.node.getComponent(cc.RigidBody);
         if (!rigid) return;
@@ -45,7 +37,6 @@ export default class Acorn extends cc.Component {
         const currentSpeed = velocity.mag();
 
         if (currentSpeed < this.minSpeed) {
-<<<<<<< HEAD
             const direction = velocity.normalize();
     
             // 방향이 거의 0일 경우 예외 처리
@@ -60,11 +51,6 @@ export default class Acorn extends cc.Component {
             const vx = Math.cos(angle) * this.minSpeed;
             const vy = Math.sin(angle) * this.minSpeed;
             rigid.linearVelocity = cc.v2(vx, vy);
-=======
-            const direction = velocity.normalizeSelf();
-            const corrected = direction.mul(this.minSpeed);
-            rigid.linearVelocity = corrected;
->>>>>>> master
         }
     }
 }

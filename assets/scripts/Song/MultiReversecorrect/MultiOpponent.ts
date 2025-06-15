@@ -7,10 +7,12 @@ function delay(ms: number) {
 @ccclass
 export default class MultiOpponent extends cc.Component {
     @property(cc.Label) questionLabel: cc.Label = null;
-    @property(cc.Label) sequenceLabel: cc.Label = null;
     @property(cc.Prefab) scoreDisplayPrefab: cc.Prefab = null;
     @property(cc.Node) correctSign: cc.Node = null;
     @property(cc.Node) wrongSign: cc.Node = null;
+    @property(cc.Sprite) reverseLabel: cc.Sprite = null;
+    @property(cc.Sprite) verseLabel: cc.Sprite = null;
+
 
     private scoreLabel: cc.Label = null;
     private lastQuestionNumbers: number[] = [];
@@ -45,23 +47,26 @@ export default class MultiOpponent extends cc.Component {
     }
 
     showQuestion(numbers: number[], direction: string) {
-        this.lastQuestionNumbers = numbers;
-
         this.questionLabel.string = numbers.join("");
         this.questionLabel.node.active = true;
-        this.sequenceLabel.node.active = false;
+
+        // 방향 이미지 초기화
+        this.reverseLabel.node.active = false;
+        this.verseLabel.node.active = false;
 
         this.scheduleOnce(() => {
             this.questionLabel.node.active = false;
-            this.sequenceLabel.string = direction === "reverse" ? "역방향" : "정방향";
-            this.sequenceLabel.node.active = true;
+            if (direction === "reverse") {
+                this.reverseLabel.node.active = true;
+            } 
+            else {
+            this.verseLabel.node.active = true;
+            }
         }, 1.5);
     }
 
     async showResult(input: number[], isCorrect: boolean) {
         const signNode = isCorrect ? this.correctSign : this.wrongSign;
-
-        this.sequenceLabel.node.active = false;
         this.questionLabel.node.active = false;
 
         this.questionLabel.string = input.join(" ");

@@ -69,6 +69,9 @@ export default class SingleGameListController extends cc.Component {
     loadGameCards() {
         this.gameList.forEach((game, index) => {
             const card = cc.instantiate(this.gameCardPrefab);
+            // desc(게임 설명) 숨김 처리 (멀티에서만 씀)
+            const descNode = card.getChildByName("GameDesc");
+            if (descNode) descNode.active = false;
 
             const titleNode = card.getChildByName("GameTitleBox")?.getChildByName("GameTitle");
             if (titleNode && titleNode.getComponent(cc.Label)) {

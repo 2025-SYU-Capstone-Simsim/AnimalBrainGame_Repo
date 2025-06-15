@@ -7,6 +7,12 @@ export default class show_QnA extends cc.Component {
 
     @property(cc.Node)
     buttonLayout: cc.Node = null;
+    
+    @property(cc.Sprite)
+    reverse_label : cc.Sprite = null;
+
+    @property(cc.Sprite)
+    verse_label : cc.Sprite = null;
 
     @property(cc.Label)
     sequence_label: cc.Label = null;
@@ -29,35 +35,39 @@ export default class show_QnA extends cc.Component {
 
     // 문제 표시 및 방향 설정, 숨김 시간 조절
     public showNewQuestion() {
-        const roundIndex = show_QnA.correctCount % 3;
-        this.hideDelay = 1.6 - (roundIndex * 0.2);
+    const roundIndex = show_QnA.correctCount % 3;
+    this.hideDelay = 1.6 - (roundIndex * 0.2);
 
-        show_QnA.isReverse = Math.random() < 0.5;
+    // 랜덤 방향 결정
+    show_QnA.isReverse = Math.random() < 0.5;
 
-        const randomNum = this.print_randnum();
-        this.random_label.string = `${randomNum}`;
-        this.random_label.node.active = true;
-        this.setButtonsInteractable(false);
+    // 문제 숫자 생성 및 표시
+    const randomNum = this.print_randnum();
+    this.random_label.string = `${randomNum}`;
+    this.random_label.node.active = true;
 
-        if (this.sequence_label) {
-            this.sequence_label.string = "";
-            this.sequence_label.node.active = false;
+    this.setButtonsInteractable(false);
+
+    // 방향 이미지 초기화
+    this.reverse_label.node.active = false;
+    this.verse_label.node.active = false;
+
+    this.scheduleOnce(() => {
+        // 숫자 숨기기
+        this.random_label.node.active = false;
+
+        // 방향 이미지 표시
+        if (show_QnA.isReverse) {
+            this.reverse_label.node.active = true;
+        } else {
+            this.verse_label.node.active = true;
         }
 
-        this.scheduleOnce(() => {
-            this.random_label.node.active = false;
+        // 게임 오버 상태가 아니면 버튼 활성화
+        this.setButtonsInteractable(!show_QnA.isGameOver);
+    }, this.hideDelay);
+}
 
-            if (this.sequence_label) {
-                this.sequence_label.string = show_QnA.isReverse ? "역방향" : "정방향";
-                this.sequence_label.node.active = true;
-                this.setButtonsInteractable(true);
-            }
-
-            if (show_QnA.isGameOver === true) {
-                this.setButtonsInteractable(false);
-            }
-        }, this.hideDelay);
-    }
 
     // 문제 숫자 배열 생성 + 자리수 조절
     make_randnum(): number[] {
