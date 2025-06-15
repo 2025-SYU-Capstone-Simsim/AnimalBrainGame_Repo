@@ -95,7 +95,7 @@ export default class GameController extends cc.Component {
         this.setInitialButtonState();
         this.startButton.node.active = false;
 
-        // ✅ 더 이상 timerLabel.node.active = false 제거 (프리팹에서 직접 조절)
+        // 더 이상 timerLabel.node.active = false 제거 (프리팹에서 직접 조절)
 
         this.tickCallback = this.updateTimer.bind(this);
         this.setFrogState("neutral");
@@ -212,7 +212,7 @@ export default class GameController extends cc.Component {
 
     private startTimer() {
         this.unschedule(this.tickCallback);
-        this.remainingTime = 30;
+        this.remainingTime = 60;
         this.timerLabel.string = `${this.remainingTime}`;
         this.timerLabel.node.active = true;
         this.schedule(this.tickCallback, 1);

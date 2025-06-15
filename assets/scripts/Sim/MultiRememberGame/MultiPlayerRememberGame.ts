@@ -70,7 +70,7 @@
             this.timerLabel = timerLabelNode.getComponent(cc.Label);
         }
         if (!this.timerLabel) {
-            console.warn("⚠️ TimerLabel 연결 실패: 프리팹 구조를 확인하세요.");
+            console.warn("TimerLabel 연결 실패: 프리팹 구조를 확인하세요.");
         }
         }
 
@@ -227,7 +227,7 @@
 
     private startTimer() {
         this.unschedule(this.tickCallback);
-        this.remainingTime = 30;
+        this.remainingTime = 60;
         this.timerLabel.string = `${this.remainingTime}`;
         this.timerLabel.node.active = true;
         this.schedule(this.tickCallback, 1);

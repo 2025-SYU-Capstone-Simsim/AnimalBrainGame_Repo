@@ -28,8 +28,8 @@ export default class ThreeMatchManager extends cc.Component {
     @property(cc.Prefab)
     gameStartOverlayPrefab: cc.Prefab = null;
 
-    private totalTime: number = 30;
-    private currentTime: number = 30;
+    private totalTime: number = 60;
+    private currentTime: number = 60;
     private score: number = 0;
 
     private timerNode: cc.Node = null;

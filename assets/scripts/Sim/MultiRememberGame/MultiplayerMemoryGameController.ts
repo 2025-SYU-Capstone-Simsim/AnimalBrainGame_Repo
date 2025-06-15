@@ -23,12 +23,38 @@ export default class MultiplayerMemoryGameController extends cc.Component {
     @property(cc.Label) guestNameLabel: cc.Label = null;
     @property(cc.Node) guestCharacterNode: cc.Node = null;
 
+    @property(cc.Prefab) loadingPopupPrefab: cc.Prefab = null;
+
     private myGameCtrl: GameController = null;
     private opponentView: OpponentMemoryViewer = null;
 
     private _alreadyStarted = false;
+    private loadingNode: cc.Node = null;
 
     start() {
+        // ─── 1. 로딩 프리팹 띄우기 ───
+        if (this.loadingPopupPrefab) {
+            this.loadingNode = cc.instantiate(this.loadingPopupPrefab);
+
+            const canvas = cc.find("Canvas");
+            if (canvas) {
+                this.loadingNode.zIndex = 9999; // 다른 UI보다 위에 나오도록
+                canvas.addChild(this.loadingNode);
+                this.loadingNode.setPosition(cc.v2(0, 0));
+            } else {
+                // fallback: 현재 node에 붙이기
+                this.node.addChild(this.loadingNode);
+            }
+        }
+
+        // ─── 2. 일정 시간 뒤 제거 (혹은 리소스 준비 완료 시 제거) ───
+        this.scheduleOnce(() => {
+            if (this.loadingNode && this.loadingNode.isValid) {
+                this.loadingNode.destroy();
+                this.loadingNode = null;
+            }
+        }, 2.0);
+
         if (this._alreadyStarted) return;
         this._alreadyStarted = true;
 
@@ -36,16 +62,16 @@ export default class MultiplayerMemoryGameController extends cc.Component {
         MultiGameFlowController.initializeSocketListeners();
 
         // (2) GameState 복구
-        const savedSequence = cc.sys.localStorage.getItem("selectedGameSequence");
-        const savedIndex = cc.sys.localStorage.getItem("currentGameIndex");
-        if (savedSequence) {
-            try {
-                GameState.selectedGameSequence = JSON.parse(savedSequence);
-                GameState.currentGameIndex = Number(savedIndex) || 0;
-            } catch (e) {
-                cc.warn("[MMemGC] selectedGameSequence 복구 실패:", e);
-            }
-        }
+        // const savedSequence = cc.sys.localStorage.getItem("selectedGameSequence");
+        // const savedIndex = cc.sys.localStorage.getItem("currentGameIndex");
+        // if (savedSequence) {
+        //     try {
+        //         GameState.selectedGameSequence = JSON.parse(savedSequence);
+        //         GameState.currentGameIndex = Number(savedIndex) || 0;
+        //     } catch (e) {
+        //         cc.warn("[MMemGC] selectedGameSequence 복구 실패:", e);
+        //     }
+        // }
         const savedHost = cc.sys.localStorage.getItem("isHost");
         GameState.isHost = savedHost === "true";
 

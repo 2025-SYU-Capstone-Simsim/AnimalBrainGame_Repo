@@ -40,7 +40,7 @@ export default class GameScene extends cc.Component {
     private moleHoles: cc.Node[] = [];
     private holeStates: boolean[] = [];
     private score: number = 0;
-    private timer: number = 30;
+    private timer: number = 60;
     private timerNode: cc.Node = null;
     private timerLabel: cc.Label = null;
     private scoreNode: cc.Node = null;

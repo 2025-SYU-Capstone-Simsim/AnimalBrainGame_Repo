@@ -113,7 +113,7 @@ export default class GameManager extends cc.Component {
 
   private startTimer() {
     this.unschedule(this.updateTimer);
-    this.timeLeft = 30;
+    this.timeLeft = 60;
     if (this.timeLabel) this.timeLabel.string = `${this.timeLeft}`;
     this.schedule(this.updateTimer, 1);
   }

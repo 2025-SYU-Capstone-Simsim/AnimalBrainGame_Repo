@@ -33,7 +33,7 @@ export default class PlayerMoleGameScene extends cc.Component {
   private scoreLabel: cc.Label = null;
 
   public score: number = 0;
-  private timer: number = 30;
+  private timer: number = 60;
   public isGameOver: boolean = false;
   private moleSpawnCallback: Function = null;
 
@@ -54,7 +54,7 @@ export default class PlayerMoleGameScene extends cc.Component {
     ];
     this.holeStates = new Array(9).fill(false);
     this.score = 0;
-    this.timer = 10;
+    this.timer = 60;
     this.isGameOver = false;
 
     this.createHammer();
