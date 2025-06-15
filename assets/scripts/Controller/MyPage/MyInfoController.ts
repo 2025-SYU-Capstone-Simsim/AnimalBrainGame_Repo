@@ -1,34 +1,46 @@
+import GameState from "../CommonUI/GameState";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class MyPage extends cc.Component {
+  @property(cc.Sprite)
+  characterSprite: cc.Sprite = null;
 
-    @property(cc.Node)
-    myRecordButton: cc.Node = null;
+  @property(cc.Label)
+  nicknameLabel: cc.Label = null;
 
-    @property(cc.Node)
-    backButton: cc.Node = null;
+   @property(cc.Button)
+  deleteAccountButton: cc.Button = null;
 
-    onLoad() {
-        cc.debug.setDisplayStats(false);
+  start() {
+    this.nicknameLabel.string = GameState.nickname || "이름 없음";
+    this.setCharacterSprite(this.characterSprite.node, GameState.character);
+  }
+
+  setCharacterSprite(node: cc.Node, characterKey: string) {
+    const sprite = node.getComponent(cc.Sprite);
+    if (!sprite) return;
+
+    if (!['dog', 'rabbit', 'tiger'].includes(characterKey)) {
+      characterKey = 'dog';
     }
 
-    start() {
-        if (this.myRecordButton) {
-            this.myRecordButton.on(cc.Node.EventType.TOUCH_END, () => {
-                cc.director.loadScene("MyRecord");
-            }, this);
-        }
+    const path = `Images/Common/characters/${characterKey}`;
+    cc.resources.load(path, cc.SpriteFrame, (err, spriteFrame) => {
+      if (!err && spriteFrame) {
+        sprite.spriteFrame = spriteFrame;
+      }
+    });
+  }
 
-        if (this.backButton) {
-            this.backButton.on(cc.Node.EventType.TOUCH_END, () => {
-                cc.director.loadScene('홈화면');
-            }, this);
-        }
-    }
+  onClickDeleteAccount() {
+    localStorage.clear(); // 저장된 토큰, 닉네임, 캐릭터 등 삭제
+    GameState.nickname = '';
+    GameState.character = '';
+    GameState.browserId = '';
 
-    onClickMain() {
-        cc.log("뒤로가기 버튼 클릭됨. MainMenu 씬으로 이동.");
-        cc.director.loadScene("MainScene");
-    }
+
+    cc.director.loadScene("LoginScene"); // 로그인 씬으로 이동
+  }
 }

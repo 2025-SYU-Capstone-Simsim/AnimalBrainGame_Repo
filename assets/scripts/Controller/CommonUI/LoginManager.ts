@@ -31,6 +31,13 @@ export default class LoginManager extends cc.Component {
   private selectedCharacter: string = '';
 
   onLoad() {
+    const overlay = cc.find("Canvas/TransitionOverlay");
+    if (overlay) {
+      overlay.active = false;
+      overlay.opacity = 0;
+    }
+
+    
     this.startButton.interactable = false;
 
     this.tryAutoLogin();
@@ -144,8 +151,6 @@ export default class LoginManager extends cc.Component {
     const nickname = this.nicknameInput.string.trim();
     const character = this.selectedCharacter;
 
-    cc.log("Start 버튼 클릭됨 - 닉네임:", nickname, "캐릭터:", character);
-
     if (!nickname || !character) return;
 
     try {
@@ -154,7 +159,7 @@ export default class LoginManager extends cc.Component {
         browserId = this.generateBrowserId();
         localStorage.setItem('browserId', browserId);
       }
-      GameState.browserId = browserId; 
+      GameState.browserId = browserId;
 
       const loginRes = await fetch('https://smartzoo.shop/auth/login', {
         method: 'POST',
@@ -181,16 +186,14 @@ export default class LoginManager extends cc.Component {
       GameState.nickname = nickname;
       GameState.character = character;
 
-      cc.log("GameState 저장됨:", GameState.nickname, GameState.character);
       const pendingRoomId = localStorage.getItem("pendingRoomId");
       if (pendingRoomId) {
-        cc.log("로그인 후 초대 방으로 이동:", pendingRoomId);
         GameState.incomingRoomId = pendingRoomId;
         GameState.isHost = false;
         localStorage.removeItem("pendingRoomId");
-        cc.director.loadScene("PlayerConnect");
+        this.fadeOutToScene("PlayerConnect"); // 초대방으로 페이드 전환
       } else {
-        cc.director.loadScene("MainScene");
+        this.fadeOutToScene("MainScene"); // 일반 진입 시 페이드 전환
       }
 
     } catch (error) {
@@ -208,12 +211,13 @@ export default class LoginManager extends cc.Component {
     const jwtToken = localStorage.getItem('jwtToken');
     const browserId = localStorage.getItem('browserId');
     if (!jwtToken || !browserId) return;
-    GameState.browserId = browserId; // 자동 로그인에서도 할당
+    GameState.browserId = browserId;
 
     const verify = await fetch('https://smartzoo.shop/auth/verify-token', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${jwtToken}` }
     });
+
     const verifyResult = await verify.json();
     if (!verify.ok || !verifyResult.success) return;
 
@@ -228,8 +232,28 @@ export default class LoginManager extends cc.Component {
       GameState.character = result.character;
       GameState.recentSingleScores = result.recentSingleScores;
       cc.log("자동 로그인 GameState 채움:", GameState);
-      cc.director.loadScene("MainScene");
+      this.fadeOutToScene("MainScene"); // 페이드 효과로 전환
     }
   }
+
+  fadeOutToScene(sceneName: string) {
+    const overlay = cc.find("Canvas/TransitionOverlay");
+    if (!overlay) {
+      cc.warn("TransitionOverlay를 찾을 수 없습니다.");
+      cc.director.loadScene(sceneName); // fallback
+      return;
+    }
+
+    overlay.active = true;
+    overlay.opacity = 0;
+
+    cc.tween(overlay)
+      .to(0.5, { opacity: 255 })
+      .call(() => {
+        cc.director.loadScene(sceneName);
+      })
+      .start();
+  }
+
 
 }
