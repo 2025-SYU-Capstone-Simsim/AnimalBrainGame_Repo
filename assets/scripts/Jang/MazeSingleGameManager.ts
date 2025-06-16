@@ -24,7 +24,7 @@ export default class GameManager extends cc.Component {
   @property(cc.Prefab) gameOverUIPrefab!: cc.Prefab;
 
   private logic!: MazeLogic;
-  private timeRem = 60;
+  private timeRem = 30;
   private gameOver = false;
 
   // ─ 골 도착을 별도로 표시할 플래그 추가 ─
@@ -66,7 +66,7 @@ onLoad() {
   // 같은 부모 내 맨 뒤로 보내기
   startOverlay.setSiblingIndex(canvas.childrenCount - 1);
 
-  startOverlay.setPosition(0, 0);
+  startOverlay.setPosition(540, 960);
       const anim = startOverlay.getComponent(cc.Animation);
       if (anim) {
         anim.play("GameStartFade");
@@ -110,7 +110,7 @@ onLoad() {
 
   private _startLevel(lv: number) {
     GameData.currentLevel = lv;
-    this.timeRem = 60;
+    this.timeRem = 30;
     this.gameOver = false;
     this.isGoalReached = false;  // 레벨 시작할 때마다 초기화
 
@@ -126,8 +126,8 @@ onLoad() {
     const cs = this.logic.cellSize;
     const cols = this.logic.maze[0].length;
     const rows = this.logic.maze.length;
-    const baseX = -cols * cs / 2;
-    const baseY = -rows * cs / 2;
+    const baseX = (1080 - cols * cs) / 2;
+    const baseY = (1920 - rows * cs) / 2;
     this.mazeContainer.setPosition(baseX, baseY);
 
     this.playerCtrl.baseX = baseX;
@@ -227,7 +227,7 @@ onLoad() {
   gameOverUI.setSiblingIndex(canvas.childrenCount - 1);
 
   // ④ 화면 중앙에 배치
-  gameOverUI.setPosition(0, 0);
+  gameOverUI.setPosition(540, 960);
 
       const retryBtn = gameOverUI.getChildByName("RetryButton");
       if (retryBtn) {

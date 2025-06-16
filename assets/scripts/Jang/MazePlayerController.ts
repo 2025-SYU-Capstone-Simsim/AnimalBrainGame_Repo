@@ -24,7 +24,7 @@ export default class PlayerController extends cc.Component {
   public mazeLogic!: MazeLogic;
 
   private isMoving = false;
-  private movedOnce = false;      // 한 번만 이동했는지 체크
+  //private movedOnce = false;      // 한 번만 이동했는지 체크
   private gameOverShown = false;  // GameOver UI를 이미 띄웠는지 체크
   private sprite!: cc.Sprite;
 
@@ -38,7 +38,7 @@ export default class PlayerController extends cc.Component {
   // ② resetPlayer: 시작 위치(START_XY)로 되돌린 뒤, 상태 초기화
   public resetPlayer() {
     this.isMoving = false;
-    this.movedOnce = false;
+    //this.movedOnce = false;
     this.gameOverShown = false;
     this.pathGrids = [];
     this.visualPathPixels = [];
@@ -105,19 +105,23 @@ export default class PlayerController extends cc.Component {
   }
 
   private screenToGrid(worldPos: cc.Vec2): cc.Vec2 {
-    const cs = this.mazeLogic.cellSize;
-    const gx = Math.floor((worldPos.x - this.baseX) / cs);
-    const gy = Math.floor((worldPos.y - this.baseY) / cs);
+  const cs = this.mazeLogic.cellSize;
 
-    if (
-      gx < 0 || gy < 0 ||
-      gx >= this.mazeLogic.maze[0].length ||
-      gy >= this.mazeLogic.maze.length
-    ) {
-      return this.currentGridPos.clone();
-    }
-    return cc.v2(gx, gy);
+  // 🛠️ [핵심] 화면 위치 → mazeContainer 내부 상대 좌표로 변환
+  const localPos = this.node.parent.convertToNodeSpaceAR(worldPos);
+
+  const gx = Math.floor((localPos.x - this.baseX) / cs);
+  const gy = Math.floor((localPos.y - this.baseY) / cs);
+
+  if (
+    gx < 0 || gy < 0 ||
+    gx >= this.mazeLogic.maze[0].length ||
+    gy >= this.mazeLogic.maze.length
+  ) {
+    return this.currentGridPos.clone();
   }
+  return cc.v2(gx, gy);
+}
 
   private isValidGrid(gridPos: cc.Vec2): boolean {
     return (
@@ -168,9 +172,9 @@ export default class PlayerController extends cc.Component {
     if (this.isMoving) return;
 
     // ── (1) 이미 한 번 이동했거나 GameOver UI가 이미 떴다면 터치 무시
-    if (this.movedOnce || this.gameOverShown) {
-      return;
-    }
+    if (this.gameOverShown) {
+  return;  // movedOnce 제거
+}
 
     // ── (2) 경로 그리기 초기화
     this.drawingLine.clear();
@@ -197,7 +201,7 @@ export default class PlayerController extends cc.Component {
     if (this.isMoving) return;
 
     // ── (1) pathGrids가 비어 있거나 이미 GameOver 상태라면 무시
-    if (this.pathGrids.length === 0 || this.movedOnce || this.gameOverShown) {
+    if (this.pathGrids.length === 0 || this.gameOverShown) {
       return;
     }
 
@@ -228,10 +232,10 @@ export default class PlayerController extends cc.Component {
   }
 
   private onDrawEnd(event: cc.Event.EventTouch) {
-    // ── (1) 이미 이동했거나 GameOver 상태라면 무시
-    if (this.movedOnce || this.gameOverShown) {
-      return;
-    }
+
+   if (this.gameOverShown) {
+  return;  
+}
 
     // pathGrids가 2칸 이상이면 이동 시작
     if (this.pathGrids.length > 1) {
@@ -272,50 +276,28 @@ private async followPath(path: cc.Vec2[]) {
     }
 
     // ── (5) 골 도착 체크 (기존 로직)
-    if (
-      this.currentGridPos.x === goalGrid.x &&
-      this.currentGridPos.y === goalGrid.y
-    ) {
-      this.isMoving = false;
-      this.drawingLine.clear();
-      this.pathGrids = [];
-      this.visualPathPixels = [];
-      this.node.emit("playerReachedGoal");
-      return;
-    }
-  }
-
-  // ── (6) 목표 미도달 시 GameOver UI (기존 코드 유지)
+   if (
+  this.currentGridPos.x === goalGrid.x &&
+  this.currentGridPos.y === goalGrid.y
+) {
   this.isMoving = false;
   this.drawingLine.clear();
   this.pathGrids = [];
   this.visualPathPixels = [];
-  this.movedOnce = true;
-  if (this.gameOverUIPrefab) {
-  const goUI = cc.instantiate(this.gameOverUIPrefab);
-
-  // ① Canvas에 붙이기
-  const canvas = cc.find("Canvas");
-  canvas.addChild(goUI);
-
-  // ② zIndex 설정
-  goUI.zIndex = 1000;
-  // ③ 같은 부모 내 맨 뒤로 보내기
-  goUI.setSiblingIndex(canvas.childrenCount - 1);
-
-  // ④ 중앙 위치
-  goUI.setPosition(0, 0);
-
-  this.gameOverShown = true;
-          // // 게임 상태 저장
-          // GameState.lastGameScene = cc.director.getScene().name;
-          // GameState.score = this.score;
-          // GameState.gameId = "remember-game"; // 기억력 게임 고유 식별자
-}
+  this.node.emit("playerReachedGoal");
+  return;
 }
 
+// ── (6) 목표 미도달 시 다음 드래그 가능하게 초기화
+this.isMoving = false;
+this.drawingLine.clear();
+this.pathGrids = [];
+this.visualPathPixels = [];
 
 
+  // ── (6) 목표 미도달 시 GameOver UI (기존 코드 유지)
+}
+}
 
   private moveToGrid(gridPos: cc.Vec2): Promise<void> {
     return new Promise(resolve => {
