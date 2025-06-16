@@ -31,8 +31,8 @@ export default class MultiGameListController extends cc.Component {
             , desc: '잠깐 공개된 숫자를 기억하고 맞혀보세요!\n가끔씩은 역방향으로 맞춰보세요! '  },
         // { title: '집중력 게임', thumbnail: 'concetration_thumb', scene: 'Rottenacorn_Multiscene' 
         //     , desc: '잠깐 내부가 보였다 사라지는 도토리들! \n 벌레 먹은 도토리를 기억하고,\n정확히 골라내세요.' },
-        { title: '미로 게임', thumbnail: 'maze_thumb', scene: 'Maze_MultiScene' 
-            , desc: '미로를 뚫고 동물들이 음식을 찾는 걸 \n 도와주세요!  기회는 단 한번 뿐이에요!' },
+        // { title: '미로 게임', thumbnail: 'maze_thumb', scene: 'Maze_MultiScene' 
+        //     , desc: '미로를 뚫고 동물들이 음식을 찾는 걸 \n 도와주세요!  기회는 단 한번 뿐이에요!' },
     ];
 
     onLoad() {
