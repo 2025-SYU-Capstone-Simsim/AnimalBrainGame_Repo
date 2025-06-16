@@ -29,41 +29,42 @@ static initializeSocketListeners() {
     const { type, payload, roomId: incomingRoomId } = message;
     if (incomingRoomId !== roomId) return;
 
-    switch (type) {
-      case "guest-ready":
-        if (GameState.isHost) {
-          window.socket.emit("game-event", { type: "game-start", roomId, payload: {} });
-          cc.director.emit("multi-game-start");
-        }
-        break;
+  switch (type) {
+    case "draw-path":
+      cc.director.emit("draw-path", payload);
+      break;
 
-      case "game-start":
-        if (!GameState.isHost) {
-          cc.director.emit("multi-game-start");
-        }
-        break;
- case "maze-data":
-    cc.director.emit("maze-data", payload);
-    break;
+    case "maze-data":
+      cc.director.emit("maze-data", payload);
+      break;
 
-  case "opponent-move":
-    cc.director.emit("opponent-move", payload);
-    break;
+    case "player-reached-goal":
+      cc.director.emit("player-reached-goal", payload);
+      break;
 
-  case "player-reached-goal":
-    cc.director.emit("player-reached-goal", payload);
+    case "opponent-move":
+  cc.director.emit("opponent-move", payload);
+  break;
+
+    case "guest-ready":
+      if (GameState.isHost) {
+        window.socket.emit("game-event", { type: "game-start", roomId, payload: {} });
+        cc.director.emit("multi-game-start");
+      }
+      break;
+
+    case "game-start":
+      if (!GameState.isHost) {
+        cc.director.emit("multi-game-start");
+      }
+      break;
+
+
+  case "spawn-mole":
+  case "hit-mole":
+  case "score-update":
+    cc.director.emit(type, payload);
     break;
-        case "spawn-mole": 
-        case "hit-mole": 
-        case "sequence-generated": 
-        case "user-input": 
-        case "input-result": 
-        case "level-up": 
-        case "spawn-question":
-        case "answer-result":
-        case "score-update":   
-        cc.director.emit(type, payload); // 필수 
-        break;
 
       case "move-scene":
         {

@@ -420,7 +420,7 @@
     "node": {
       "__id__": 7
     },
-    "_enabled": true,
+    "_enabled": false,
     "myGameArea": {
       "__id__": 9
     },
@@ -479,8 +479,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 800,
-      "height": 800
+      "width": 0,
+      "height": 0
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -537,8 +537,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 800,
-      "height": 800
+      "width": 0,
+      "height": 0
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -788,8 +788,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 800,
-      "height": 800
+      "width": 0,
+      "height": 0
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -846,8 +846,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 800,
-      "height": 800
+      "width": 0,
+      "height": 0
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -859,7 +859,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        32.283,
+        0,
         0,
         0,
         0,
@@ -1310,7 +1310,7 @@
       "ctor": "Float64Array",
       "array": [
         180,
-        -885.195,
+        -800,
         0,
         0,
         0,
@@ -1389,8 +1389,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -256.085,
-        -888.238,
+        -250,
+        -800,
         0,
         0,
         0,
@@ -1522,7 +1522,7 @@
       "ctor": "Float64Array",
       "array": [
         180,
-        26.53,
+        60,
         0,
         0,
         0,
@@ -1601,8 +1601,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -256.085,
-        31.76,
+        -250,
+        30,
         0,
         0,
         0,

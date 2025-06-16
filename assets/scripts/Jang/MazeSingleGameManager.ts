@@ -41,17 +41,32 @@ onLoad() {
   this.node.on("nextLevel", () => this._startLevel(GameData.currentLevel + 1));
 
   // 이제는 이벤트 리스너를 비워 두거나 아예 지워도 무방합니다.
-  this.playerCtrl.node.on("playerReachedGoal", () => {
-    // 아무 코드도 없으므로, 골 도달 시에는 여기서 아무런 처리를 하지 않습니다.
-  }, this);
+ 
 }
-
 
 
 
   start() {
     GameState.lastGameScene = cc.director.getScene().name;
-  if (this.gameStartOverlayPrefab) {
+  if (this.playerCtrl && this.playerCtrl.node) {
+    this.playerCtrl.node.on("playerReachedGoal", () => {
+      console.log("[🟢 GameManager] playerReachedGoal 이벤트 수신");
+      if (this.isGoalReached || this.gameOver) return;
+
+      this.isGoalReached = true;
+      this.gameOver = true;
+
+      GameData.addScore(GameData.currentLevel);
+      this.uiMgr.setScore(GameData.score);
+
+      this.scheduleOnce(() => {
+        this._startLevel(GameData.currentLevel + 1);
+      }, 0.1);
+    }, this);
+  } else {
+    cc.error("[GameManager] playerCtrl 또는 node가 null입니다");
+  }
+    if (this.gameStartOverlayPrefab) {
   const startOverlay = cc.instantiate(this.gameStartOverlayPrefab);
 
   // ❌ 지우기
@@ -66,7 +81,7 @@ onLoad() {
   // 같은 부모 내 맨 뒤로 보내기
   startOverlay.setSiblingIndex(canvas.childrenCount - 1);
 
-  startOverlay.setPosition(540, 960);
+  startOverlay.setPosition(0, 0);
       const anim = startOverlay.getComponent(cc.Animation);
       if (anim) {
         anim.play("GameStartFade");
@@ -124,11 +139,12 @@ onLoad() {
     this.logic.build(lv);
 
     const cs = this.logic.cellSize;
-    const cols = this.logic.maze[0].length;
-    const rows = this.logic.maze.length;
-    const baseX = (1080 - cols * cs) / 2;
-    const baseY = (1920 - rows * cs) / 2;
-    this.mazeContainer.setPosition(baseX, baseY);
+const cols = this.logic.maze[0].length;
+const rows = this.logic.maze.length;
+
+const baseX = -cols * cs / 2;
+const baseY = -rows * cs / 2;
+this.mazeContainer.setPosition(baseX, baseY);
 
     this.playerCtrl.baseX = baseX;
     this.playerCtrl.baseY = baseY;
@@ -137,11 +153,11 @@ onLoad() {
     this.playerCtrl.resetPlayer();
     // ─ 실제 시작 좌표로 덮어쓰기
     const st = this.logic.getStartPosition();
-    this.playerCtrl.currentGridPos = cc.v2(st.x, st.y);
-    this.playerCtrl.node.setPosition(
-      baseX + st.x * cs + cs / 2,
-      baseY + st.y * cs + cs / 2
-    );
+this.playerCtrl.currentGridPos = cc.v2(st.x, st.y);
+this.playerCtrl.node.setPosition(
+  baseX + st.x * cs + cs / 2,
+  baseY + st.y * cs + cs / 2
+);
 
     // ─ 목표 스프라이트 설정 & 배치
     let goalSprite: cc.SpriteFrame;
@@ -160,12 +176,12 @@ onLoad() {
     sp.spriteFrame = goalSprite;
 
     const go = this.logic.getGoalPosition();
-    this.goalNode.setPosition(
-      cc.v2(
-        baseX + go.x * cs + cs / 2,
-        baseY + go.y * cs + cs / 2
-      )
-    );
+this.goalNode.setPosition(
+  cc.v2(
+    baseX + go.x * cs + cs / 2,
+    baseY + go.y * cs + cs / 2
+  )
+);
 
     // UI 타이머 초기화
     this.uiMgr.setTimer(this.timeRem);
@@ -179,8 +195,8 @@ onLoad() {
   const cs   = this.logic.cellSize;
   const cols = this.logic.maze[0].length;
   const rows = this.logic.maze.length;
-  const baseX = (1080 - cols * cs) / 2;
-  const baseY = (1920 - rows * cs) / 2;
+  const baseX = -cols * cs / 2;
+const baseY = -rows * cs / 2;
 
   // ① 거리 기반 골 판정 (여기서만 한 번 점수 + 레벨업 예약)
   const go = this.logic.getGoalPosition();
@@ -188,21 +204,21 @@ onLoad() {
     baseX + go.x * cs + cs / 2,
     baseY + go.y * cs + cs / 2
   );
-  if (!this.isGoalReached &&
-      this.playerCtrl.node.getPosition().sub(goalWorld).mag() < cs * 0.5) {
-    this.isGoalReached = true;
-    this.gameOver = true;
+  //if (!this.isGoalReached &&
+  //    this.playerCtrl.node.getPosition().sub(goalWorld).mag() < cs * 0.5) {
+  //  this.isGoalReached = true;
+   // this.gameOver = true;
 
     // 점수는 한 번만 +10
-    GameData.addScore(GameData.currentLevel);
-    this.uiMgr.setScore(GameData.score);
+   // GameData.addScore(GameData.currentLevel);
+   // this.uiMgr.setScore(GameData.score);
 
     // → 아주 짧은 지연(0초)으로 다음 프레임에 _startLevel 호출
-    this.scheduleOnce(() => {
-      this._startLevel(GameData.currentLevel + 1);
-    }, 0.1);
-    return;
-  }
+   // this.scheduleOnce(() => {
+   //   this._startLevel(GameData.currentLevel + 1);
+   // }, 0.1);
+  //  return;
+ // }
 
   // ② 시간 차감 & 시간초과 판정
   this.timeRem -= dt;
@@ -227,7 +243,7 @@ onLoad() {
   gameOverUI.setSiblingIndex(canvas.childrenCount - 1);
 
   // ④ 화면 중앙에 배치
-  gameOverUI.setPosition(540, 960);
+  gameOverUI.setPosition(0, 0);
 
       const retryBtn = gameOverUI.getChildByName("RetryButton");
       if (retryBtn) {

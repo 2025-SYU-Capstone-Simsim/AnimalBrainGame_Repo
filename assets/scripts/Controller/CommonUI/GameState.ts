@@ -56,7 +56,7 @@ export default class GameState {
     this.guestCharacter = '';
   }
 
-  // // 멀티플레이 선택 게임 목록과 인덱스
-  // static selectedGameSequence: string[] = [];
-  // static currentGameIndex: number = 0;
+  // 멀티플레이 선택 게임 목록과 인덱스
+  static selectedGameSequence: string[] = [];
+  static currentGameIndex: number = 0;
 }

@@ -187,8 +187,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        540,
-        960,
+        0,
+        0,
         0,
         0,
         0,
@@ -285,8 +285,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        540,
-        960,
+        0,
+        0,
         0,
         0,
         0,
@@ -379,8 +379,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        540,
-        960,
+        0,
+        0,
         0,
         0,
         0,
@@ -475,20 +475,20 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 1080,
+      "height": 1920
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 1
+      "y": 0.5
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        540,
-        960,
+        0,
+        0,
         0,
         0,
         0,
@@ -546,7 +546,7 @@
     "_id": "d76lQ1dGxKXZKZb2jXHqb3"
   },
   {
-    "__type__": "4945dCYaAtPU49aTpTuPF+Z",
+    "__type__": "1c1fbPAAudL4pu0vAkYQREo",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -562,7 +562,7 @@
     "rabbitFrame": {
       "__uuid__": "0f0478ae-1e46-4d23-9bec-23c50f99ab6f"
     },
-    "_id": "126Lb48pBF8q9Wp369wLiz"
+    "_id": "cbRH8+X0FJcJS+BwkF9a+W"
   },
   {
     "__type__": "cc.Node",
@@ -601,8 +601,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        540,
-        960,
+        0,
+        0,
         0,
         0,
         0,
@@ -686,8 +686,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        540,
-        960,
+        0,
+        0,
         0,
         0,
         0,
@@ -751,8 +751,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -470,
-        850,
+        -1030,
+        -110,
         0,
         0,
         0,
@@ -927,8 +927,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        540,
-        960,
+        0,
+        0,
         0,
         0,
         0,
@@ -996,7 +996,7 @@
       "height": 1920
     },
     "_fitWidth": false,
-    "_fitHeight": false,
+    "_fitHeight": true,
     "_id": "59Cd0ovbdF4byw5sbjJDx7"
   },
   {
@@ -1037,9 +1037,7 @@
     "mazeContainer": {
       "__id__": 9
     },
-    "playerCtrl": {
-      "__id__": 11
-    },
+    "playerCtrl": null,
     "uiMgr": {
       "__id__": 13
     },

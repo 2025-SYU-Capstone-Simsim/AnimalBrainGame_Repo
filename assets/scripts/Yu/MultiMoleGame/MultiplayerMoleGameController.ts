@@ -49,17 +49,17 @@ export default class MultiplayerMoleGameController extends cc.Component {
         console.log("[MMGC] 'multi-game-start' 리스너 등록 완료");
 
         // ─── 2) GameState 복구 ───
-        // const savedSequence = cc.sys.localStorage.getItem("selectedGameSequence");
-        // const savedIndex = cc.sys.localStorage.getItem("currentGameIndex");
-        // if (savedSequence) {
-        //     try {
-        //         GameState.selectedGameSequence = JSON.parse(savedSequence);
-        //         GameState.currentGameIndex = Number(savedIndex) || 0;
-        //         cc.log("GameState 복구 완료:", GameState.selectedGameSequence, GameState.currentGameIndex);
-        //     } catch (e) {
-        //         cc.warn("selectedGameSequence 복구 실패:", e);
-        //     }
-        // }
+        const savedSequence = cc.sys.localStorage.getItem("selectedGameSequence");
+        const savedIndex = cc.sys.localStorage.getItem("currentGameIndex");
+        if (savedSequence) {
+            try {
+                GameState.selectedGameSequence = JSON.parse(savedSequence);
+                GameState.currentGameIndex = Number(savedIndex) || 0;
+                cc.log("GameState 복구 완료:", GameState.selectedGameSequence, GameState.currentGameIndex);
+            } catch (e) {
+                cc.warn("selectedGameSequence 복구 실패:", e);
+            }
+        }
         const savedHost = cc.sys.localStorage.getItem("isHost");
         GameState.isHost = savedHost === "true";
         cc.log("복원된 isHost 값:", GameState.isHost);

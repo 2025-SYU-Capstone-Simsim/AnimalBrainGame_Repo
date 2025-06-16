@@ -17,9 +17,11 @@ export default class GameData {
     if (GameState) GameState.character = value;
   }
 
-  public static addScore(level: number) {
-    this.score += 10;
-  }
+  static addScore(level: number) {
+  const amount = 10;
+  console.log(`[🟡 GameData] addScore 호출됨! +${amount} (레벨: ${level})`);
+  this.score += amount;
+}
 
   public static resetScore() {
     this.score = 0;
