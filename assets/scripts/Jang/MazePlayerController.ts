@@ -304,7 +304,7 @@ private async followPath(path: cc.Vec2[]) {
   goUI.setSiblingIndex(canvas.childrenCount - 1);
 
   // ④ 중앙 위치
-  goUI.setPosition(540, 960);
+  goUI.setPosition(0, 0);
 
   this.gameOverShown = true;
           // // 게임 상태 저장

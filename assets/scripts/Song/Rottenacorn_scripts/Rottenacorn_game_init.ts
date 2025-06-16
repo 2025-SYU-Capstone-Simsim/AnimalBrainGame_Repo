@@ -1,10 +1,8 @@
 const { ccclass, property } = cc._decorator;
 import GameState from "../../Controller/CommonUI/GameState";
+
 @ccclass
 export default class GameInit extends cc.Component {
-    @property(cc.Prefab)
-    acornPrefab: cc.Prefab = null;
-
     @property(cc.Node)
     correct_sign: cc.Node = null;
 
@@ -14,45 +12,56 @@ export default class GameInit extends cc.Component {
     @property(cc.Button)
     exitButton: cc.Button = null;
 
-    @property(cc.Prefab)
-    timerDisplayPrefab: cc.Prefab = null;
+    @property(cc.Node)
+    scoreNode: cc.Node = null;
 
-    @property(cc.Prefab)
-    scoreDisplayPrefab: cc.Prefab = null;
+    @property(cc.Node)
+    timerNode: cc.Node = null;
 
-    @property(cc.Prefab)
-    gameStartOverlayPrefab: cc.Prefab = null;
+    @property(cc.Node)
+    gameStartOverlay: cc.Node = null;
 
-    @property(cc.Prefab)
-    gameOverUIPrefab: cc.Prefab = null;
+    @property(cc.Node)
+    gameOverUI: cc.Node = null;
+
+    private scoreLabel: cc.Label = null;
+    private timerLabel: cc.Label = null;
 
     private totalTime: number = 60;
     private currentTime: number = 60;
     private score: number = 0;
 
-    private timerNode: cc.Node = null;
-    private scoreNode: cc.Node = null;
-
-    private timerLabel: cc.Label = null;
-    private scoreLabel: cc.Label = null;
-
     onLoad() {
+        if (this.gameOverUI) {
+            this.gameOverUI.active = false;
+        }
+        // 물리 매니저 설정
         const manager = cc.director.getPhysicsManager();
         manager.enabled = true;
         manager.gravity = cc.v2(0, 0);
+
+        // 정답/오답 비활성화
         this.correct_sign.active = false;
         this.wrong_sign.active = false;
 
-        if (this.gameStartOverlayPrefab) {
-            const startOverlay = cc.instantiate(this.gameStartOverlayPrefab);
-            this.node.addChild(startOverlay);
-            startOverlay.setPosition(0, 0);
+        // 타이머/점수 라벨 연결
+        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
+        this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
 
-            cc.tween(startOverlay)
+        this.updateScore(0);
+        this.timerLabel.string = `${this.currentTime}`;
+        this.schedule(this.updateTimer, 1);
+
+        // 게임 시작 오버레이 보여주기
+        if (this.gameStartOverlay) {
+            this.gameStartOverlay.active = true;
+            this.gameStartOverlay.setPosition(0, 0);
+
+            cc.tween(this.gameStartOverlay)
                 .delay(1.5)
                 .to(0.5, { opacity: 0 })
                 .call(() => {
-                    startOverlay.destroy();
+                    this.gameStartOverlay.active = false;
                     this.startGameLogic();
                 })
                 .start();
@@ -63,32 +72,6 @@ export default class GameInit extends cc.Component {
 
     startGameLogic() {
         GameState.lastGameScene = cc.director.getScene().name;
-        const sceneName = cc.director.getScene().name;
-
-        // 타이머 프리팹 인스턴스화
-        this.timerNode = cc.instantiate(this.timerDisplayPrefab);
-        this.node.addChild(this.timerNode);
-        this.timerLabel = this.timerNode.getChildByName("TimerLabel").getComponent(cc.Label);
-        this.timerLabel.string = `${this.currentTime}`;
-        this.schedule(this.updateTimer, 1);
-
-        if (sceneName === 'Rottenacorn_Mainscene') {
-            this.timerNode.setPosition(cc.v2(180, 1700));
-        } else if (sceneName === 'Rottenacorn_Multiscene') {
-            this.timerNode.setPosition(cc.v2(900, 1825));
-        }
-
-        // 점수 프리팹 인스턴스화
-        this.scoreNode = cc.instantiate(this.scoreDisplayPrefab);
-        this.node.addChild(this.scoreNode);
-        this.scoreLabel = this.scoreNode.getChildByName("ScoreLabel").getComponent(cc.Label);
-        this.updateScore(0);
-
-        // if (sceneName === 'Rottenacorn_Mainscene') {
-        //     this.scoreNode.setPosition(cc.v2(850, 1700));
-        // } else if (sceneName === 'Rottenacorn_Multiscene') {
-        //     this.scoreNode.setPosition(cc.v2(750, 125));
-        // }
     }
 
     updateTimer() {
@@ -109,16 +92,15 @@ export default class GameInit extends cc.Component {
     onGameOver() {
         cc.log("게임 종료!");
 
-        // GameState 저장
         GameState.lastGameScene = cc.director.getScene().name;
         GameState.score = this.score;
-        GameState.gameId = "RottenAcorn"; // 원하는 고유 ID로 설정
+        GameState.gameId = "RottenAcorn";
 
-        const gameOverUI = cc.instantiate(this.gameOverUIPrefab);
-        this.node.addChild(gameOverUI);
-        gameOverUI.setPosition(0, 0);
+        if (this.gameOverUI) {
+            this.gameOverUI.active = true;
+            this.gameOverUI.setPosition(0, 0);
+        }
     }
-
 
     loadList() {
         console.log("싱글 게임 리스트로 돌아가기");

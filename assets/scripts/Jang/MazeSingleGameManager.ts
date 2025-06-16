@@ -66,7 +66,7 @@ onLoad() {
   // 같은 부모 내 맨 뒤로 보내기
   startOverlay.setSiblingIndex(canvas.childrenCount - 1);
 
-  startOverlay.setPosition(540, 960);
+  startOverlay.setPosition(0, 0);
       const anim = startOverlay.getComponent(cc.Animation);
       if (anim) {
         anim.play("GameStartFade");
@@ -110,7 +110,7 @@ onLoad() {
 
   private _startLevel(lv: number) {
     GameData.currentLevel = lv;
-    this.timeRem = 30;
+    this.timeRem = 60;
     this.gameOver = false;
     this.isGoalReached = false;  // 레벨 시작할 때마다 초기화
 
@@ -126,8 +126,8 @@ onLoad() {
     const cs = this.logic.cellSize;
     const cols = this.logic.maze[0].length;
     const rows = this.logic.maze.length;
-    const baseX = (1080 - cols * cs) / 2;
-    const baseY = (1920 - rows * cs) / 2;
+    const baseX = -cols * cs / 2;
+    const baseY = -rows * cs / 2;
     this.mazeContainer.setPosition(baseX, baseY);
 
     this.playerCtrl.baseX = baseX;
@@ -227,7 +227,7 @@ onLoad() {
   gameOverUI.setSiblingIndex(canvas.childrenCount - 1);
 
   // ④ 화면 중앙에 배치
-  gameOverUI.setPosition(540, 960);
+  gameOverUI.setPosition(0, 0);
 
       const retryBtn = gameOverUI.getChildByName("RetryButton");
       if (retryBtn) {
