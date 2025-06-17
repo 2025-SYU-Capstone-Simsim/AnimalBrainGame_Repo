@@ -33,7 +33,7 @@ export default class GameController extends cc.Component {
     onLoad() {
         GameState.lastGameScene = cc.director.getScene().name;
 
-        // ✅ Score UI 프리팹 인스턴스화 및 Label 연결
+        //  Score UI 프리팹 인스턴스화 및 Label 연결
         if (this.scoreUIPrefab) {
             const scoreUI = cc.instantiate(this.scoreUIPrefab);
             this.node.addChild(scoreUI);
@@ -48,7 +48,7 @@ export default class GameController extends cc.Component {
             }
         }
 
-        // ✅ Timer UI 프리팹 인스턴스화 및 Label 연결
+        //  Timer UI 프리팹 인스턴스화 및 Label 연결
         if (this.timerUIPrefab) {
             const timerUI = cc.instantiate(this.timerUIPrefab);
             this.node.addChild(timerUI);
@@ -63,7 +63,7 @@ export default class GameController extends cc.Component {
             }
         }
 
-        // ✅ 게임 시작 오버레이
+        // 게임 시작 오버레이
         if (this.gameStartOverlayPrefab) {
             const overlay = cc.instantiate(this.gameStartOverlayPrefab);
             this.node.addChild(overlay);
@@ -212,7 +212,7 @@ export default class GameController extends cc.Component {
 
     private startTimer() {
         this.unschedule(this.tickCallback);
-        this.remainingTime = 60;
+        this.remainingTime = 30;
         this.timerLabel.string = `${this.remainingTime}`;
         this.timerLabel.node.active = true;
         this.schedule(this.tickCallback, 1);

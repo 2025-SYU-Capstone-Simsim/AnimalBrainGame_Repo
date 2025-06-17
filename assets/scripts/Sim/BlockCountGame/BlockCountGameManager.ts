@@ -42,7 +42,7 @@ export default class GameManager extends cc.Component {
   private correctCount: number = 0;
   private score: number = 0;
   private answered: boolean = false;
-  private timeLeft: number = 60;
+  private timeLeft: number = 30;
 
   private blockTextures: string[] = [
     "Images/Sim/navyBlock",

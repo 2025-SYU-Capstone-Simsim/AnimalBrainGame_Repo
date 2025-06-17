@@ -27,8 +27,8 @@ export default class GameInit extends cc.Component {
     private scoreLabel: cc.Label = null;
     private timerLabel: cc.Label = null;
 
-    private totalTime: number = 60;
-    private currentTime: number = 60;
+    private totalTime: number = 30;
+    private currentTime: number = 30;
     private score: number = 0;
 
     onLoad() {
