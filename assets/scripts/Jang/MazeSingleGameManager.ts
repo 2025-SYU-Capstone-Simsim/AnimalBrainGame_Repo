@@ -24,7 +24,7 @@ export default class GameManager extends cc.Component {
   @property(cc.Prefab) gameOverUIPrefab!: cc.Prefab;
 
   private logic!: MazeLogic;
-  private timeRem = 30;
+  private timeRem = 60;
   private gameOver = false;
 
   // ─ 골 도착을 별도로 표시할 플래그 추가 ─

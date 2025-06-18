@@ -7127,6 +7127,9 @@
     "guestCharacterNode": {
       "__id__": 150
     },
+    "loadingPopupPrefab": {
+      "__uuid__": "23ec807a-bf5c-4189-b95c-e2ec124e37bd"
+    },
     "_id": "60j+FlRMJKLo4f2VAmxoSr"
   }
 ]

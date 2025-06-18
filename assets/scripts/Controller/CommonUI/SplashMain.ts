@@ -13,7 +13,7 @@ export default class SplashMain extends cc.Component {
         // 2초(2000ms) 후 자동으로 StoryScene_1로 이동
         this.scheduleOnce(() => {
             cc.director.loadScene("StoryScene_1");
-        }, 1); // 2초 후 실행
+        }, 2); // 2초 후 실행
         this.node.on("touchend", () => {
         cc.director.loadScene("StoryScene_1");
 });
