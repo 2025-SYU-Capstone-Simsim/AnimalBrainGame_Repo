@@ -125,7 +125,7 @@ onLoad() {
 
   private _startLevel(lv: number) {
     GameData.currentLevel = lv;
-    this.timeRem = 30;
+    this.timeRem = 60;
     this.gameOver = false;
     this.isGoalReached = false;  // 레벨 시작할 때마다 초기화
 

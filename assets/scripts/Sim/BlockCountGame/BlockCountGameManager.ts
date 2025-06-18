@@ -93,7 +93,7 @@ export default class GameManager extends cc.Component {
     this.score = 0;
     if (this.scoreLabel) this.scoreLabel.string = `${this.score}`;
 
-    this.timeLeft = 60;
+    this.timeLeft = 30;
     if (this.timeLabel) this.timeLabel.string = `${this.timeLeft}`;
 
     if (this.gameStartOverlayPrefab) {
